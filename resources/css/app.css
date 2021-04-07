@@ -1,0 +1,48 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Raleway');
+h1,
+h2,
+h3,
+p,
+span,
+small,
+em {
+    font-family: Raleway, sans-serif;
+    color: #797979
+}
+
+.foo {
+    color: blue !important;
+    @apply bg-blue-100;
+}
+
+.bg-mp-general {
+    background: #A2ECE1 !important;
+}
+
+.bg-mp-second {
+    background: #ddf0ed !important;
+}
+
+.orange {
+    color: #fb6e15;
+}
+
+header {
+    background-image: url("../img/fondo-ultima-web.jpg");
+}
+
+h2 {
+    font-size: 25px;
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
