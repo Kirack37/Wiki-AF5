@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\WikiAf5Projects;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -24,22 +24,18 @@ class WikiAf5ProjectsController extends Controller
         // ::where('user_id', Auth::user()->id)->orderby('fecha_revision','DESC')->first()
         
         return Inertia::render('Projects/Index', [
-            'filters' => Request::all('search'),
-            // 'wikiaf5projects' =>  $wiki_af5_projects
-            // 'wikiaf5projects' => WikiAf5Projects::where('name','LIKE','%{request->term}%')
-            //     ->paginate(15)                
-            //     ->withQueryString()
-            //     ->sortBy("name")
+            // 'filters' => Request::all('search'),
+            // // 'wikiaf5projects' =>  $wiki_af5_projects
+            // // 'wikiaf5projects' => WikiAf5Projects::where('name','LIKE','%{request->term}%')
+            // //     ->paginate(15)                
+            // //     ->withQueryString()
+            // //     ->sortBy("name")
             'wikiaf5projects' => WikiAf5Projects::orderBy('name','ASC')
-            // ->when($request->term, function ($query, $term ){
-            //     $query->where('name','LIKE','%' . $term . '%');})
-                ->paginate(10)
+            ->when($request->term, function ($query, $term ){
+                $query->where('name','LIKE','%' . $term . '%');})
+            ->paginate(10)
             ->withQueryString()
             ->sortBy('name')
-            
-            
-                
-                
          ]);
     }
 

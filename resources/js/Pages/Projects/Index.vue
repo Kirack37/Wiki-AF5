@@ -7,8 +7,8 @@
         </template>
         <div class="container mx-auto my-10">
             <div class="select-stuff mb-20">
-                <input id="search" class="w-full max-w-md mr-4" :value="value" @input="$emit('input', $event.target.value)"  @reset="reset">
-                <!-- </search> -->
+                <search id="search" class="w-full max-w-md mr-4"  v-model:search="term" @keyup="searchFor" @click="resetQuery()">
+                </search>
             </div>
             <div class="recent-projects">
                 <table class="bg-blue-250 dark:bg-red-700 text-green-750 dark:text-blue-400  " >
@@ -73,9 +73,7 @@
 <script>
 
 import AppLayout from '@/Layouts/AppLayout'
-import pickBy from 'lodash/pickBy'
-import throttle from 'lodash/throttle'
-import mapValues from 'lodash/mapValues'
+import { reactive } from "vue";
 import Search from '@/Shared/Search'
 
 export default {
@@ -90,67 +88,30 @@ export default {
     },
     props: {
       wikiaf5projects: Object,
-      filters: Object,
-      value: String,
-      emits: ['input'],
-      maxWidth: {
-        type: Number,
-        default: 300,
-      },
+      term: String,
   },
-    data() {
-    return {
-      form: {
-        search: this.filters.search,
-      },
-    }
+   setup () {
+    let searching = reactive({
+      
+      term: ''
+    })
+    return { searching }
   },
-  watch: {
-    form: {
-      handler: throttle(function() {
-        let query = pickBy(this.form)
-        this.$inertia.replace(this.route('projects', Object.keys(query).length ? query : { remember: 'forget' }))
-      }, 150),
-      deep: true,
-    },
-  },
+
   methods: {
-    reset() {
-      this.form = mapValues(this.form, () => null)
+    resetQuery() {
+      this.$inertia.replace(this.route('projects', ''))
+      var inputs = document.getElementsByTagName('input');
+      for (var i=0 ; i < inputs.length ; i++){
+        if (inputs[i].type == "text"){
+            inputs[i].value = "";
+        }
+      }
     },
-    onInput() {
-      console.log(this.searchQuery);
-      this.$emit('queryChange', this.searchQuery);
+    searchFor() {
+      this.$inertia.replace(this.route('projects', {term:this.term}))
+      
     },
   },
-    
-//     data() {
-//         return{
-//         term: {
-//         term: this.filters.search,
-        
-//         }
-//     }
-//         // return {
-//         //     term:''
-//         // }
-//     }, 
-//     term: {
-//         form: {
-//         handler: throttle(function() {
-//             let query = pickBy(this.term)
-//             this.$inertia.replace(this.route('projects', Object.keys(query).length ? query : { remember: 'forget' }))
-//         }, 150),
-//         deep: true,
-//         },
-//   },
-//     methods: {
-//         // search(){
-//         //     this.$inertia.get(this.route('projects',  { term: this.term }))
-//         // },
-//         reset() {
-//             this.term = mapValues(this.term, () => null)
-//         },
-//     },
 };
 </script>
