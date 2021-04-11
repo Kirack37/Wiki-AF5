@@ -28,6 +28,8 @@
     },
     "dependencies": {
         "@ckeditor/ckeditor5-build-classic": "^27.0.0",
-        "@popperjs/core": "^2.9.2"
+        "@ckeditor/ckeditor5-vue": "^2.0.1",
+        "@popperjs/core": "^2.9.2",
+        "jshint": "^2.12.0"
     }
 }

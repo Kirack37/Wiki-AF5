@@ -1,6 +1,5 @@
 <template>
   <app-layout>
-    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/27.0.0/classic/ckeditor.js"></script> -->
     <template #header>
         <h2 class="font-semibold text-xl text-white leading-tight">
             Proyectos
@@ -37,9 +36,9 @@ export default {
       AppLayout,
   },
   props: {
-    // wikiaf5projects: Object,
-    // users: Object,
-    // priorities: Object,
+    wikiaf5projects: Object,
+    users: Object,
+    priorities: Object,
     errors: Object,
   },
   data() {
@@ -58,7 +57,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$inertia.post(route('company.store'), this.form);
+      this.$inertia.post(route('priorities.store'), this.form);
     },
   },
 }

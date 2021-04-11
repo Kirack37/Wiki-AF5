@@ -6,6 +6,9 @@
         </h2>
     </template>
     <div class="container mx-auto my-10">
+      <div id="app">
+        <ckeditor :editor="editor" v-model="editorData" :config="editorConfig"></ckeditor>
+      </div>
       <form @submit.prevent="submit">
         <div>
           <label for="name">Nombre:</label >
@@ -54,11 +57,14 @@
 <script>
 
 import AppLayout from '@/Layouts/AppLayout'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 export default {
           
   components: {
       AppLayout,
+      ckeditor: CKEditor.component
   },
   props: {
     wikiaf5projects: Object,
@@ -66,8 +72,14 @@ export default {
     priorities: Object,
     errors: Object,
   },
+  name: 'app',
   data() {
     return {
+      editor: ClassicEditor,
+      editorData: '<p>Content of the editor.</p>',
+      editorConfig: {
+          // The configuration of the editor.
+      },
       form: {
         name: null,
         start_date: null,
@@ -76,14 +88,12 @@ export default {
         description: null,
         responsible_id: null,
         priority_id: null,
-        responsible: null,
 
       },
     };
   },
   methods: {
     submit() {
-      this.form.responsible = 'hola';
       this.$inertia.post(route('projects.store'), this.form);
     },
   },
