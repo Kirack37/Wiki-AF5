@@ -26,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'user_type_id', 'company_id', 'firstname', 'lastname', 'status'
     ];
 
     /**
@@ -58,4 +58,14 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function WikiAf5Projects(){
+        return $this->hasMany(WikiAf5Projects::class);
+    }
+    public function userType(){
+        return $this->hasOne(WikiAf5UsersType::class);
+    }
+    public function company(){
+        return $this->hasOne(WikiAf5Company::class);
+    }
 }

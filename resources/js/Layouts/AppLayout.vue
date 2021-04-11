@@ -3,7 +3,7 @@
         <jet-banner />
 
         <div class="min-h-screen">
-            <nav class="bg-white border-b border-gray-100 sticky top-0">
+            <nav class="bg-white border-b border-gray-100 sticky top-0 z-10">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
@@ -27,22 +27,22 @@
                                 </jet-nav-link>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('meetings')" :active="route().current('dashboard')">
+                                <jet-nav-link :href="route('meetings')" :active="route().current('meetings')">
                                     Reuniones
                                 </jet-nav-link>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('clients')" :active="route().current('dashboard')">
+                                <jet-nav-link :href="route('clients')" :active="route().current('clients')">
                                     Clientes
                                 </jet-nav-link>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('externalworkers')" :active="route().current('dashboard')">
+                                <jet-nav-link :href="route('externalworkers')" :active="route().current('externalworkers')">
                                     Trabajadores Externos
                                 </jet-nav-link>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('personalnotes')" :active="route().current('dashboard')">
+                                <jet-nav-link :href="route('personalnotes')" :active="route().current('personalnotes')">
                                     Notas personales
                                 </jet-nav-link>
                             </div>
@@ -193,7 +193,9 @@
 
             <!-- Page Content -->
             <main>
-                <slot></slot>
+                <div class="opacity-90">
+                    <slot></slot>
+                </div>
             </main>
         </div>
     </div>

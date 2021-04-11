@@ -27,15 +27,11 @@
             <div>
                 
                 <jet-label for="user_type_id" value="Tipo de usuario" />
-                <select id="user_type_id" type="text" class="mt-1 block w-full" v-model="form.user_type" required autofocus autocomplete="user_type_id" />
+                <select id="user_type_id" type="text" class="mt-1 block w-full" v-model="form.user_type" autofocus autocomplete="user_type_id" />
             </div>
             <div>
                 <jet-label for="company_id" value="Empresa del usuario" />
-                <select id="company_id" type="" class="mt-1 block w-full" v-model="form.company" required autofocus autocomplete="company_id" />
-            </div>
-            <div>
-                <jet-label for="lastname" value="Apellidos" />
-                <jet-input id="lastname" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="lastname" />
+                <select id="company_id" type="" class="mt-1 block w-full" v-model="form.company" autofocus autocomplete="company_id" />
             </div>
 
             <div class="mt-4">

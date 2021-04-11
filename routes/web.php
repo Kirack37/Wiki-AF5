@@ -6,6 +6,7 @@ use Inertia\Inertia;
 
 use App\Models\WikiAf5Projects;
 use App\Http\Controllers\WikiAf5ProjectsController;
+use App\Http\Controllers\WikiAf5CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,12 +27,6 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
-
-Route::resource('WikiAf5Projects', 'WikiAf5ProjectsController');
-// Ruta acceso Controller de revisiones:
-Route::resource('Projects', WikiAf5ProjectsController::class)
-    ->middleware(['auth:sanctum', 'verified']); 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -60,6 +55,17 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/personalnotes', function 
 
 /** Projects **/
 
+Route::resource('projects', WikiAf5ProjectsController::class)
+    ->middleware(['auth:sanctum', 'verified']); 
+
+    Route::resource('company', WikiAf5CompanyController::class)
+    ->middleware(['auth:sanctum', 'verified']); 
+
 Route::get('projects', [WikiAf5ProjectsController::class, 'index'])
     ->name('projects')
     ->middleware(['auth:sanctum', 'verified']);
+
+// Route::get('/projects/{id}', [WikiAf5ProjectsController::class, 'show'])
+//     ->name('projects/{id}')
+//     ->middleware(['auth:sanctum', 'verified']);
+

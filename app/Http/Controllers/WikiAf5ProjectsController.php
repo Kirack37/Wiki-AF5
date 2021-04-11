@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\WikiAf5Projects;
+use App\Models\User;
+use App\Models\WikiAf5Priorities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +24,15 @@ class WikiAf5ProjectsController extends Controller
         // when($request->term, function($query, $term){
         // })->paginate();
         // ::where('user_id', Auth::user()->id)->orderby('fecha_revision','DESC')->first()
-        
+        $responsible =  DB::table('users')
+        ->join('wiki_af5_projects', 'responsible_id', '=', 'users.id')
+        ->select('users.*')->get();
+        // DB::table('users')
+        // ->join('contacts', function ($join) {
+        //     $join->on('users.id', '=', 'contacts.user_id')->orOn(...);
+        // })
+        // ->get();
+
         return Inertia::render('Projects/Index', [
             // 'filters' => Request::all('search'),
             // // 'wikiaf5projects' =>  $wiki_af5_projects
@@ -30,10 +40,12 @@ class WikiAf5ProjectsController extends Controller
             // //     ->paginate(15)                
             // //     ->withQueryString()
             // //     ->sortBy("name")
+            
             'wikiaf5projects' => WikiAf5Projects::orderBy('name','ASC')
             ->when($request->term, function ($query, $term ){
                 $query->where('name','LIKE','%' . $term . '%');})
-            ->paginate(10)
+            ->with('users')
+            ->paginate(20)
             ->withQueryString()
             ->sortBy('name')
          ]);
@@ -45,8 +57,9 @@ class WikiAf5ProjectsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
+    {   $users = User::where('user_type_id', 1)->get();
+        $priorities = WikiAf5Priorities::all();
+        return Inertia::render('Projects/ProjectForm')->with('priorities', $priorities)->with('users', $users);
     }
 
     /**
@@ -56,8 +69,24 @@ class WikiAf5ProjectsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+
+       
+        // $request->validate(
+        //     [   
+        //         'name' => 'required',
+        //         'start_date' => 'required',
+        //         'end_date',
+        //         'alias',
+        //         'description' => 'required',
+        //         'responsible_id',
+        //         'priority_id'
+        //     ]
+        // );
+
+        WikiAf5Projects::create($request->all());
+
+        return Redirect::route('projects');
     }
 
     /**
@@ -68,12 +97,8 @@ class WikiAf5ProjectsController extends Controller
      */
     public function show(WikiAf5Projects $wikiAf5Projects)
     {   
-        $wikiAf5Projects = WikiAf5Projects::all();
-
-        return Inertia::render('Projects/Show', ['wiki_af5_projects' => $wikiAf5Projects]);
-        // return Inertia::render('Projects/Show', [
-        //     'wikiAf5Projects' => $wikiAf5Projects->only('id','start_date','end_date','description','name','alias','responsible')
-        //  ]);
+        
+        return Inertia::render('Projects/', ['wiki_af5_projects' => WikiAf5Projects::findOrFail($wikiAf5Projects->id)]);
     }
 
     /**
@@ -84,7 +109,7 @@ class WikiAf5ProjectsController extends Controller
      */
     public function edit(WikiAf5Projects $wikiAf5Projects)
     {
-        //
+        return Inertia::render('EditForm', ['WikiAf5Projects' => $wikiAf5Projects]);
     }
 
     /**
@@ -96,7 +121,8 @@ class WikiAf5ProjectsController extends Controller
      */
     public function update(Request $request, WikiAf5Projects $wikiAf5Projects)
     {
-        //
+        $wikiAf5Projects->update($request->all());
+        return Redirect::route('projects');
     }
 
     /**
@@ -107,6 +133,7 @@ class WikiAf5ProjectsController extends Controller
      */
     public function destroy(WikiAf5Projects $wikiAf5Projects)
     {
-        //
+        $wikiAf5Projects->delete();
+        return Redirect::route('projects');
     }
 }

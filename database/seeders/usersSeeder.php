@@ -14,16 +14,47 @@ class usersSeeder extends Seeder
      */
     public function run()
     {
-        // DB::table('users')->insert([
-            
-        //     'user_type_id' => '1',
-        //     'company_id' => '1',  
-        //     'name' => 'MariaAF5',
-        //     'firstname' => 'María',
-        //     'lastname' => 'Correa',
-        //     'email' => 'kirack37@gmail.com',
-        //     'password' => 'WikiAreaF5',
-        //     'status' => '1'
-        // ]);
+        DB::table('users')->insert([
+        [   
+            'user_type_id' => '2',
+            'company_id' => '1',  
+            'name' => 'EjemploAF5',
+            'firstname' => 'Ejemplo',
+            'lastname' => 'Prueba',
+            'email' => 'ejemplocliente@gmail.com',
+            'password' => bcrypt('12346578'),
+            'status' => '1'
+        ],
+        [
+            'user_type_id' => '1',
+            'company_id' => '1',  
+            'name' => 'EjemploAF52',
+            'firstname' => 'Ejemplo2',
+            'lastname' => 'Prueba2',
+            'email' => 'ejemplo2@gmail.com',
+            'password' => bcrypt('12346578'),
+            'status' => '1'
+        ],
+        [
+            'user_type_id' => '2',
+            'company_id' => '1',  
+            'name' => 'Ricardo',
+            'firstname' => 'Ricardo',
+            'lastname' => 'González',
+            'email' => 'ricardog@gmail.com',
+            'password' => bcrypt('12346578'),
+            'status' => '1'
+        ],
+        [
+            'user_type_id' => '3',
+            'company_id' => '1',  
+            'name' => 'Pepa',
+            'firstname' => 'Pepa',
+            'lastname' => 'Pepa López',
+            'email' => 'pepa@gmail.com',
+            'password' => bcrypt('12346578'),
+            'status' => '1'
+        ]
+    ]);
     }
 }

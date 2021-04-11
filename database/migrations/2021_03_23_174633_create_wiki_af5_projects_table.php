@@ -22,7 +22,6 @@ class CreateWikiAf5ProjectsTable extends Migration
             $table->text('description');
             $table->string('name');
             $table->string('alias')->nullable();
-            $table->string('responsible');
             $table->timestamps();
             $table->dateTime('delete_at')->nullable();
             $table->foreign('responsible_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');

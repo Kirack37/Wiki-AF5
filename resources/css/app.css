@@ -8,6 +8,9 @@
 h1,
 h2,
 h3,
+h4,
+h5,
+h6,
 p,
 span,
 small,
@@ -16,21 +19,17 @@ em {
     color: #797979
 }
 
-.foo {
-    color: blue !important;
-    @apply bg-blue-100;
-}
-
-.bg-mp-general {
-    background: #A2ECE1 !important;
-}
-
-.bg-mp-second {
-    background: #ddf0ed !important;
+.logo-fondo {
+    background-image: url(../img/normal_logo.png);
+    @apply bg-fixed bg-no-repeat bg-center;
 }
 
 .orange {
     color: #fb6e15;
+}
+
+body {
+    background-color: #FEFEFE;
 }
 
 header {
@@ -38,11 +37,16 @@ header {
 }
 
 h2 {
-    font-size: 25px;
+    font-size: 1.5625rem;
 }
 
 h3 {
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 1.2rem;
+    font-weight: 500;
     margin-bottom: 20px;
+}
+
+h4 {
+    font-size: 1rem;
+    color: black;
 }

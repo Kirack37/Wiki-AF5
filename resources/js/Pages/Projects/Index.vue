@@ -1,96 +1,79 @@
 <template>
-    <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-white leading-tight">
-                Proyectos
-            </h2>
-        </template>
-        <div class="container mx-auto my-10">
-            <div class="select-stuff mb-20">
-                <search id="search" class="w-full max-w-md mr-4"  v-model:search="term" @keyup="searchFor" @click="resetQuery()">
-                </search>
-            </div>
-            <div class="recent-projects">
-                <table class="bg-blue-250 dark:bg-red-700 text-green-750 dark:text-blue-400  " >
-            <thead class="bg-red-500 text-green-750 dark:bg-red-800 dark:text-blue-450">
-            <tr>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                ID
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Fecha de Inicio
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Fecha Fin
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Descripción
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Nombre
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Alias
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Responsable
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr v-for="projects in wikiaf5projects" :key="projects.id" class="border-2 text-xs border-blue-450">
-                
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.id }} 
-                </td>
-
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.start_date }} 
-                </td>
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.end_date }} 
-                </td>
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.description }} 
-                </td>
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.name }} 
-                </td>
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.alias }} 
-                </td>
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.responsible }} 
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    
+  <app-layout>
+    <template #header>
+        <h2 class="font-semibold text-xl text-white leading-tight">
+            Proyectos
+        </h2>
+    </template>
+    <div class="container mx-auto my-10">
+      <div class="select-stuff mb-20 flex">
+          <search id="search" class="w-full max-w-md mr-10"  v-model:search="term" @keyup="searchFor" @click="resetQuery()">
+          </search>
+          <button class="flex-none ml-60 border-2 border-double rounded border-gray-300 p-2"><a class="text-yellow-600" :href="'projects/create'">Crear un nuevo proyecto</a></button>
+      </div>
+      <div class="recent-projects">
+        <div class="recent-projects-titles bg-white p-3 flex mb-2">
+          <div class="project-title flex mr-56 mr-1"><h3 class="text-gray-600">Nombre</h3></div>
+          <div class="project-title flex mr-44"><h3 class="text-gray-600">Fecha de inicio</h3></div>
+          <div class="project-title flex mr-56"><h3 class="text-gray-600">Alias</h3></div>
+          <div class="project-title flex"><h3 class="text-gray-600">Responsable del proyecto</h3></div>
+        </div>
+        <div v-for="projects in wikiaf5projects" :key="projects.id" class="project-card flex border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
+          <div class="project-data flex-1">
+            <h4>{{ projects.name }}</h4>
+          </div>
+          <div class="project-data flex-1">
+            <p>{{ projects.start_date }}</p>
+          </div>
+          <div class="project-data flex-1">
+            <p>{{ projects.alias }}</p>
+          </div>
+          <div class="project-data flex-1">
+            <p>{{ projects.users.firstname }} {{ projects.users.lastname }}</p>
+          </div>
+          <div class="project-data flex-1">
+            <button class="inside-project text-yellow-600"><a :href="'/projects/' + projects.id">Ver más</a></button>
+          </div>
+        </div>
+      <div class="paginate">
+            <select id="priority">
+                <option v-for="projects in wikiaf5projects" :key="projects.id" :value="projects.id">{{ projects.name }}</option>
+            </select>
+      </div>
       </div>
     </div>
-    </app-layout>
+  </app-layout>
 </template>
 <script>
 
 import AppLayout from '@/Layouts/AppLayout'
 import { reactive } from "vue";
+
+
+
 import Search from '@/Shared/Search'
 
 export default {
         
-    metaInfo: { 
-        title: 'Projects' 
-    },
-    
-    components: {
-        AppLayout,
-        Search
-    },
-    props: {
-      wikiaf5projects: Object,
-      term: String,
+  metaInfo: { 
+      title: 'Projects' 
   },
-   setup () {
+  
+  components: {
+      AppLayout,
+
+      Search,
+  },
+  props: {
+    wikiaf5projects: Object,
+    term: String,
+  },
+  data() {
+    return {
+      page: 1
+      }    
+  },
+  setup () {
     let searching = reactive({
       
       term: ''

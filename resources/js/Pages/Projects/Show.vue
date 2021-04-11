@@ -60,6 +60,9 @@
 <script>
 
 export default {
-  props: ['wikiaf5projects'],
+        metaInfo: { 
+                title: 'ShowProject' 
+        },
+        props: ['wikiaf5projects'],
 };
 </script>
