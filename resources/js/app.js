@@ -7,7 +7,6 @@ import { App as InertiaApp, plugin as InertiaPlugin } from '@inertiajs/inertia-v
 import { InertiaProgress } from '@inertiajs/progress';
 
 
-// createApp({ /* options */ }).use(CKEditor).mount(ckeditor);
 const el = document.getElementById('app');
 
 createApp({

@@ -58,14 +58,15 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/personalnotes', function 
 Route::resource('projects', WikiAf5ProjectsController::class)
     ->middleware(['auth:sanctum', 'verified']); 
 
-    Route::resource('company', WikiAf5CompanyController::class)
-    ->middleware(['auth:sanctum', 'verified']); 
-
 Route::get('projects', [WikiAf5ProjectsController::class, 'index'])
     ->name('projects')
     ->middleware(['auth:sanctum', 'verified']);
 
-// Route::get('/projects/{id}', [WikiAf5ProjectsController::class, 'show'])
-//     ->name('projects/{id}')
-//     ->middleware(['auth:sanctum', 'verified']);
+Route::get('/projects/{id}', [WikiAf5ProjectsController::class, 'show'])
+    ->name('projects/{id}')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::get('/projects/{id}/edit', [WikiAf5ProjectsController::class, 'edit'])
+    ->name('projects/{id}/edit')
+    ->middleware(['auth:sanctum', 'verified']);
 

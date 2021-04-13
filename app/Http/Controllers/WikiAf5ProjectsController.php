@@ -24,9 +24,9 @@ class WikiAf5ProjectsController extends Controller
         // when($request->term, function($query, $term){
         // })->paginate();
         // ::where('user_id', Auth::user()->id)->orderby('fecha_revision','DESC')->first()
-        $responsible =  DB::table('users')
-        ->join('wiki_af5_projects', 'responsible_id', '=', 'users.id')
-        ->select('users.*')->get();
+        // $responsible =  DB::table('users')
+        // ->join('wiki_af5_projects', 'responsible_id', '=', 'users.id')
+        // ->select('users.*')->get();
         // DB::table('users')
         // ->join('contacts', function ($join) {
         //     $join->on('users.id', '=', 'contacts.user_id')->orOn(...);
@@ -59,7 +59,7 @@ class WikiAf5ProjectsController extends Controller
     public function create()
     {   $users = User::where('user_type_id', 1)->get();
         $priorities = WikiAf5Priorities::all();
-        return Inertia::render('Projects/ProjectForm')->with('priorities', $priorities)->with('users', $users);
+        return Inertia::render('Projects/ProjectForm')->with('priorities', $priorities)->with('allUsers', $users);
     }
 
     /**
@@ -72,17 +72,15 @@ class WikiAf5ProjectsController extends Controller
     {   
 
        
-        // $request->validate(
-        //     [   
-        //         'name' => 'required',
-        //         'start_date' => 'required',
-        //         'end_date',
-        //         'alias',
-        //         'description' => 'required',
-        //         'responsible_id',
-        //         'priority_id'
-        //     ]
-        // );
+        $request->validate(
+            [   
+                'name' => 'required',
+                'start_date' => 'required',
+                'description' => 'required',
+                'responsible_id' => 'required',
+                'priority_id' => 'required'
+            ]
+        );
 
         WikiAf5Projects::create($request->all());
 
@@ -95,10 +93,19 @@ class WikiAf5ProjectsController extends Controller
      * @param  \App\Models\WikiAf5Projects  $wikiAf5Projects
      * @return \Illuminate\Http\Response
      */
-    public function show(WikiAf5Projects $wikiAf5Projects)
+    public function show(Request $request)
     {   
-        
-        return Inertia::render('Projects/', ['wiki_af5_projects' => WikiAf5Projects::findOrFail($wikiAf5Projects->id)]);
+        if (isset($request['project']) && $request['project']) {
+            $project_id = $request['project'];
+            $project = WikiAf5Projects::find($project_id);
+            if (isset($project->id)){
+                $project->description = strip_tags($project->description);
+                $users = User::where('user_type_id', 1)->get();
+                $priorities = WikiAf5Priorities::all();
+                return Inertia::render('Projects/Show', ['project' =>  $project, 'priorities' => $priorities, 'allUsers' => $users]);
+            }
+        } 
+        abort(404);
     }
 
     /**
@@ -109,7 +116,21 @@ class WikiAf5ProjectsController extends Controller
      */
     public function edit(WikiAf5Projects $wikiAf5Projects)
     {
-        return Inertia::render('EditForm', ['WikiAf5Projects' => $wikiAf5Projects]);
+        $users = User::where('user_type_id', 1)->get();
+        $priorities = WikiAf5Priorities::all();
+        
+        return Inertia::render('Projects/ProjectEditForm', [ 
+            'WikiAf5Projects' => [
+                'id' => $wikiAf5Projects->id,
+                'name' => $wikiAf5Projects->name,
+                'alias' => $wikiAf5Projects->alias,
+                'responsible' => $wikiAf5Projects->responsible_id,
+                'description' => $wikiAf5Projects->description,
+                'priority' => $wikiAf5Projects->priority_id,
+                'start_date' => $wikiAf5Projects->start_date,
+                'end_date' => $wikiAf5Projects->end_date,
+            ], 'priorities' => $priorities, 'allUsers' => $users
+        ]);
     }
 
     /**
@@ -134,6 +155,6 @@ class WikiAf5ProjectsController extends Controller
     public function destroy(WikiAf5Projects $wikiAf5Projects)
     {
         $wikiAf5Projects->delete();
-        return Redirect::route('projects');
+        return Redirect::back()->with('success', 'Proyecto borrado.');
     }
 }

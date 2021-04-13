@@ -16,6 +16,8 @@
         <!-- Scripts -->
         @routes
         <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
+        <script>CKFinder.config( { connectorPath: '/ckfinder/connector' } );</script>
     </head>
     <body class="font-sans logo-fondo antialiased">
         @inertia

@@ -18,26 +18,46 @@
           <div class="project-title flex mr-56"><h3 class="text-gray-600">Alias</h3></div>
           <div class="project-title flex"><h3 class="text-gray-600">Responsable del proyecto</h3></div>
         </div>
-        <div v-for="projects in wikiaf5projects" :key="projects.id" class="project-card flex border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
+        <div v-for="project in wikiaf5projects" :key="project.id" class="project-card flex border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
           <div class="project-data flex-1">
-            <h4>{{ projects.name }}</h4>
+            <h4>{{ project.name }}</h4>
           </div>
           <div class="project-data flex-1">
-            <p>{{ projects.start_date }}</p>
+            <p>{{ project.start_date }}</p>
           </div>
           <div class="project-data flex-1">
-            <p>{{ projects.alias }}</p>
+            <p>{{ project.alias }}</p>
           </div>
           <div class="project-data flex-1">
-            <p>{{ projects.users.firstname }} {{ projects.users.lastname }}</p>
+            <p>{{ project.users.firstname }} {{ project.users.lastname }}</p>
           </div>
           <div class="project-data flex-1">
-            <button class="inside-project text-yellow-600"><a :href="'/projects/' + projects.id">Ver más</a></button>
+            <inertia-link class="inside-project text-yellow-600" :href="route('projects.show', project.id)">
+              Ver más
+            </inertia-link>
+          </div>
+          <div class="project-data flex-1">
+            <inertia-link
+              class="inside-project text-blue-600"
+              method="get"
+              as="button"
+              :href="route('projects.edit', project.id)">
+              Editar
+            </inertia-link>
+          </div>
+          <div class="project-data flex-1">
+            <inertia-link
+              class="inside-project text-red-600"
+              method="delete"
+              as="button"
+              :href="route('projects.destroy', project.id)">
+              Borrar
+            </inertia-link>
           </div>
         </div>
       <div class="paginate">
             <select id="priority">
-                <option v-for="projects in wikiaf5projects" :key="projects.id" :value="projects.id">{{ projects.name }}</option>
+                <option v-for="project in wikiaf5projects" :key="project.id" :value="project.id">{{ project.name }}</option>
             </select>
       </div>
       </div>
@@ -49,8 +69,6 @@
 import AppLayout from '@/Layouts/AppLayout'
 import { reactive } from "vue";
 
-
-
 import Search from '@/Shared/Search'
 
 export default {
@@ -61,7 +79,6 @@ export default {
   
   components: {
       AppLayout,
-
       Search,
   },
   props: {
@@ -95,6 +112,12 @@ export default {
       this.$inertia.replace(this.route('projects', {term:this.term}))
       
     },
+    // showProject: function(project){
+    //   this.$inertia.get(this.route('projects.show'), project)
+    // },
+    // deleteUser: function(project){
+    //   this.$inertia.delete(this.route('projects.destroy'), project)
+    // },
   },
 };
 </script>

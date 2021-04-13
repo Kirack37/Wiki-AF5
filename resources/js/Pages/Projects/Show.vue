@@ -28,29 +28,29 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="projects in wikiaf5projects" :key="projects.id" class="border-2 text-xs border-blue-450">
+            <tr class="border-2 text-xs border-blue-450">
                 
                 <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.id }} 
+                        {{ project.id }} 
                 </td>
 
                 <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.start_date }} 
+                        {{ project.start_date }} 
                 </td>
                 <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.end_date }} 
+                        {{ project.end_date }} 
                 </td>
                 <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.description }} 
+                        {{ project.description }} 
                 </td>
                 <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.name }} 
+                        {{ project.name }} 
                 </td>
                 <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.alias }} 
+                        {{ project.alias }} 
                 </td>
                 <td class="border-r-2 border-red-200 text-center">
-                        {{ projects.responsible }} 
+                        {{ project.responsible }} 
                 </td>
             </tr>
             </tbody>
@@ -60,9 +60,20 @@
 <script>
 
 export default {
-        metaInfo: { 
-                title: 'ShowProject' 
+        props: {
+                project: Object,
+                allUsers: Object,
+                priorities: Object,
+                errors: Object,
         },
-        props: ['wikiaf5projects'],
+        // data: {
+        //         wikiaf5projects: 'hola'
+        // },
+                mounted(){
+                        console.log(this.project);
+                }
+        
+        
 };
+
 </script>

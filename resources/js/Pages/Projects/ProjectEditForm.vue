@@ -28,7 +28,7 @@
         <div>
           <label for="description">Descripción del proyecto:</label>
           <div id="app">
-            <ckeditor id="description" v-model="form.description" tag-name="textarea" 
+            <ckeditor id="description" v-model="form.description" tag-name="textarea"
             :editor="editor"
             :config="editorConfig"
             @ready="onEditorReady"
@@ -37,7 +37,6 @@
             @input="onEditorInput"
             @destroy="onEditorDestroy"></ckeditor>
           </div>
-          <!-- <textarea id="description" v-model="form.description"/> -->
         </div>
         <div>
           <label for="responsible">Responsable del proyecto:</label>
@@ -70,38 +69,41 @@ export default {
       ckeditor: CKEditor.component
   },
   props: {
-    wikiaf5projects: Object,
+    WikiAf5Projects: Object,
     allUsers: Object,
     priorities: Object,
     errors: Object,
   },
-  emits: ['onFocus', 'submit'],
+  remember: 'form',
   data() {
     return {
       editor: ClassicEditor,
       editorData: '',
       editorConfig: {
-        ckfinder: {
-          uploadUrl: '/ckfinder/connector?command=QuickUpload&type=Images&responseType=json',
-          openerMethod: 'popup',
-        },
-        language: 'es',
+          language: 'es'
       },
-      remember: 'form',
-      form: this.$inertia.form({
-        name: null,
-        start_date: null,
-        end_date: null,
-        alias: null,
-        description: null,
-        responsible_id: null,
-        priority_id: null,
+      form: this.$inertia.form({ 
+        name: this.WikiAf5Projects.name,
+        start_date: this.WikiAf5Projects.start_date,
+        end_date: this.WikiAf5Projects.end_date,
+        alias: this.WikiAf5Projects.alias,
+        description: this.WikiAf5Projects.description,
+        responsible_id: this.WikiAf5Projects.responsible_id,
+        priority_id: this.WikiAf5Projects.priority_id,
       }),
+      
     };
+  },
+  mounted() {
+    console.log(this.WikiAf5Projects)
   },
   methods: {
     submit() {
-      this.$inertia.post(route('projects.store'), this.form);
+      // this.$inertia.put(
+      //   route("prjects.update", this.$props.project.id),
+      //   this.form
+      // );
+      console.log(this.$props.WikiAf5Projects.name)
     },
     onReady( editor )  {
     // Insert the toolbar before the editable area.
