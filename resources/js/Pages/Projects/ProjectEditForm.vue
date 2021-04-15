@@ -2,7 +2,7 @@
   <app-layout>
     <template #header>
         <h2 class="font-semibold text-xl text-white leading-tight">
-            Proyectos
+            {{project.name}}
         </h2>
     </template>
     <div class="container mx-auto my-10">
@@ -29,19 +29,15 @@
           <label for="description">Descripción del proyecto:</label>
           <div id="app">
             <ckeditor id="description" v-model="form.description" tag-name="textarea"
-            :editor="editor"
-            :config="editorConfig"
-            @ready="onEditorReady"
-            @focus="onEditorFocus"
-            @blur="onEditorBlur"
-            @input="onEditorInput"
-            @destroy="onEditorDestroy"></ckeditor>
+              :editor="editor"
+              :config="editorConfig">
+            </ckeditor>
           </div>
         </div>
         <div>
           <label for="responsible">Responsable del proyecto:</label>
           <select id="responsible_id" v-model="form.responsible_id">
-              <option v-for="user in allUsers" :key="user.id" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
+              <option v-for="responsible in responsibles" :key="responsible.id" :value="responsible.id">{{responsible.firstname}} {{responsible.lastname}}</option>
           </select>
         </div>
         <div>
@@ -69,67 +65,64 @@ export default {
       ckeditor: CKEditor.component
   },
   props: {
-    WikiAf5Projects: Object,
-    allUsers: Object,
+    project: Object,
     priorities: Object,
-    errors: Object,
+    responsibles: Object,
+    errors: Object
   },
-  remember: 'form',
   data() {
     return {
       editor: ClassicEditor,
-      editorData: '',
       editorConfig: {
           language: 'es'
       },
       form: this.$inertia.form({ 
-        name: this.WikiAf5Projects.name,
-        start_date: this.WikiAf5Projects.start_date,
-        end_date: this.WikiAf5Projects.end_date,
-        alias: this.WikiAf5Projects.alias,
-        description: this.WikiAf5Projects.description,
-        responsible_id: this.WikiAf5Projects.responsible_id,
-        priority_id: this.WikiAf5Projects.priority_id,
+        name: this.project.name,
+        start_date: this.project.start_date,
+        end_date: this.project.end_date,
+        alias: this.project.alias,
+        description: this.project.description,
+        responsible_id: this.project.responsible_id,
+        priority_id: this.project.priority_id,
       }),
       
     };
   },
   mounted() {
-    console.log(this.WikiAf5Projects)
+    console.log(this.project)
   },
   methods: {
     submit() {
-      // this.$inertia.put(
-      //   route("prjects.update", this.$props.project.id),
-      //   this.form
-      // );
-      console.log(this.$props.WikiAf5Projects.name)
-    },
-    onReady( editor )  {
-    // Insert the toolbar before the editable area.
-    editor.ui.getEditableElement().parentElement.insertBefore(
-            editor.ui.view.toolbar.element,
-            editor.ui.getEditableElement()
+      this.$inertia.put(
+        route("projects.update", this.$props.project.id),
+        this.form
       );
     },
-      destroyApp() {
-          app.$destroy();
-      },
-      onEditorReady( editor ) {
-          console.log( 'Editor is ready.', { editor } );
-      },
-      onEditorFocus( event, editor ) {
-          console.log( 'Editor focused.', { event, editor } );
-      },
-      onEditorBlur( event, editor ) {
-          console.log( 'Editor blurred.', { event, editor } );
-      },
-      onEditorInput( data, event, editor ) {
-          console.log( 'Editor data input.', { event, editor, data } );
-      },
-      onEditorDestroy( editor ) {
-          console.log( 'Editor destroyed.', { editor } );
-      }
+    // onReady( editor )  {
+    // // Insert the toolbar before the editable area.
+    // editor.ui.getEditableElement().parentElement.insertBefore(
+    //         editor.ui.view.toolbar.element,
+    //         editor.ui.getEditableElement()
+    //   );
+    // },
+    //   destroyApp() {
+    //       app.$destroy();
+    //   },
+    //   onEditorReady( editor ) {
+    //       console.log( 'Editor is ready.', { editor } );
+    //   },
+    //   onEditorFocus( event, editor ) {
+    //       console.log( 'Editor focused.', { event, editor } );
+    //   },
+    //   onEditorBlur( event, editor ) {
+    //       console.log( 'Editor blurred.', { event, editor } );
+    //   },
+    //   onEditorInput( data, event, editor ) {
+    //       console.log( 'Editor data input.', { event, editor, data } );
+    //   },
+    //   onEditorDestroy( editor ) {
+    //       console.log( 'Editor destroyed.', { editor } );
+    //   }
   }
 }
 

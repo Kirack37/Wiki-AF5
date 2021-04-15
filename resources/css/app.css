@@ -54,3 +54,7 @@ h4 {
 .ck-editor__editable_inline {
     min-height: 400px;
 }
+
+.projects-show .ck.ck-toolbar {
+    display: none;
+}

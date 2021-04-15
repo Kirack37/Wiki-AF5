@@ -56,9 +56,7 @@
           </div>
         </div>
       <div class="paginate">
-            <select id="priority">
-                <option v-for="project in wikiaf5projects" :key="project.id" :value="project.id">{{ project.name }}</option>
-            </select>
+            
       </div>
       </div>
     </div>
@@ -112,9 +110,6 @@ export default {
       this.$inertia.replace(this.route('projects', {term:this.term}))
       
     },
-    // showProject: function(project){
-    //   this.$inertia.get(this.route('projects.show'), project)
-    // },
     // deleteUser: function(project){
     //   this.$inertia.delete(this.route('projects.destroy'), project)
     // },

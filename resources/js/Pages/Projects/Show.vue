@@ -1,79 +1,85 @@
 <template>
-    
-        
-        <table class="bg-blue-250 dark:bg-red-700 text-green-750 dark:text-blue-400  " >
-            <thead class="bg-red-500 text-green-750 dark:bg-red-800 dark:text-blue-450">
-            <tr>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                ID
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Fecha de Inicio
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Fecha Fin
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Descripción
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Nombre
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Alias
-                </th>
-                <th class="border-2 text-xs border-blue-450 text-center">
-                Responsable
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="border-2 text-xs border-blue-450">
-                
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ project.id }} 
-                </td>
+  <app-layout>
+    <template #header>
+        <h2 class="font-semibold text-xl text-white leading-tight">
+            {{project.name.charAt(0).toUpperCase() + project.name.substr(1)}}
+        </h2>
+    </template>
+    <main class="projects-show">
+      <div class="container mx-auto my-10">
+          <div class="project-attribute">
+            <h4>Fecha de inicio:</h4> <p>{{project.start_date}}</p>
+          </div>
+          <div v-if="project.end_date==!null" class="project-attribute">
+            <h4>Fecha fin:</h4> <p>{{project.end_date}}</p>
+          </div>
+          <div class="project-attribute">
+            <h4>Responsable:</h4> <p v-for="responsible in responsible" :key="responsible.id" :value="responsible.id">{{ responsible.firstname }} {{ responsible.lastname }}</p>
+          </div>
+          <div class="project-attribute">
+            <h4>Alias:</h4> <p>{{project.alias.charAt(0).toUpperCase() + project.alias.substr(1)}}</p>
+          </div>
+          <div class="project-attribute">
+            <h4>Prioridad:</h4><p v-for="priority in priority" :key="priority.id" :value="priority.id">{{priority.level.charAt(0).toUpperCase() + priority.level.substr(1)}}</p>
+          </div>
+          <div class="project-attribute">
+            <h4>Descripción:</h4>
+            <ckeditor 
+              id="description" 
+              tag-name="textarea" 
+              v-model="editorData" 
+              :disabled="true"
+              @ready="onReady"
+              :editor="editor"
+              :config="editorConfig" >  
+            </ckeditor>
+          </div>
+          <button><a href="/projects">Volver a la página de proyectos</a></button>
+      </div>
+    </main>
+  </app-layout>
+</template>
 
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ project.start_date }} 
-                </td>
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ project.end_date }} 
-                </td>
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ project.description }} 
-                </td>
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ project.name }} 
-                </td>
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ project.alias }} 
-                </td>
-                <td class="border-r-2 border-red-200 text-center">
-                        {{ project.responsible }} 
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    
-</template> 
 <script>
 
+import AppLayout from '@/Layouts/AppLayout'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from '@ckeditor/ckeditor5-vue';
+
 export default {
-        props: {
-                project: Object,
-                allUsers: Object,
-                priorities: Object,
-                errors: Object,
+  name: 'app',       
+  components: {
+      AppLayout,
+      ckeditor: CKEditor.component
+  },
+  props: {
+    project: Object,
+    priority: Object,
+    responsible: Object
+  },
+  data() {
+    return {
+      editor: ClassicEditor,
+      editorData: this.project.description,
+      editorConfig: {      
+        editorDisabled: true,
+        ckfinder: {
+          uploadUrl: '/ckfinder/connector?command=QuickUpload&type=Images&responseType=json',
+          openerMethod: 'popup',
         },
-        // data: {
-        //         wikiaf5projects: 'hola'
-        // },
-                mounted(){
-                        console.log(this.project);
-                }
-        
-        
-};
+        language: 'es',
+      },
+    };
+  },
+  methods: {
+    onReady( editor )  {
+      // Insert the toolbar before the editable area.
+      editor.ui.getEditableElement().parentElement.insertBefore(
+          editor.ui.view.toolbar.element,
+          editor.ui.getEditableElement()
+      );
+    },
+  }
+}
 
 </script>
