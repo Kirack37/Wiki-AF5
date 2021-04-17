@@ -5,6 +5,7 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Raleway');
+@import "~vue-sidebar-modal/dist/vue-sidebar-modal";
 h1,
 h2,
 h3,
@@ -57,4 +58,65 @@ h4 {
 
 .projects-show .ck.ck-toolbar {
     display: none;
+}
+
+
+/** Sidebar Modal  **/
+
+.slidein {
+    max-width: 600px;
+    padding: 2em 3em;
+    position: fixed;
+    z-index: 9999;
+    top: 65px;
+    right: 0;
+    background: #ddd;
+    height: 100%;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    transition: all 1s ease-in-out;
+}
+
+
+/* before the element is shown, start off the screen to the right */
+
+.slide-enter,
+.slide-leave-active {
+    right: -100%;
+    transition: all 3s ease-out
+}
+
+.close-btn {
+    border: none;
+    font-weight: bold;
+    font-size: 2em;
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 0.5em;
+}
+
+.toggle {
+    margin: 1em;
+}
+
+.modalButton {
+    padding: .5em 1em;
+    border-radius: 3em;
+    font-size: 1.1em;
+}
+
+
+/** Middle Modal **/
+
+.slidein-middle {
+    max-width: 600px;
+    padding: 2em 3em;
+    position: fixed;
+    z-index: 9999;
+    top: 65px;
+    background: #ddd;
+    height: 100%;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    transition: all 1s ease-in-out;
 }

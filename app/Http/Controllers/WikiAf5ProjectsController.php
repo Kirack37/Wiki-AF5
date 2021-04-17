@@ -21,33 +21,19 @@ class WikiAf5ProjectsController extends Controller
     public function index(Request $request)
     {
         
-        // when($request->term, function($query, $term){
-        // })->paginate();
-        // ::where('user_id', Auth::user()->id)->orderby('fecha_revision','DESC')->first()
-        // $responsible =  DB::table('users')
-        // ->join('wiki_af5_projects', 'responsible_id', '=', 'users.id')
-        // ->select('users.*')->get();
-        // DB::table('users')
-        // ->join('contacts', function ($join) {
-        //     $join->on('users.id', '=', 'contacts.user_id')->orOn(...);
-        // })
-        // ->get();
-
-        return Inertia::render('Projects/Index', [
-            // 'filters' => Request::all('search'),
-            // // 'wikiaf5projects' =>  $wiki_af5_projects
-            // // 'wikiaf5projects' => WikiAf5Projects::where('name','LIKE','%{request->term}%')
-            // //     ->paginate(15)                
-            // //     ->withQueryString()
-            // //     ->sortBy("name")
-            
-            'wikiaf5projects' => WikiAf5Projects::orderBy('name','ASC')
+        $projects = WikiAf5Projects::query()
+            ->orderBy('name','ASC')
             ->when($request->term, function ($query, $term ){
                 $query->where('name','LIKE','%' . $term . '%');})
             ->with('users')
             ->paginate(20)
             ->withQueryString()
-            ->sortBy('name')
+            ->sortBy('name');
+
+        return Inertia::render('Projects/Index', [
+       
+            'projects' =>  $projects,
+          
          ]);
     }
 

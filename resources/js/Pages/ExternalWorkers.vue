@@ -5,15 +5,57 @@
                 Trabajadores externos
             </h2>
         </template>
-    </app-layout>
+  <div>
+    <vue-final-modal
+      v-model="showModal"
+      classes="modal-container"
+      content-class="modal-content"
+    >
+      <span class="modal__title">Hello, vue-final-modal</span>
+    </vue-final-modal>
+    <button class="vfm-btn" @click="showModal = true">Open modal</button>
+  </div>
+  </app-layout>
 </template>
 
 <script>
-    import AppLayout from '@/Layouts/AppLayout'
+import AppLayout from '@/Layouts/AppLayout'
 
-    export default {
-        components: {
-            AppLayout
-        },
-    }
+
+export default {
+  components: {
+      AppLayout,
+  },
+  data: () => ({
+    showModal: false
+  })
+}
 </script>
+
+<style scoped>
+::v-deep(.modal-container) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+::v-deep(.modal-content) {
+  display: flex;
+  flex-direction: column;
+  margin: 0 1rem;
+  padding: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  background: #fff;
+}
+.modal__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+</style>
+
+<style scoped>
+.dark-mode div ::v-deep(.modal-content) {
+  border-color: #2d3748;
+  background-color: #1a202c;
+}
+</style>

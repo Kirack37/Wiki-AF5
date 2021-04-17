@@ -18,7 +18,7 @@
           <div class="project-title flex mr-56"><h3 class="text-gray-600">Alias</h3></div>
           <div class="project-title flex"><h3 class="text-gray-600">Responsable del proyecto</h3></div>
         </div>
-        <div v-for="project in wikiaf5projects" :key="project.id" class="project-card flex border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
+        <div v-for="project in projects" :key="project.id" class="project-card flex border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
           <div class="project-data flex-1">
             <h4>{{ project.name }}</h4>
           </div>
@@ -32,9 +32,11 @@
             <p>{{ project.users.firstname }} {{ project.users.lastname }}</p>
           </div>
           <div class="project-data flex-1">
+            
             <inertia-link class="inside-project text-yellow-600" :href="route('projects.show', project.id)">
               Ver más
             </inertia-link>
+
           </div>
           <div class="project-data flex-1">
             <inertia-link
@@ -45,29 +47,25 @@
               Editar
             </inertia-link>
           </div>
-          <div class="project-data flex-1">
-            <inertia-link
-              class="inside-project text-red-600"
-              method="delete"
-              as="button"
-              :href="route('projects.destroy', project.id)">
-              Borrar
-            </inertia-link>
+          <div class="project-data flex-1"><button class="text-red-600" @click="doDelete(project.id)">Borrar</button>
+            <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
           </div>
         </div>
-      <div class="paginate">
-            
       </div>
-      </div>
+      <!-- <pagination class="mt-6" :links="projects.links" /> -->
     </div>
   </app-layout>
 </template>
+
 <script>
 
 import AppLayout from '@/Layouts/AppLayout'
 import { reactive } from "vue";
 
 import Search from '@/Shared/Search'
+import ConfirmDialogue from '@/Shared/ConfirmDialogue.vue'
+import Pagination from '@/Shared/Pagination'
+import MiddleModal from '../../Shared/MiddleModal.vue';
 
 export default {
         
@@ -78,9 +76,12 @@ export default {
   components: {
       AppLayout,
       Search,
+      ConfirmDialogue,
+      Pagination,
+    MiddleModal
   },
   props: {
-    wikiaf5projects: Object,
+    projects: Object,
     term: String,
   },
   data() {
@@ -110,9 +111,16 @@ export default {
       this.$inertia.replace(this.route('projects', {term:this.term}))
       
     },
-    // deleteUser: function(project){
-    //   this.$inertia.delete(this.route('projects.destroy'), project)
-    // },
+    async doDelete(project) {
+      const ok = await this.$refs.confirmDialogue.show({
+          title: 'Eliminar proyecto',
+          message: 'Confirma que deseas borrar este proyecto. Esta acción no puede deshacerse.',
+          okButton: 'Eliminar',
+      })
+      if (ok) {
+          this.$inertia.delete(this.route('projects.destroy', project));
+      } 
+  },
   },
 };
 </script>

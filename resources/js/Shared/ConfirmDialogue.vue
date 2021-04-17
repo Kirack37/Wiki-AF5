@@ -22,7 +22,7 @@ export default {
         title: undefined,
         message: undefined, // Main text content
         okButton: undefined, // Text for confirm button; leave it empty because we don't know what we're using it for
-        cancelButton: 'Go Back', // text for cancel button
+        cancelButton: 'Volver', // text for cancel button
         
         // Private variables
         resolvePromise: undefined,
@@ -66,23 +66,29 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-top: 1em;
 }
 
 .ok-btn {
-    color: red;
-    text-decoration: underline;
-    line-height: 2.5rem;
+    padding: 0.5em 1em;
+    background-color: #eb5050;
+    color: #ffffff;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    text-transform: uppercase;
     cursor: pointer;
 }
 
 .cancel-btn {
     padding: 0.5em 1em;
-    background-color: #d5eae7;
-    color: #35907f;
-    border: 2px solid #0ec5a4;
+    background-color: #eb9240;
+    color: #ffffff;
+    border: 2px solid #ff8800;
     border-radius: 5px;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 14px;
     text-transform: uppercase;
     cursor: pointer;
 }
