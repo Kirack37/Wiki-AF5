@@ -18,7 +18,7 @@ class CreateWikiAf5EntityPermissionsTable extends Migration
             $table->unsignedBigInteger('entity_id');
             $table->unsignedBigInteger('permission_id');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('entity_id')->references('id')->on('wiki_af5_entities')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('permission_id')->references('id')->on('wiki_af5_permissions')->onUpdate('cascade')->onDelete('cascade');
         });

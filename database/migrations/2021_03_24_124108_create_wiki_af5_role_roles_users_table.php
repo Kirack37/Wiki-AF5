@@ -18,7 +18,7 @@ class CreateWikiAf5RoleRolesUsersTable extends Migration
             $table->unsignedBigInteger('role_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('role_id')->references('id')->on('wiki_af5_roles')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });

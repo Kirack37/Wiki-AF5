@@ -8,9 +8,14 @@ import { InertiaProgress } from '@inertiajs/progress';
 
 import VueFinalModal from 'vue-final-modal'
 import PortalVue from "portal-vue";
+
 import { Modalable, ToModal } from "@protonemedia/inertia-vue-modal-poc"
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faPhone, faEye } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 
+library.add(faPhone, faEye);
 
 
 const el = document.getElementById('app');
@@ -21,14 +26,18 @@ createApp({
                 initialPage: JSON.parse(el.dataset.page),
                 resolveComponent: (name) => require(`./Pages/${name}`).default,
             }),
+
     })
     .mixin({ methods: { route } })
 
 .use(InertiaPlugin)
     // .component("Modalable", Modalable)
     // .component("ToModal", ToModal)
+    // .add(faUserSecret)
+    .use(library)
     .use(PortalVue)
     .use(VueFinalModal())
+    .component('font-awesome-icon', FontAwesomeIcon)
     .mount(el);
 
 InertiaProgress.init({ color: '#4B5563' });

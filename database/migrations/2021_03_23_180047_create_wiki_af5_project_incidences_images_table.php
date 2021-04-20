@@ -18,7 +18,7 @@ class CreateWikiAf5ProjectIncidencesImagesTable extends Migration
             $table->unsignedBigInteger('incidence_id');
             $table->string('image');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('incidence_id')->references('id')->on('wiki_af5_project_incidences')->onUpdate('cascade')->onDelete('cascade');
         });
     }

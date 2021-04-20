@@ -24,7 +24,7 @@ class CreateWikiAf5WebServicesTable extends Migration
             $table->text('data_request');
             $table->text('data_response');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('project_id')->references('id')->on('wiki_af5_projects')->onUpdate('cascade')->onDelete('cascade');
         });
     }

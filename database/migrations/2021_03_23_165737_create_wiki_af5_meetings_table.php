@@ -22,7 +22,7 @@ class CreateWikiAf5MeetingsTable extends Migration
             $table->string('description')->nullable();
             $table->tinyInteger('status')->default('0');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('owner_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('priority_id')->references('id')->on('wiki_af5_priorities')->onUpdate('cascade')->onDelete('cascade');
         });

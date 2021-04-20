@@ -26,13 +26,14 @@ class WikiAf5ProjectsController extends Controller
             ->when($request->term, function ($query, $term ){
                 $query->where('name','LIKE','%' . $term . '%');})
             ->with('users')
-            ->paginate(20)
+            ->paginate(10)
             ->withQueryString()
             ->sortBy('name');
 
         return Inertia::render('Projects/Index', [
        
             'projects' =>  $projects,
+            'paginator' =>WikiAf5Projects::paginate(10)
           
          ]);
     }

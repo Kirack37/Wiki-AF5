@@ -5,7 +5,9 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Raleway');
-@import "~vue-sidebar-modal/dist/vue-sidebar-modal";
+
+/* @import "~vue-sidebar-modal/dist/vue-sidebar-modal"; */
+
 h1,
 h2,
 h3,

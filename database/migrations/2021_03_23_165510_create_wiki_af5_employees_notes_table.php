@@ -20,7 +20,7 @@ class CreateWikiAf5EmployeesNotesTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }

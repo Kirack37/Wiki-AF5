@@ -18,7 +18,7 @@ class CreateWikiAf5MeetingsLogsTable extends Migration
             $table->unsignedBigInteger('meeting_id');
             $table->string('message');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('meeting_id')->references('id')->on('wiki_af5_meetings')->onUpdate('cascade')->onDelete('cascade');
         });
     }

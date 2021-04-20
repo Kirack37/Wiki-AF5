@@ -21,7 +21,7 @@ class CreateWikiAf5ProjectIncidencesTable extends Migration
             $table->text('reason');
             $table->text('solution')->nullable();
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('project_id')->references('id')->on('wiki_af5_projects')->onUpdate('cascade')->onDelete('cascade');
         });
     }

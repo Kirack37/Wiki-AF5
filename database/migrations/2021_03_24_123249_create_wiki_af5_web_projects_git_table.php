@@ -19,7 +19,7 @@ class CreateWikiAf5WebProjectsGitTable extends Migration
             $table->string('repository_url');
             $table->string('repository_name');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('project_enviroment_id')->references('id')->on('wiki_af5_projects_enviroments')->onUpdate('cascade')->onDelete('cascade');
         });
     }

@@ -13,7 +13,7 @@
     >
       <span class="modal__title">Hello, vue-final-modal</span>
     </vue-final-modal>
-    <button class="vfm-btn" @click="showModal = true">Open modal</button>
+    <button class="vfm-btn" @click="createModal()">Open modal</button>
   </div>
   </app-layout>
 </template>
@@ -25,10 +25,21 @@ import AppLayout from '@/Layouts/AppLayout'
 export default {
   components: {
       AppLayout,
+      UseModal
   },
   data: () => ({
     showModal: false
-  })
+  }),
+  methods:{
+    createModal(){
+      this.showModal = true;
+      axios.post('projects.create', this.$data)
+                 .then(() => {
+                      window.location.href = '/home';
+                 });
+      this.$inertia.get(this.route('projects.create'));
+    }
+  }
 }
 </script>
 

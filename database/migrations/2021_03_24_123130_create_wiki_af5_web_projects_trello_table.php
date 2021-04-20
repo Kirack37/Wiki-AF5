@@ -20,7 +20,7 @@ class CreateWikiAf5WebProjectsTrelloTable extends Migration
             $table->string('username');
             $table->string('password');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('project_enviroment_id')->references('id')->on('wiki_af5_projects_enviroments')->onUpdate('cascade')->onDelete('cascade');
         });
     }

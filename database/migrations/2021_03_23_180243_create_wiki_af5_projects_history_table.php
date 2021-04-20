@@ -21,7 +21,7 @@ class CreateWikiAf5ProjectsHistoryTable extends Migration
             $table->date('date');
             $table->enum('publication',['publicado','borrador','denegado'])->default('publicado');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('project_id')->references('id')->on('wiki_af5_projects')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });

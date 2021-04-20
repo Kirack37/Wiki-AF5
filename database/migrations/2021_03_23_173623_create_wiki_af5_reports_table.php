@@ -20,7 +20,7 @@ class CreateWikiAf5ReportsTable extends Migration
             $table->text('description');
             $table->enum('publication',['publicado','borrador','denegado'])->default('borrador');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('meeting_id')->references('id')->on('wiki_af5_meetings')->onUpdate('cascade')->onDelete('cascade');
         });
     }

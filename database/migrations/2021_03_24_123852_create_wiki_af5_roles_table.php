@@ -19,7 +19,7 @@ class CreateWikiAf5RolesTable extends Migration
             $table->string('slug');
             $table->string('description');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 

@@ -19,7 +19,7 @@ class CreateWikiAf5UsersTypeTable extends Migration
             $table->string('description')->nullable()->default('null');
             $table->tinyInteger('status')->default('0');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 

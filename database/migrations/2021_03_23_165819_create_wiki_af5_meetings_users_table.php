@@ -20,7 +20,7 @@ class CreateWikiAf5MeetingsUsersTable extends Migration
             $table->enum('accept_invitation',['aceptada','rechada']);
             $table->tinyInteger('status')->default('0');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('meeting_id')->references('id')->on('wiki_af5_meetings')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });

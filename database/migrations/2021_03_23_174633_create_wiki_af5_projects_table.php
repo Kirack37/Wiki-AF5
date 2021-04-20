@@ -23,7 +23,7 @@ class CreateWikiAf5ProjectsTable extends Migration
             $table->string('name');
             $table->string('alias')->nullable();
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('responsible_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('priority_id')->references('id')->on('wiki_af5_priorities')->onUpdate('cascade')->onDelete('cascade');
         });

@@ -17,7 +17,7 @@ class CreateWikiAf5ProjectUsersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }

@@ -19,7 +19,7 @@ class CreateWikiAf5EntitiesTable extends Migration
             $table->string('slug');
             $table->string('description')->nullable();
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 

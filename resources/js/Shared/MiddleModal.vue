@@ -17,7 +17,13 @@
 
 export default {
     name: 'MiddleModal',
-
+  computed: { 
+    modalComponent() { 
+      return this.$page.props.modal 
+        ? () => import(`@/Pages/${this.$page.props.modal}`) 
+        : false 
+    }
+  },
   data() {
     return {
       open: false

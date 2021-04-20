@@ -17,7 +17,7 @@ class CreateWikiAf5PrioritiesTable extends Migration
             $table->id();
             $table->enum('level',['baja','media','alta'])->default('baja');
             $table->timestamps();
-            $table->dateTime('delete_at')->nullable();
+            $table->dateTime('deleted_at')->nullable();
         });
     }
 
