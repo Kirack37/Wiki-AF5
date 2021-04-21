@@ -5,48 +5,55 @@
             {{project.name}}
         </h2>
     </template>
-    <div class="container mx-auto my-10">
-      <form @submit.prevent="submit">
-        <div>
-          <label for="name">Nombre:</label >
-          <input id="name" v-model="form.name" />
-          <div v-if="errors.name">El Nombre es requerido</div>
-        </div>
-        <div>
-          <label for="start_date">Fecha de inicio:</label>
-          <input type="date" id="start_date" v-model="form.start_date"/>
-          <div v-if="errors.start_date">La fecha inicial es requerida</div>
-        </div>
-          <div>
-          <label for="end_date">Fecha fin:</label>
-          <input type="date" id="end_date" v-model="form.end_date"/>
-        </div>
-        <div>
-          <label for="alias">Alias:</label>
-          <input id="alias" v-model="form.alias"/>
-        </div>
-        <div>
-          <label for="description">Descripción del proyecto:</label>
-          <div id="app">
-            <ckeditor id="description" v-model="form.description" tag-name="textarea"
-              :editor="editor"
-              :config="editorConfig">
-            </ckeditor>
+        <div class="container mx-auto my-10 bg-white">
+          <form @submit.prevent="submit">
+            <div class="flex items-center mb-8">
+              <div class="flex-1">
+                <label class="mr-12" for="name">Nombre del proyecto:</label >
+                <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.name" />
+                <div v-if="errors.name">El Nombre es requerido</div>
+              </div>
+              <div class="flex-1">
+                <label class="mr-8" for="alias">Alias en el proyecto:</label>
+                <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="alias" v-model="form.alias"/>
+              </div>
+            </div>
+            <div class="flex items-center mb-8">
+              <div class="flex-1">
+                <label class="mr-4" for="responsible">Responsable del proyecto:</label>
+                <select class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="responsible_id" v-model="form.responsible_id">
+                    <option v-for="responsible in responsibles" :key="responsible.id" :value="responsible.id">{{responsible.firstname}} {{responsible.lastname}}</option>
+                </select>
+              </div>
+              <div class="flex-1">
+                <label class="mr-6" for="priority">Prioridad del proyecto:</label>
+                <select class="relative px-6 py-3 w-32 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="priority_id" v-model="form.priority_id">
+                    <option id="priority_id" v-for="priority in priorities" :key="priority.id" :value="priority.id" data-id="priority.id">{{ priority.level }} </option>
+                </select>
+              </div>
+            </div>
+            <div class="flex items-center mb-8">
+              <div class="flex-1">
+                <label class="mr-24" for="start_date">Fecha de inicio:</label>
+                <input class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" type="date" id="start_date" v-model="form.start_date"/>
+                <div v-if="errors.start_date">La fecha inicial es requerida</div>
+              </div>
+              <div class="flex-1">
+                <label class="mr-10" for="end_date">Fecha final prevista:</label>
+                <input class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" type="date" id="end_date" v-model="form.end_date"/>
+              </div>
+            </div>
+            <div class="mt-14">
+              <label for="description">Descripción del proyecto:</label>
+              <div id="app" class="mt-4">
+                <ckeditor id="description" v-model="form.description" tag-name="textarea" 
+                  :editor="editor"
+                  :config="editorConfig"
+                  >
+                </ckeditor>
           </div>
         </div>
-        <div>
-          <label for="responsible">Responsable del proyecto:</label>
-          <select id="responsible_id" v-model="form.responsible_id">
-              <option v-for="responsible in responsibles" :key="responsible.id" :value="responsible.id">{{responsible.firstname}} {{responsible.lastname}}</option>
-          </select>
-        </div>
-        <div>
-          <label for="priority">Prioridad del proyecto:</label>
-          <select id="priority_id" v-model="form.priority_id">
-              <option v-for="priority in priorities" :key="priority.id" :value="priority.id">{{ priority.level }}</option>
-          </select>
-        </div>
-        <button type="submit"> Añadir </button>
+        <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Editar el proyecto </button>
       </form>
     </div>
   </app-layout>

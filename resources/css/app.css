@@ -122,3 +122,20 @@ h4 {
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
     transition: all 1s ease-in-out;
 }
+
+
+/** Footer **/
+
+.fa-home,
+.fa-envelope,
+.fa-phone {
+    margin-right: 0.5em;
+}
+
+.footer-link {
+    margin-bottom: 1.5rem;
+}
+
+.footer-icons {
+    margin-left: 0.2em;
+}

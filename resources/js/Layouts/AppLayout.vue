@@ -6,6 +6,7 @@
             <nav class="bg-white border-b border-gray-100 sticky top-0 z-10">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- <flash-messages /> -->
                     <div class="flex justify-between h-16">
                         <div class="flex">
                             <!-- Logo -->
@@ -181,6 +182,7 @@
                             </template>
                         </div>
                     </div>
+
                 </div>
             </nav>
 
@@ -198,6 +200,50 @@
                 </div>
             </main>
         </div>
+        <footer>
+                <!-- Footer -->
+            <div class="page-footer-container opacity-90">
+                <div style="backgroundColor: #EA891B">
+                    <div class="container-rrss">
+                        <div class="py-4 flex justify-between">
+                            <div class="text-center ml-6 flex-initial">
+                                <h6 class="mb-0 text-white font-medium text-lg">Wiki Área F5</h6>
+                            </div>
+                            <div class="mr-10">
+                                <a href="https://www.facebook.com/Web.Area.f5/" target="_blank" class="mr-4 "><font-awesome-icon :icon="['fab', 'facebook-square']" size="2x" /></a>
+                                <a href="https://twitter.com/area_f5?lang=es" target="_blank" class="mr-4"><font-awesome-icon :icon="['fab', 'twitter-square']" size="2x" /></a>
+                                <a href="https://www.linkedin.com/company/%C3%A1rea-f5" target="_blank"><font-awesome-icon :icon="['fab', 'linkedin']" size="2x" /></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-links flex mt-10 bg-white">
+                    <div class="footer-info flex-1 ml-6">
+                        <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Área F5</strong></h6>
+                        <p>Wiki oficial de la empresa Área F5.</p>
+                    </div>
+                    <div class="footer-links flex-1">
+                        <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Enlaces de interés</strong></h6>
+                        <p class="footer-link"><a href="#!">Guía de estilo Área F5</a></p>
+                        <p class="footer-link"><a href="#!">Guías generales</a></p>
+                        <p class="footer-link"><a href="#!">Incidencias frecuentes</a></p>
+                        <p class="footer-link"><a href="#!">Memes (proximamente)</a></p>
+                    </div>
+                    <div class="footer-contact flex-1">
+                        <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Contacto</strong></h6>
+                        <p class="footer-link"><font-awesome-icon :icon="['fas', 'home']" size="lg"/>Calle Melilla 1, Local 21, Churriana de la Vega (Granada).</p>
+                        <a href="mailto:info@areaf5.es" target="_blank"><p class="footer-icons footer-link"><font-awesome-icon :icon="['fas', 'envelope']" size="lg"/>info@areaf5.es</p></a>
+                        <p class="footer-icons footer-link"><font-awesome-icon :icon="['fas', 'phone']" size="lg"/>Granada: 633 65 99 20</p>
+                        <p class="footer-icons footer-link"><font-awesome-icon :icon="['fas', 'phone']" size="lg"/>Dúrcal: 679 749 395</p>
+                    </div>
+                </div>
+                <div class="footer-copyright text-center mt-8 mb-10">
+                    <div fluid>
+                        &copy; 2021 Copyright: <a href="https://www.areaf5.es"> Área F5 </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
 </template>
 
@@ -209,6 +255,8 @@
     import JetNavLink from '@/Jetstream/NavLink'
     import JetResponsiveNavLink from '@/Jetstream/ResponsiveNavLink'
 
+    import FlashMessages from '@/Shared/FlashMessages'
+
     export default {
         components: {
             JetApplicationMark,
@@ -217,6 +265,7 @@
             JetDropdownLink,
             JetNavLink,
             JetResponsiveNavLink,
+            FlashMessages,
         },
 
         data() {

@@ -31,6 +31,7 @@
         "@ckeditor/ckeditor5-ckfinder": "^27.0.0",
         "@ckeditor/ckeditor5-vue": "^2.0.1",
         "@fortawesome/fontawesome-svg-core": "^1.2.35",
+        "@fortawesome/free-brands-svg-icons": "^5.15.3",
         "@fortawesome/free-regular-svg-icons": "^5.15.3",
         "@fortawesome/free-solid-svg-icons": "^5.15.3",
         "@fortawesome/vue-fontawesome": "^3.0.0-3",
@@ -40,6 +41,7 @@
         "moment": "^2.29.1",
         "portal-vue": "^3.0.0-alpha.0",
         "vue-final-modal": "^3.1.0",
+        "vue-router": "^4.0.6",
         "vue-sidebar-menu": "^5.0.0-alpha.9"
     }
 }

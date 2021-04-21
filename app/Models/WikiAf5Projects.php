@@ -27,11 +27,4 @@ class WikiAf5Projects extends Model
     public function priority(){
         return $this->belongsTo(WikiAf5Priorities::class);
     }
-
-    // public function scopeFilter($query, array $filters)
-    // {   
-    //     $query->when($filters['search'] ?? null, function ($query, $search) {
-    //         $query->where('name', 'like', '%'.$search.'%');
-    //     });
-    // }
 }

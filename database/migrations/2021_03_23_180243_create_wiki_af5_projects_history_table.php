@@ -18,7 +18,6 @@ class CreateWikiAf5ProjectsHistoryTable extends Migration
             $table->unsignedBigInteger('project_id');
             $table->unsignedBigInteger('user_id');
             $table->text('description');
-            $table->date('date');
             $table->enum('publication',['publicado','borrador','denegado'])->default('publicado');
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();

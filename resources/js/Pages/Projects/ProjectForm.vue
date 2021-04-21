@@ -5,53 +5,54 @@
             Proyectos
         </h2>
     </template>
-    <div class="container mx-auto my-10">
+    <div class="container mx-auto my-10 bg-white">
       <form @submit.prevent="submit">
-        <div>
-          <label for="name">Nombre:</label >
-          <input id="name" v-model="form.name" />
-          <div v-if="errors.name">El Nombre es requerido</div>
+        <div class="flex items-center mb-8">
+          <div class="flex-1">
+            <label class="mr-12" for="name">Nombre del proyecto:</label >
+            <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.name" />
+            <div v-if="errors.name">El Nombre es requerido</div>
+          </div>
+          <div class="flex-1">
+            <label class="mr-8" for="alias">Alias en el proyecto:</label>
+            <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="alias" v-model="form.alias"/>
+          </div>
         </div>
-        <div>
-          <label for="start_date">Fecha de inicio:</label>
-          <input type="date" id="start_date" v-model="form.start_date"/>
-          <div v-if="errors.start_date">La fecha inicial es requerida</div>
+        <div class="flex items-center mb-8">
+          <div class="flex-1">
+            <label class="mr-4" for="responsible">Responsable del proyecto:</label>
+            <select class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="responsible_id" v-model="form.responsible_id">
+                <option v-for="user in allUsers" :key="user.id" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
+            </select>
+          </div>
+          <div class="flex-1">
+            <label class="mr-6" for="priority">Prioridad del proyecto:</label>
+            <select class="relative px-6 py-3 w-32 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="priority_id" v-model="form.priority_id">
+                <option id="priority_id" v-for="priority in priorities" :key="priority.id" :value="priority.id" data-id="priority.id">{{ priority.level }} </option>
+            </select>
+          </div>
         </div>
-          <div>
-          <label for="end_date">Fecha fin:</label>
-          <input type="date" id="end_date" v-model="form.end_date"/>
+        <div class="flex items-center mb-8">
+          <div class="flex-1">
+            <label class="mr-24" for="start_date">Fecha de inicio:</label>
+            <input class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" type="date" id="start_date" v-model="form.start_date"/>
+            <div v-if="errors.start_date">La fecha inicial es requerida</div>
+          </div>
+          <div class="flex-1">
+            <label class="mr-10" for="end_date">Fecha final prevista:</label>
+            <input class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" type="date" id="end_date" v-model="form.end_date"/>
+          </div>
         </div>
-        <div>
-          <label for="alias">Alias:</label>
-          <input id="alias" v-model="form.alias"/>
-        </div>
-        <div>
+        <div class="mt-14">
           <label for="description">Descripción del proyecto:</label>
-          <div id="app">
+          <div id="app" class="mt-4">
             <ckeditor id="description" v-model="form.description" tag-name="textarea" 
             :editor="editor"
             :config="editorConfig"
-            @ready="onEditorReady"
-            @focus="onEditorFocus"
-            @blur="onEditorBlur"
-            @input="onEditorInput"
-            @destroy="onEditorDestroy"></ckeditor>
+            ></ckeditor>
           </div>
-          <!-- <textarea id="description" v-model="form.description"/> -->
         </div>
-        <div>
-          <label for="responsible">Responsable del proyecto:</label>
-          <select id="responsible_id" v-model="form.responsible_id">
-              <option v-for="user in allUsers" :key="user.id" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
-          </select>
-        </div>
-        <div>
-          <label for="priority">Prioridad del proyecto:</label>
-          <select id="priority_id" v-model="form.priority_id">
-              <option v-for="priority in priorities" :key="priority.id" :value="priority.id">{{ priority.level }}</option>
-          </select>
-        </div>
-        <button type="submit"> Añadir </button>
+        <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Añadir proyecto </button>
       </form>
     </div>
   </app-layout>
@@ -103,31 +104,6 @@ export default {
     submit() {
       this.$inertia.post(route('projects.store'), this.form);
     },
-    onReady( editor )  {
-    // Insert the toolbar before the editable area.
-    editor.ui.getEditableElement().parentElement.insertBefore(
-            editor.ui.view.toolbar.element,
-            editor.ui.getEditableElement()
-      );
-    },
-      destroyApp() {
-          app.$destroy();
-      },
-      onEditorReady( editor ) {
-          console.log( 'Editor is ready.', { editor } );
-      },
-      onEditorFocus( event, editor ) {
-          console.log( 'Editor focused.', { event, editor } );
-      },
-      onEditorBlur( event, editor ) {
-          console.log( 'Editor blurred.', { event, editor } );
-      },
-      onEditorInput( data, event, editor ) {
-          console.log( 'Editor data input.', { event, editor, data } );
-      },
-      onEditorDestroy( editor ) {
-          console.log( 'Editor destroyed.', { editor } );
-      }
   }
 }
 

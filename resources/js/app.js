@@ -11,11 +11,12 @@ import PortalVue from "portal-vue";
 
 import { Modalable, ToModal } from "@protonemedia/inertia-vue-modal-poc"
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPhone, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faPhone, faEye, faEdit, faTrash, faHome, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faFacebookSquare, faTwitterSquare, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 
-library.add(faPhone, faEye);
+library.add(faPhone, faEye, faEdit, faTrash, faFacebookSquare, faTwitterSquare, faLinkedin, faHome, faEnvelope);
 
 
 const el = document.getElementById('app');

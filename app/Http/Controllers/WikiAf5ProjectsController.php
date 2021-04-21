@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\WikiAf5Projects;
 use App\Models\User;
 use App\Models\WikiAf5Priorities;
+use App\Models\WikiAf5ProjectsHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +47,7 @@ class WikiAf5ProjectsController extends Controller
     public function create()
     {   $users = User::where('user_type_id', 1)->get();
         $priorities = WikiAf5Priorities::all();
-        return Inertia::render('Projects/ProjectForm')->with('priorities', $priorities)->with('allUsers', $users);
+        return Inertia::render('Projects/ProjectForm')->with('priorities', $priorities)->with('allUsers', $users)->with('status', '¡Proyecto creado correctamente!');
     }
 
     /**
@@ -71,7 +72,7 @@ class WikiAf5ProjectsController extends Controller
 
         WikiAf5Projects::create($request->all());
 
-        return Redirect::route('projects');
+        return Redirect::route('projects')->with('success', '¡Proyecto creado correctamente!');
     }
 
     /**
@@ -87,11 +88,12 @@ class WikiAf5ProjectsController extends Controller
             $project = WikiAf5Projects::find($project_id);
             if (isset($project->id)){
                 $project->description = strip_tags($project->description);
+                $history = WikiAf5ProjectsHistory::where('project_id', $project_id)->get();
                 $responsible_id = $project->responsible_id;
                 $responsible = User::where('id', $responsible_id)->get();
                 $priority_id = $project->priority_id;
                 $priority = WikiAf5Priorities::where('id', $priority_id)->get();
-                return Inertia::render('Projects/Show', ['project' =>  $project, 'priority' => $priority, 'responsible' => $responsible]);
+                return Inertia::render('Projects/Show', ['project' =>  $project, 'priority' => $priority, 'responsible' => $responsible, 'history' => $history]);
             }
         } 
         abort(404);
@@ -132,7 +134,7 @@ class WikiAf5ProjectsController extends Controller
             $project = WikiAf5Projects::find($project_id);
             if (isset($project->id)){
                 $project->update($request->all());
-                return Redirect::route('projects');
+                return Redirect::route('projects')->with('success', '¡Proyecto editado correctamente!');
             }
         } 
         abort(404);
@@ -151,7 +153,7 @@ class WikiAf5ProjectsController extends Controller
             $project = WikiAf5Projects::find($project_id);
             if (isset($project->id)){
                 $project->delete();
-                return Redirect::back()->with('success', 'Proyecto borrado.');
+                return redirect()->back()->with('success', 'Proyecto borrado correctamente');
             }
         } 
         abort(404);        
