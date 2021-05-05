@@ -26,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'user_type_id', 'company_id', 'firstname', 'lastname', 'status'
+        'user_type_id', 'firstname', 'lastname', 'name', 'email', 'password', 'company_id', 'status'
     ];
 
     /**
@@ -63,9 +63,9 @@ class User extends Authenticatable
         return $this->hasMany(WikiAf5Projects::class);
     }
     public function userType(){
-        return $this->hasOne(WikiAf5UsersType::class);
+        return $this->belongsTo(WikiAf5UsersType::class);
     }
     public function company(){
-        return $this->hasOne(WikiAf5Company::class);
+        return $this->belongsTo(WikiAf5Company::class);
     }
 }

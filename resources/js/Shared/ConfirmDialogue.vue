@@ -3,8 +3,8 @@
         <h2 style="margin-top: 0">{{ title }}</h2>
         <p>{{ message }}</p>
         <div class="btns">
-            <button class="cancel-btn" @click="_cancel">{{ cancelButton }}</button>
             <span class="ok-btn" @click="_confirm">{{ okButton }}</span>
+            <button class="cancel-btn" @click="_cancel">{{ cancelButton }}</button>
         </div>
     </popup-modal>
 </template>

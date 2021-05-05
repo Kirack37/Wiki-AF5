@@ -12,19 +12,18 @@ class WikiAf5ProjectIncidences extends Model
     protected $table = 'wiki_af5_project_incidences';
 
     protected $fillable = [
-        'responsible_id',
-        'priority_id',
-        'start_date',
-        'end_date',
+        'user_id',
+        'project_id',
+        'title',
         'description',
-        'name',
-        'alias',
+        'reason',
+        'solution',
     ];
 
     public function users(){
-        return $this->belongsTo(User::class, 'responsible_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
-    public function priority(){
-        return $this->belongsTo(WikiAf5Priorities::class);
+    public function projects(){
+        return $this->belongsTo(WikiAf5Projects::class);
     }
 }

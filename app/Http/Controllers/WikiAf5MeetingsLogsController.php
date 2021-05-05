@@ -1,0 +1,152 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\WikiAf5MeetingsLogs;
+use App\Models\WikiAf5Meetings;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
+
+class WikiAf5MeetingsLogsController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index($id, Request $request)
+    {
+        $meetings = WikiAf5Meetings::where('id', $id)->get();
+        $logs = WikiAf5MeetingsLogs::where('meeting_id' , $id)
+                ->orderBy('created_at', 'asc')
+                ->when($request->term, function ($query, $term ){
+                    $query->where('message','LIKE','%' . $term . '%');})
+                ->with('users')
+                ->with('meetings')
+                ->paginate(10)
+                ->withQueryString()
+                ->sortBy('name');
+
+        return Inertia::render('MeetingsLogs/Index', [
+            'meetings' => $meetings,
+            'logs' =>  $logs,
+            'paginator' =>WikiAf5MeetingsLogs::paginate(10)
+      
+     ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create($id)
+    {   
+        // $user_id = Auth::id();
+        $meetings = WikiAf5Meetings::where('id', $id)->get();
+
+        return Inertia::render('MeetingsLogs/LogForm', ['meetings' => $meetings]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store($id, Request $request)
+    {
+        $request->validate(
+            [   
+                'message' => 'required',
+            ]
+        );
+
+        WikiAf5MeetingsLogs::create($request->all());
+
+        return Redirect::route('logs.index', $id)->with('success', '¡Log de la reunión creado correctamente!');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\WikiAf5MeetingsLogs  $wikiAf5MeetingsLogs
+     * @return \Illuminate\Http\Response
+     */
+    public function show(WikiAf5MeetingsLogs $wikiAf5MeetingsLogs)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\WikiAf5MeetingsLogs  $wikiAf5MeetingsLogs
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id, Request $request)
+    {
+        $user_id = Auth::id();
+        $meeting = WikiAf5Meetings::where('id', $id)->get();
+        
+        if (isset($request['log']) && $request['log']) {
+            $log_id = $request['log'];
+            $log = WikiAf5MeetingsLogs::find($log_id);
+
+            if (isset($log->id)){
+                
+                return Inertia::render('MeetingsLogs/LogEditForm', ['meeting' =>  $meeting, 'log' => $log, 'user_id' => $user_id]);
+            }
+        } 
+        abort(404);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\WikiAf5MeetingsLogs  $wikiAf5MeetingsLogs
+     * @return \Illuminate\Http\Response
+     */
+    public function update($id, Request $request)
+    {
+        if (isset($request['log']) && $request['log']) {
+
+            $log_id = $request['log'];
+            $log = WikiAf5MeetingsLogs::find($log_id);
+
+            if (isset($log->id)){
+
+                $log->update($request->all());
+
+                return Redirect::route('logs.index', $id)->with('success', '¡Log de la reunión editado correctamente!');
+            }
+        } 
+        abort(404);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\WikiAf5MeetingsLogs  $wikiAf5MeetingsLogs
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id, Request $request)
+    {
+        if (isset($request['log']) && $request['log']) {
+
+            $log_id = $request['log'];
+            $log = WikiAf5MeetingsLogs::find($log_id);
+
+            if (isset($log->id)){
+
+                $log->delete();
+                
+                return redirect()->back()->with('success', 'Log de historial borrado correctamente');
+            }
+        } 
+        abort(404);        
+    }
+}

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\WikiAf5Company;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\WikiAf5UsersType;
 
 class UsersController extends Controller
 {
@@ -15,10 +17,7 @@ class UsersController extends Controller
      */
     public function index()
     {   
-        $users = User::all();
-        return Inertia::render('Projects/ProjectForm', [
-            'users' => $users
-         ]);
+        
     }
 
     /**
@@ -28,7 +27,12 @@ class UsersController extends Controller
      */
     public function create()
     {
-        //
+        // $usersType = WikiAf5UsersType::all();
+        // $companies = WikiAf5Company::all();
+
+        // return Inertia::render('Auth/Register', [
+        //     'usersType' => $usersType, 'companies' => $companies
+        //  ]);
     }
 
     /**

@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\WikiAf5Clients;
+use App\Models\User;
+use App\Models\WikiAf5Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
+use DB;
 
 class WikiAf5ClientsController extends Controller
 {
@@ -12,9 +17,42 @@ class WikiAf5ClientsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $slug_action = 'listado_clientes';   
+        // $users = User::all();
+        // $sql = 'SELECT * FROM `wiki_af5_clients`
+        // JOIN `users` ON `users`.id = `wiki_af5_clients`.user_id
+        // ORDER BY `users`.name ASC';
+        // $results = DB::select($sql, ['id' => 1]);
+
+        // $clients = WikiAf5Clients::query()
+        //     ->orderBy('user_id', 'ASC')
+        //     ->when($request->term, function ($query, $term ){
+        //         $query->where('company_id','LIKE','%' . $term . '%');})
+        //     ->with('user')
+        //     ->with('company')
+        //     ->paginate(10)
+        //     ->withQueryString()
+        //     ->sortBy('name');
+
+        $clients = WikiAf5Clients::query()
+	    ->join('users','users.id','=','wiki_af5_clients.user_id')
+        ->when($request->term, function ($query, $term ){      
+            $query->where('users.firstname', 'LIKE', '%' . $term . '%');})
+            //->orderBy('users.name', 'ASC')
+            ->with('user')
+            ->with('company')
+            ->paginate(10)
+            ->withQueryString()
+            ->sortBy('name');
+
+        return Inertia::render('Clients/Index', [
+       
+            'clients' =>  $clients,
+            'paginator' =>WikiAf5Clients::paginate(10)
+          
+         ]);
     }
 
     /**
@@ -24,7 +62,11 @@ class WikiAf5ClientsController extends Controller
      */
     public function create()
     {
-        //
+        $slug_action = 'carga_form_creacion_cliente';
+
+        $users = User::where('user_type_id', 2)->get();
+        $companies = WikiAf5Company::all();
+        return Inertia::render('Clients/ClientForm')->with('users', $users)->with('companies', $companies);
     }
 
     /**
@@ -35,7 +77,17 @@ class WikiAf5ClientsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $slug_action = 'guardar_form_creacion_cliente';
+
+        $request->validate(
+            [   
+                'user_id' => 'required',
+            ]
+        );
+
+        WikiAf5Clients::create($request->all());
+
+        return Redirect::route('clients')->with('success', '¡Cliente creado correctamente!');
     }
 
     /**
@@ -44,9 +96,26 @@ class WikiAf5ClientsController extends Controller
      * @param  \App\Models\WikiAf5Clients  $wikiAf5Clients
      * @return \Illuminate\Http\Response
      */
-    public function show(WikiAf5Clients $wikiAf5Clients)
-    {
-        //
+    public function show(Request $request)
+    {   
+        $slug_action = 'carga_vista_cliente';
+
+        if (isset($request['client']) && $request['client']) {
+
+            $client_id = $request['client'];
+            $client = WikiAf5Clients::find($client_id);
+
+            if (isset($client->id)){
+
+                $user_id = $client->user_id;
+                $users = User::where('id', $user_id)->get();
+                $company_id = $client->company_id;
+                $companies = WikiAf5Company::where('id', $company_id)->get();
+
+                return Inertia::render('Clients/Show', ['client' =>  $client, 'users' => $users, 'companies' => $companies]);
+            }
+        } 
+        abort(404);
     }
 
     /**
@@ -55,9 +124,24 @@ class WikiAf5ClientsController extends Controller
      * @param  \App\Models\WikiAf5Clients  $wikiAf5Clients
      * @return \Illuminate\Http\Response
      */
-    public function edit(WikiAf5Clients $wikiAf5Clients)
+    public function edit(Request $request)
     {
-        //
+        $slug_action = 'carga_form_edicion_cliente';
+
+        if (isset($request['client']) && $request['client']) {
+
+            $client_id = $request['client'];
+            $client = WikiAf5Clients::find($client_id);
+
+            if (isset($client->id)){
+
+                $users = User::where('user_type_id', 2)->get();
+                $companies = WikiAf5Company::all();
+
+                return Inertia::render('Clients/ClientEditForm', ['client' =>  $client, 'users' => $users, 'companies' => $companies]);
+            }
+        } 
+        abort(404);
     }
 
     /**
@@ -67,9 +151,23 @@ class WikiAf5ClientsController extends Controller
      * @param  \App\Models\WikiAf5Clients  $wikiAf5Clients
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, WikiAf5Clients $wikiAf5Clients)
+    public function update(Request $request)
     {
-        //
+        $slug_action = 'guardar_form_edicion_cliente';
+
+        if (isset($request['client']) && $request['client']) {
+
+            $client_id = $request['client'];
+            $client = WikiAf5Clients::find($client_id);
+
+            if (isset($client->id)){
+
+                $client->update($request->all());
+                
+                return Redirect::route('clients')->with('success', '¡Cliente editado correctamente!');
+            }
+        } 
+        abort(404);
     }
 
     /**
@@ -78,8 +176,18 @@ class WikiAf5ClientsController extends Controller
      * @param  \App\Models\WikiAf5Clients  $wikiAf5Clients
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WikiAf5Clients $wikiAf5Clients)
+    public function destroy(Request $request)
     {
-        //
+        $slug_action = 'eliminar_cliente';
+
+        if (isset($request['client']) && $request['client']) {
+            $client_id = $request['client'];
+            $client = WikiAf5Clients::find($client_id);
+            if (isset($client->id)){
+                $client->delete();
+                return redirect()->back()->with('success', 'Cliente borrado correctamente');
+            }
+        } 
+        abort(404);     
     }
 }

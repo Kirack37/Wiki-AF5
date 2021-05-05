@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\WikiAf5ProjectIncidences;
+use App\Models\WikiAf5Projects;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class WikiAf5ProjectIncidencesController extends Controller
 {
@@ -12,9 +16,25 @@ class WikiAf5ProjectIncidencesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id, Request $request)
     {
-        //
+        $project = WikiAf5Projects::where('id', $id)->get();
+        $incidences = WikiAf5ProjectIncidences::where('project_id' , $id)
+                ->orderBy('created_at', 'asc')
+                ->when($request->term, function ($query, $term ){
+                    $query->where('subject','LIKE','%' . $term . '%');})
+                ->with('users')
+                ->with('projects')
+                ->paginate(10)
+                ->withQueryString()
+                ->sortBy('name');
+
+        return Inertia::render('ProjectsIncidences/Index', [
+            'project' => $project,
+            'incidences' =>  $incidences,
+            'paginator' =>WikiAf5ProjectIncidences::paginate(10)
+        
+        ]);
     }
 
     /**
@@ -22,9 +42,12 @@ class WikiAf5ProjectIncidencesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create($id)
+    {   
+        $user_id = Auth::id();
+        $projects = WikiAf5Projects::where('id', $id)->get();
+
+        return Inertia::render('ProjectsIncidences/IncidenceForm', ['projects' => $projects, 'user_id' => $user_id]);
     }
 
     /**
@@ -33,9 +56,18 @@ class WikiAf5ProjectIncidencesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($id, Request $request)
     {
-        //
+        $request->validate(
+            [   
+                'description' => 'required',
+                'reason' => 'required',
+            ]
+        );
+
+        WikiAf5ProjectIncidences::create($request->all());
+
+        return Redirect::route('incidences.index', $id)->with('success', '¡Incidencia creada correctamente!');
     }
 
     /**
@@ -55,11 +87,22 @@ class WikiAf5ProjectIncidencesController extends Controller
      * @param  \App\Models\WikiAf5ProjectIncidences  $wikiAf5ProjectIncidences
      * @return \Illuminate\Http\Response
      */
-    public function edit(WikiAf5ProjectIncidences $wikiAf5ProjectIncidences)
+    public function edit($id, Request $request)
     {
-        //
-    }
+        $user_id = Auth::id();
+        $project = WikiAf5Projects::where('id', $id)->get();
+        
+        if (isset($request['incidence']) && $request['incidence']) {
+            $incidence_id = $request['incidence'];
+            $incidence = WikiAf5ProjectIncidences::find($incidence_id);
 
+            if (isset($incidence->id)){
+                $incidence->description = strip_tags($incidence->description);
+                return Inertia::render('ProjectsIncidences/IncidenceEditForm', ['project' =>  $project, 'incidence' => $incidence, 'user_id' => $user_id]);
+            }
+        } 
+        abort(404);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -67,9 +110,17 @@ class WikiAf5ProjectIncidencesController extends Controller
      * @param  \App\Models\WikiAf5ProjectIncidences  $wikiAf5ProjectIncidences
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, WikiAf5ProjectIncidences $wikiAf5ProjectIncidences)
+    public function update($id, Request $request)
     {
-        //
+        if (isset($request['incidence']) && $request['incidence']) {
+            $incidence_id = $request['incidence'];
+            $incidence = WikiAf5ProjectIncidences::find($incidence_id);
+            if (isset($incidence->id)){
+                $incidence->update($request->all());
+                return Redirect::route('incidences.index', $id)->with('success', '¡Incidencia editada correctamente!');
+            }
+        } 
+        abort(404);
     }
 
     /**
@@ -78,8 +129,16 @@ class WikiAf5ProjectIncidencesController extends Controller
      * @param  \App\Models\WikiAf5ProjectIncidences  $wikiAf5ProjectIncidences
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WikiAf5ProjectIncidences $wikiAf5ProjectIncidences)
+    public function destroy($id, Request $request)
     {
-        //
+        if (isset($request['incidence']) && $request['incidence']) {
+            $incidence_id = $request['project'];
+            $incidence = WikiAf5ProjectIncidences::find($incidence_id);
+            if (isset($incidence->id)){
+                $incidence->delete();
+                return redirect()->back()->with('success', 'Incidencia borrada correctamente');
+            }
+        } 
+        abort(404);        
     }
 }

@@ -39,6 +39,28 @@ class WikiAf5ProjectsController extends Controller
          ]);
     }
 
+    public function data()
+    {
+        $data = [];
+        
+        $projects = WikiAf5Projects::get();
+
+        foreach($projects as $p){
+            
+            $data[] = [
+                $p->name,
+                $p->priority_id,
+                $p->responsible_id,
+                $p->start_date,
+                $p->alias
+            ];
+        }
+
+        // Auth::user()->add_action('carga_lista_empresas', json_encode($data));
+            
+        return json_encode(["data" => $data]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

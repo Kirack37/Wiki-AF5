@@ -8,4 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class WikiAf5Clients extends Model
 {
     use HasFactory;
+
+    protected $table = 'wiki_af5_clients';
+
+    protected $fillable = [
+        'user_id',
+        'company_id',
+        'strengths',
+        'weaknesses',
+        'notes',
+    ];
+
+    public function company(){
+        return $this->belongsTo(WikiAf5Company::class, 'company_id');
+    }
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function contact(){
+        return $this->hasOne(WikiAf5Contact::class, 'contact_id');
+    }
 }

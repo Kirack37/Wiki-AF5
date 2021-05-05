@@ -5,44 +5,47 @@
             Proyectos
         </h2>
     </template>
-    <div class="container mx-auto my-10">
+    <div class="container mx-auto my-10 items-list">
       <flash-messages />
       <div class="select-stuff mb-20 flex">
-          <search id="search" class="w-full max-w-md mr-10"  v-model:search="term" @keyup="searchFor" @click="resetQuery()">
-          </search>
-          <button class="flex-none ml-auto border-2 border-double rounded border-gray-100 p-2 bg-yellow-600"><a class="text-white" :href="'history/create'">Crear un nuevo historial</a></button>
+        <search id="search" class="w-full max-w-md mr-10"  v-model:search="term" @keyup="searchFor" @click="resetQuery()"></search>
+        <inertia-link class="flex-none ml-auto border-2 border-double rounded border-gray-100 p-3 bg-yellow-600 text-white" :href="'history/create'">Crear un nuevo historial</inertia-link>
       </div>
-      <div class="recent-projects">
-        <div class="recent-projects-titles bg-white p-3 flex mb-2">
-          <div class="project-title flex-1 mr-4"><h3 class="text-gray-600">Descripción</h3></div>
-          <div class="project-title flex-1"><h3 class="text-gray-600">Fecha</h3></div>
-          <div class="project-title flex-1"><h3 class="text-gray-600">Creador/a</h3></div>
-          <div class="project-title flex-initial mr-24 ml-28"><h3 class="text-gray-600">Acciones</h3></div>
-        </div>
-        <div v-for="history in histories" :key="history.id" class="project-card flex border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
-          <div class="project-data flex-1">
-            <h4 class="text-black">{{ history.description }}</h4>
+      <div class="recent-items">
+        <div v-for="history in histories" :key="history.id" class="item-card border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
+        <div class="item-info flex">
+          <div class="item-data flex-1">
+              <p><strong class="text-black ml-4">Creador del historial: </strong>{{ history.users.firstname }} {{ history.users.lastname }}</p>
+            </div>
+            <div class="item-data flex-end mr-8">
+              <p><strong class="text-black">Fecha de creación: </strong>{{ moment(history.created_at).format("DD-MM-YYYY") }}</p>
+            </div>
+          </div> 
+          <div class="item-data block ml-4 mt-10">
+            <ckeditor
+              class="text-black"
+              id="description" 
+              tag-name="textarea" 
+              v-model=history.description 
+              :disabled="true"
+              :editor="editor"
+              :config="editorConfig" >  
+            </ckeditor>
           </div>
-          <div class="project-data flex-1">
-            <p>{{ moment(history.created_at).format("DD-MM-YYYY") }}</p>
-          </div>
-          <div class="project-data flex-1">
-            <p>{{ history.users.firstname }} {{ history.users.lastname }}</p>
-          </div>
-          <div class="project-data mr-12">
-            <inertia-link
-              class="inside-project text-blue-600"
-              method="get"
-              as="button"
-              :href="route('history.edit', [project[0].id, history.id])">
-              <font-awesome-icon :icon="['fas', 'edit']" size="lg" />
-            </inertia-link>
-          </div>
-          <div class="project-data mr-12">
-            <button class="text-red-600" @click="doDelete(history.id)">
-              <font-awesome-icon :icon="['fas', 'trash']" size="lg" />
-            </button>
-            <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
+            <div class="item-actions flex">
+              <div class="item-data mr-0 ml-auto">
+                <inertia-link
+                  class="inside-item text-blue-600 mr-4"
+                  method="get"
+                  as="button"
+                  :href="route('history.edit', [project[0].id, history.id])">
+                  <font-awesome-icon :icon="['fas', 'edit']" size="lg" />
+                </inertia-link>
+                <button class="text-red-600" @click="doDelete(history.id)">
+                  <font-awesome-icon :icon="['fas', 'trash']" size="lg" />
+                </button>
+                <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
+            </div>
           </div>
         </div>
       </div>
@@ -57,6 +60,8 @@ import AppLayout from '@/Layouts/AppLayout'
 import { reactive } from "vue";
 
 import moment from "moment";
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 import Search from '@/Shared/Search'
 import ConfirmDialogue from '@/Shared/ConfirmDialogue.vue'
@@ -67,13 +72,10 @@ import FlashMessages from '@/Shared/FlashMessages'
 
 
 export default {
-        
-  // metaInfo: { 
-  //     title: 'history' 
-  // },
   
   components: {
       AppLayout,
+      ckeditor: CKEditor.component,
       Search,
       ConfirmDialogue,
       Paginator,
@@ -89,8 +91,17 @@ export default {
   data() {
 
     return {
-      moment: moment
-      }    
+      moment: moment,
+      editor: ClassicEditor,
+      editorConfig: {      
+        editorDisabled: true,
+        ckfinder: {
+          uploadUrl: '/ckfinder/connector?command=QuickUpload&type=Images&responseType=json',
+          openerMethod: 'popup',
+        },
+        language: 'es',
+      },
+    }    
   },
   setup () {
     let searching = reactive({
@@ -101,9 +112,9 @@ export default {
   },
 
   methods: {
-    
+  
     resetQuery() {
-      this.$inertia.replace(this.route('history.index', this.project[0].id, ''))
+      this.$inertia.replace(this.route('history.index', [this.project[0].id, '']))
       var inputs = document.getElementsByTagName('input');
       for (var i=0 ; i < inputs.length ; i++){
         if (inputs[i].type == "text"){
@@ -113,7 +124,7 @@ export default {
     },
     searchFor() {
 
-      this.$inertia.replace(this.route('history.index', this.project[0].id, {term:this.term}))
+      this.$inertia.replace(this.route('history.index', {project: this.project[0].id, term: this.term}))
       
     },
     async doDelete(history) {

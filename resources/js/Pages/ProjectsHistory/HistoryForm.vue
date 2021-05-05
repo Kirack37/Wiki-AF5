@@ -2,13 +2,13 @@
   <app-layout>
     <template #header>
         <h2 class="font-semibold text-xl text-white leading-tight">
-            Proyectos
+            Proyecto
         </h2>
     </template>
     <div class="container mx-auto my-10 bg-white">
       <form @submit.prevent="submit">
         <div class="mt-14">
-          <label for="description">Descripción del proyecto:</label>
+          <label for="description">Descripción del historial:</label>
           <div id="app" class="mt-4">
             <ckeditor id="description" v-model="form.description" tag-name="textarea" 
             :editor="editor"
@@ -42,6 +42,7 @@ export default {
   props: {
     projects: Object,
     histories: Object,
+    user_id: Number,
     errors: Object,
   },
   emits: ['onFocus', 'submit'],
@@ -58,7 +59,7 @@ export default {
       },
       remember: 'form',
       form: this.$inertia.form({
-        user_id: 1,
+        user_id: this.user_id,
         date: '2021-04-21',
         project_id: this.projects[0].id,
         description: null,

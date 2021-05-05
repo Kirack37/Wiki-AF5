@@ -38,6 +38,7 @@ export default {
   props: {
     project: Object,
     history: Object,
+    user_id: Number,
     errors: Object
   },
   data() {
@@ -47,7 +48,7 @@ export default {
           language: 'es'
       },
       form: this.$inertia.form({ 
-        user_id: 1,
+        user_id: this.user_id,
         date: '2021-04-21',
         project_id: this.project[0].id,
         description: this.history.description,

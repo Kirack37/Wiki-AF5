@@ -9,13 +9,10 @@ class WikiAf5Company extends Model
 {
     use HasFactory;
     protected $table = 'wiki_af5_company';
+
     protected $fillable = [
         'name',
         'description',
         'status',
     ];
-
-    // public function projects(){
-    //     return $this->hasMany(WikiAf5Projects::class);
-    // }
 }

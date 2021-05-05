@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Jetstream\Jetstream;
 
+use App\Models\WikiAf5Company;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use App\Models\WikiAf5UsersType;
+
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
@@ -22,15 +27,25 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
+        // $usersType = WikiAf5UsersType::get();
+        // $companies = WikiAf5Company::get();
+
         Validator::make($input, [
+
+            // 'fistname' => ['required', 'string', 'max:255'],
+            // 'lastname' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            // 'user_type_id' => ['required'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['required', 'accepted'] : '',
         ])->validate();
 
         return DB::transaction(function () use ($input) {
             return tap(User::create([
+                'user_type_id' => $input['user_type_id'],
+                'firstname' => $input['firstname'],
+                'lastname' => $input['lastname'],
                 'name' => $input['name'],
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),

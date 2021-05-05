@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             usersSeeder::class,
             wiki_af5_permissionsSeeder::class,
             wiki_af5_entitiessSeeder::class,
-            wiki_af5_projectsSeeder::class
+            wiki_af5_projectsSeeder::class,
+            wiki_af5_projects_historySeeder::class
         ]);
     }
 }

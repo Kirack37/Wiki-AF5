@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\WikiAf5Contact;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class WikiAf5ContactController extends Controller
 {
@@ -12,9 +15,24 @@ class WikiAf5ContactController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        
+        $contacts = WikiAf5Contact::query()
+            ->orderBy('user_id','ASC')
+            ->when($request->term, function ($query, $term ){
+                $query->where('user_id','LIKE','%' . $term . '%');})
+            ->with('user')
+            ->paginate(10)
+            ->withQueryString()
+            ->sortBy('name');
+
+        return Inertia::render('Contacts/Index', [
+       
+            'contacts' =>  $contacts,
+            'paginator' =>WikiAf5Contact::paginate(10)
+          
+         ]);
     }
 
     /**
@@ -23,8 +41,10 @@ class WikiAf5ContactController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        //
+    {   
+        $users = User::where('user_type_id', '>', 1)->get();
+        
+        return Inertia::render('Contacts/ContactForm')->with('users', $users);
     }
 
     /**
@@ -34,8 +54,18 @@ class WikiAf5ContactController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        $request->validate(
+            [   
+                'type' => 'required',
+                'value' => 'required',
+                'user_id' => 'required',
+            ]
+        );
+
+        WikiAf5Contact::create($request->all());
+
+        return Redirect::route('contacts')->with('success', '¡Contacto creado correctamente!');
     }
 
     /**
@@ -44,9 +74,22 @@ class WikiAf5ContactController extends Controller
      * @param  \App\Models\WikiAf5Contact  $wikiAf5Contact
      * @return \Illuminate\Http\Response
      */
-    public function show(WikiAf5Contact $wikiAf5Contact)
-    {
-        //
+    public function show(Request $request)
+    {   
+        if (isset($request['contact']) && $request['contact']) {
+
+            $contact_id = $request['contact'];
+            $contact = WikiAf5Contact::find($contact_id);
+
+            if (isset($contact->id)){
+
+                $users_id = $contact->user_id;
+                $users = User::where('id', $users_id)->get();
+
+                return Inertia::render('Contacts/Show', ['contact' =>  $contact, 'users' => $users]);
+            }
+        } 
+        abort(404);
     }
 
     /**
@@ -55,9 +98,21 @@ class WikiAf5ContactController extends Controller
      * @param  \App\Models\WikiAf5Contact  $wikiAf5Contact
      * @return \Illuminate\Http\Response
      */
-    public function edit(WikiAf5Contact $wikiAf5Contact)
+    public function edit(Request $request)
     {
-        //
+        if (isset($request['contact']) && $request['contact']) {
+
+            $contact_id = $request['contact'];
+            $contact = WikiAf5Contact::find($contact_id);
+
+            if (isset($contact->id)){
+
+                $users = User::where('user_type_id', '>', 1)->get();
+
+                return Inertia::render('Contacts/ContactEditForm', ['contact' =>  $contact, 'users' => $users]);
+            }
+        } 
+        abort(404);
     }
 
     /**
@@ -67,9 +122,21 @@ class WikiAf5ContactController extends Controller
      * @param  \App\Models\WikiAf5Contact  $wikiAf5Contact
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, WikiAf5Contact $wikiAf5Contact)
-    {
-        //
+    public function update(Request $request)
+    { 
+        if (isset($request['contact']) && $request['contact']) {
+
+            $contact_id = $request['contact'];
+            $contact = WikiAf5Contact::find($contact_id);
+
+            if (isset($contact->id)){
+
+                $contact->update($request->all());
+
+                return Redirect::route('contacts')->with('success', '¡Contacto editado correctamente!');
+            }
+        } 
+        abort(404);
     }
 
     /**
@@ -78,8 +145,20 @@ class WikiAf5ContactController extends Controller
      * @param  \App\Models\WikiAf5Contact  $wikiAf5Contact
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WikiAf5Contact $wikiAf5Contact)
+    public function destroy(Request $request)
     {
-        //
+        if (isset($request['contact']) && $request['contact']) {
+
+            $contact_id = $request['contact'];
+            $contact = WikiAf5Contact::find($contact_id);
+
+            if (isset($contact->id)){
+
+                $contact->delete();
+
+                return redirect()->back()->with('success', 'Cliente borrado correctamente');
+            }
+        } 
+        abort(404);        
     }
 }

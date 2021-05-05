@@ -58,8 +58,13 @@ h4 {
     min-height: 400px;
 }
 
-.projects-show .ck.ck-toolbar {
+.items-show .ck.ck-toolbar,
+.items-list .ck.ck-toolbar {
     display: none;
+}
+
+.items-list .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
+    border: none;
 }
 
 

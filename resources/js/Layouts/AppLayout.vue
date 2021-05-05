@@ -38,8 +38,18 @@
                                 </jet-nav-link>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('contacts')" :active="route().current('contacts')">
+                                    Contactos
+                                </jet-nav-link>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('externalworkers')" :active="route().current('externalworkers')">
                                     Trabajadores Externos
+                                </jet-nav-link>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('companies')" :active="route().current('companies')">
+                                    Empresas
                                 </jet-nav-link>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -199,11 +209,10 @@
                     <slot></slot>
                 </div>
             </main>
-        </div>
-        <footer>
+            <footer>
                 <!-- Footer -->
-            <div class="page-footer-container opacity-90">
-                <div style="backgroundColor: #EA891B">
+            <div class="page-footer-container opacity-90 mt-12">
+                <div class="z-0" style="backgroundColor: #EA891B">
                     <div class="container-rrss">
                         <div class="py-4 flex justify-between">
                             <div class="text-center ml-6 flex-initial">
@@ -217,15 +226,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="footer-links flex mt-10 bg-white">
+                <div class="footer-links flex mt-10 bg-white z-0">
                     <div class="footer-info flex-1 ml-6">
                         <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Área F5</strong></h6>
                         <p>Wiki oficial de la empresa Área F5.</p>
                     </div>
                     <div class="footer-links flex-1">
                         <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Enlaces de interés</strong></h6>
+                        <p class="footer-link"><a href="https://areaf5.es/">Página oficial Área F5</a></p>
                         <p class="footer-link"><a href="#!">Guía de estilo Área F5</a></p>
-                        <p class="footer-link"><a href="#!">Guías generales</a></p>
+                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Patrones de trabajo</p></inertia-link>
+                        <!-- <p class="footer-link"><a href="#!">Patrones de trabajo</a></p> -->
                         <p class="footer-link"><a href="#!">Incidencias frecuentes</a></p>
                         <p class="footer-link"><a href="#!">Memes (proximamente)</a></p>
                     </div>
@@ -244,6 +255,7 @@
                 </div>
             </div>
         </footer>
+        </div>  
     </div>
 </template>
 

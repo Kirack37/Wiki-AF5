@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class WikiAf5EmployeesNotes extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'user_id',
+        'type',
+        'title',
+        'description',
+    ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

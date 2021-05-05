@@ -8,48 +8,47 @@
     <div class="container mx-auto my-10">
       <flash-messages />
       <div class="select-stuff mb-20 flex">
-          <search id="search" class="w-full max-w-md mr-10"  v-model:search="term" @keyup="searchFor" @click="resetQuery()">
-          </search>
-          <button class="flex-none ml-auto border-2 border-double rounded border-gray-100 p-2 bg-yellow-600"><a class="text-white" :href="'projects/create'">Crear un nuevo proyecto</a></button>
+        <search id="search" class="w-full max-w-md mr-10"  v-model:search="term" @keyup="searchFor" @click="resetQuery()"></search>
+        <inertia-link class="flex-none ml-auto border-2 border-double rounded border-gray-100 p-3 bg-yellow-600 text-white" :href="'projects/create'">Crear un nuevo proyecto</inertia-link>
       </div>
-      <div class="recent-projects">
-        <div class="recent-projects-titles bg-white p-3 flex mb-2">
-          <div class="project-title flex-1 mr-4"><h3 class="text-gray-600">Nombre</h3></div>
-          <div class="project-title flex-1"><h3 class="text-gray-600">Fecha de inicio</h3></div>
-          <div class="project-title flex-1 mr-10"><h3 class="text-gray-600">Alias en el proyecto</h3></div>
-          <div class="project-title flex-1"><h3 class="text-gray-600">Responsable del proyecto</h3></div>
-          <div class="project-title flex-initial mr-24 ml-28"><h3 class="text-gray-600">Acciones</h3></div>
+      <div class="recent-items">
+        <div class="recent-items-titles bg-white p-3 flex mb-2">
+          <div class="item-title flex-1 mr-4"><h3 class="text-gray-600">Nombre</h3></div>
+          <div class="item-title flex-1"><h3 class="text-gray-600">Fecha de inicio</h3></div>
+          <div class="item-title flex-1 mr-10"><h3 class="text-gray-600">Alias en el proyecto</h3></div>
+          <div class="item-title flex-1"><h3 class="text-gray-600">Responsable del proyecto</h3></div>
+          <div class="item-title flex-initial mr-24 ml-28"><h3 class="text-gray-600">Acciones</h3></div>
         </div>
         <div v-for="project in projects" :key="project.id" class="project-card flex border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
-          <div class="project-data flex-1">
+          <div class="item-data flex-1">
             <h4>{{ project.name }}</h4>
           </div>
-          <div class="project-data flex-1">
+          <div class="item-data flex-1">
             <p>{{ moment(project.start_date).format("DD-MM-YYYY") }}</p>
           </div>
-          <div class="project-data flex-1">
+          <div class="item-data flex-1">
             <p>{{ project.alias }}</p>
           </div>
-          <div class="project-data flex-1">
+          <div class="item-data flex-1">
             <p>{{ project.users.firstname }} {{ project.users.lastname }}</p>
           </div>
-          <div class="project-data mr-12">
+          <div class="item-data mr-12">
             
-            <inertia-link class="inside-project text-yellow-600" :href="route('projects.show', project.id)">
+            <inertia-link class="inside-item text-yellow-600" :href="route('projects.show', project.id)">
               <font-awesome-icon :icon="['fas', 'eye']" size="lg" />
             </inertia-link>
 
           </div>
-          <div class="project-data mr-12">
+          <div class="item-data mr-12">
             <inertia-link
-              class="inside-project text-blue-600"
+              class="inside-item text-blue-600"
               method="get"
               as="button"
               :href="route('projects.edit', project.id)">
               <font-awesome-icon :icon="['fas', 'edit']" size="lg" />
             </inertia-link>
           </div>
-          <div class="project-data mr-12">
+          <div class="item-data mr-12">
             <button class="text-red-600" @click="doDelete(project.id)">
               <font-awesome-icon :icon="['fas', 'trash']" size="lg" />
             </button>
@@ -74,8 +73,6 @@ import ConfirmDialogue from '@/Shared/ConfirmDialogue.vue'
 import MiddleModal from '../../Shared/MiddleModal.vue';
 import Paginator from "@/Shared/Paginator";
 import FlashMessages from '@/Shared/FlashMessages'
-
-
 
 export default {
         
@@ -134,7 +131,7 @@ export default {
       if (ok) {
           this.$inertia.delete(this.route('projects.destroy', project));
       } 
-  },
+    },
   },
 };
 </script>

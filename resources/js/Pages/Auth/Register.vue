@@ -11,11 +11,11 @@
                 <jet-label for="firstname" value="Nombre" />
                 <jet-input id="firstname" type="text" class="mt-1 block w-full" v-model="form.firstname" required autofocus autocomplete="firstname" />
             </div>
-            <div>
+            <div class="mt-4">
                 <jet-label for="lastname" value="Apellidos" />
                 <jet-input id="lastname" type="text" class="mt-1 block w-full" v-model="form.lastname" required autofocus autocomplete="lastname" />
             </div>
-            <div>
+            <div class="mt-4">
                 <jet-label for="username" value="Nombre de usuario" />
                 <jet-input id="username" type="text" class="mt-1 block w-full" v-model="form.name" required autofocus autocomplete="name" />
             </div>
@@ -24,16 +24,12 @@
                 <jet-label for="email" value="Email" />
                 <jet-input id="email" type="email" class="mt-1 block w-full" v-model="form.email" required />
             </div>
-            <div>
-                
+            <div class="mt-4">  
                 <jet-label for="user_type_id" value="Tipo de usuario" />
-                <select id="user_type_id" type="text" class="mt-1 block w-full" v-model="form.user_type" autofocus autocomplete="user_type_id" />
+                <select class="mt-1 relative px-6 py-3 w-50 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="user_type_id" v-model="form.user_type_id">
+                    <option id="usersType" v-for="userType in usersType" :key="userType.id" :value="userType.id" data-id="userType.id">{{ userType.name }} </option>
+                </select>
             </div>
-            <div>
-                <jet-label for="company_id" value="Empresa del usuario" />
-                <select id="company_id" type="" class="mt-1 block w-full" v-model="form.company" autofocus autocomplete="company_id" />
-            </div>
-
             <div class="mt-4">
                 <jet-label for="password" value="Contraseña" />
                 <jet-input id="password" type="password" class="mt-1 block w-full" v-model="form.password" required autocomplete="new-password" />
@@ -88,10 +84,16 @@
             JetLabel,
             JetValidationErrors
         },
+         props: {
+            usersType: Object,
+        },
 
         data() {
             return {
                 form: this.$inertia.form({
+                    user_type_id: null,
+                    firstname: '',
+                    lastname: '',
                     name: '',
                     email: '',
                     password: '',
@@ -103,6 +105,7 @@
 
         methods: {
             submit() {
+                console.log(this.form);
                 this.form.post(this.route('register'), {
                     onFinish: () => this.form.reset('password', 'password_confirmation'),
                 })
