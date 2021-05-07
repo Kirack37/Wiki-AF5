@@ -18,7 +18,8 @@ class WikiAf5MeetingsController extends Controller
      */
     public function index(Request $request)
     {
-        
+        $slug_action = 'listado_reuniones';
+
         $meetings = WikiAf5Meetings::query()
             ->orderBy('subjects','ASC')
             ->when($request->term, function ($query, $term ){
@@ -43,6 +44,8 @@ class WikiAf5MeetingsController extends Controller
      */
     public function create()
     {   
+        $slug_action = 'carga_form_creacion_reunion';
+
         $users = User::where('user_type_id', 1)->get();
         $priorities = WikiAf5Priorities::all();
         
@@ -57,6 +60,8 @@ class WikiAf5MeetingsController extends Controller
      */
     public function store(Request $request)
     {   
+        $slug_action = 'guardar_form_creacion_reunion';
+
         $request->validate(
             [   
                 'date' => 'required',
@@ -80,6 +85,8 @@ class WikiAf5MeetingsController extends Controller
      */
     public function show(Request $request)
     {   
+        $slug_action = 'carga_vista_reunion';
+
         if (isset($request['meeting']) && $request['meeting']) {
 
             $meeting_id = $request['meeting'];
@@ -106,6 +113,8 @@ class WikiAf5MeetingsController extends Controller
      */
     public function edit(Request $request)
     {
+        $slug_action = 'carga_form_edicion_reunion';
+
         if (isset($request['meeting']) && $request['meeting']) {
 
             $meeting_id = $request['meeting'];
@@ -131,6 +140,8 @@ class WikiAf5MeetingsController extends Controller
      */
     public function update(Request $request)
     {
+        $slug_action = 'guardar_form_edicion_reunion';
+
         if (isset($request['meeting']) && $request['meeting']) {
 
             $meeting_id = $request['meeting'];
@@ -154,6 +165,8 @@ class WikiAf5MeetingsController extends Controller
      */
     public function destroy(Request $request)
     {
+        $slug_action = 'eliminar_reunion';
+
         if (isset($request['meeting']) && $request['meeting']) {
 
             $meeting_id = $request['meeting'];

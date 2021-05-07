@@ -18,6 +18,8 @@ class WikiAf5MeetingsLogsController extends Controller
      */
     public function index($id, Request $request)
     {
+        $slug_action = 'listado_logs_reuniones';
+
         $meetings = WikiAf5Meetings::where('id', $id)->get();
         $logs = WikiAf5MeetingsLogs::where('meeting_id' , $id)
                 ->orderBy('created_at', 'asc')
@@ -44,6 +46,8 @@ class WikiAf5MeetingsLogsController extends Controller
      */
     public function create($id)
     {   
+        $slug_action = 'carga_form_creacion_log_reunion';
+
         // $user_id = Auth::id();
         $meetings = WikiAf5Meetings::where('id', $id)->get();
 
@@ -58,6 +62,8 @@ class WikiAf5MeetingsLogsController extends Controller
      */
     public function store($id, Request $request)
     {
+        $slug_action = 'guardar_form_creacion_log_reunion';
+
         $request->validate(
             [   
                 'message' => 'required',
@@ -88,6 +94,8 @@ class WikiAf5MeetingsLogsController extends Controller
      */
     public function edit($id, Request $request)
     {
+        $slug_action = 'carga_form_edicion_log_reunion';
+
         $user_id = Auth::id();
         $meeting = WikiAf5Meetings::where('id', $id)->get();
         
@@ -112,6 +120,8 @@ class WikiAf5MeetingsLogsController extends Controller
      */
     public function update($id, Request $request)
     {
+        $slug_action = 'guardar_form_edicion_log_reunion';
+
         if (isset($request['log']) && $request['log']) {
 
             $log_id = $request['log'];
@@ -135,6 +145,8 @@ class WikiAf5MeetingsLogsController extends Controller
      */
     public function destroy($id, Request $request)
     {
+        $slug_action = 'eliminar_log_reunion';
+
         if (isset($request['log']) && $request['log']) {
 
             $log_id = $request['log'];

@@ -23,7 +23,7 @@ use App\Http\Controllers\WikiAf5CompanyController;
 use App\Http\Controllers\WikiAf5ContactController;
 use App\Http\Controllers\WikiAf5ClientsController;
 use App\Http\Controllers\WikiAf5ExternalWorkersController;
-use App\Http\Controllers\EmployeesNotesController;
+use App\Http\Controllers\WikiAf5EmployeesNotesController;
 use App\Http\Controllers\WikiAf5RolesController;
 use App\Http\Controllers\WikiAf5PermissionsController;
 
@@ -127,7 +127,7 @@ Route::resource('meetings/{meeting}/logs', WikiAf5MeetingsLogsController::class)
 
      /* Meetings Notes */
 
-Route::resource('meetings/{meeting}/note', WikiAf5MeetingsNotesController::class)
+Route::resource('meetings/{meeting}/meetingnotes', WikiAf5MeetingsNotesController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
     /* Meetings Reports */
@@ -138,10 +138,10 @@ Route::resource('meetings/{meeting}/reports', WikiAf5ReportsController::class)
 
 /** Employees **/
 
-Route::resource('personalnotes', EmployeesNotesController::class)
+Route::resource('personalnotes', WikiAf5EmployeesNotesController::class)
     ->middleware(['auth:sanctum', 'verified']); 
 
-Route::get('personalnotes', [EmployeesNotesController::class, 'index'])
+Route::get('personalnotes', [WikiAf5EmployeesNotesController::class, 'index'])
     ->name('personalnotes')
     ->middleware(['auth:sanctum', 'verified']);
 

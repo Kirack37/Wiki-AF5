@@ -18,6 +18,8 @@ class WikiAf5MeetingsUsersController extends Controller
      */
     public function index($id, Request $request)
     {
+        $slug_action = 'listado_usuarios_reuniones';
+
         $meetings = WikiAf5Meetings::where('id', $id)->get();
         $users = WikiAf5MeetingsUsers::where('meeting_id' , $id)
                 ->orderBy('created_at', 'asc')
@@ -43,6 +45,8 @@ class WikiAf5MeetingsUsersController extends Controller
      */
     public function create($id)
     {   
+        $slug_action = 'carga_form_creacion_usuario_reunion';
+
         $user_id = Auth::id();
         $meetings = WikiAf5Meetings::where('id', $id)->get();
 
@@ -57,6 +61,8 @@ class WikiAf5MeetingsUsersController extends Controller
      */
     public function store($id, Request $request)
     {
+        $slug_action = 'guardar_form_creacion_usuario_reunion';
+
         $request->validate(
             [   
                 'subjects' => 'required',
@@ -86,9 +92,25 @@ class WikiAf5MeetingsUsersController extends Controller
      * @param  \App\Models\WikiAf5MeetingsUsers  $wikiAf5MeetingsUsers
      * @return \Illuminate\Http\Response
      */
-    public function edit(WikiAf5MeetingsUsers $wikiAf5MeetingsUsers)
+    public function edit($id, Request $request)
     {
-        //
+        $slug_action = 'carga_form_edicion_usuario_reunion';
+
+        $user_id = Auth::id();
+
+        $meeting = WikiAf5Meetings::where('id', $id)->get();
+        
+        if (isset($request['user']) && $request['user']) {
+
+            $user_id = $request['user'];
+            $user = WikiAf5MeetingsUsers::find($user_id);
+
+            if (isset($user->id)){
+                
+                return Inertia::render('MeetingsUsers/UserEditForm', ['meeting' =>  $meeting, 'user' => $user, 'user_id' => $user_id]);
+            }
+        } 
+        abort(404);
     }
 
     /**
@@ -98,9 +120,23 @@ class WikiAf5MeetingsUsersController extends Controller
      * @param  \App\Models\WikiAf5MeetingsUsers  $wikiAf5MeetingsUsers
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, WikiAf5MeetingsUsers $wikiAf5MeetingsUsers)
+    public function update($id, Request $request)
     {
-        //
+        $slug_action = 'guardar_form_edicion_usuario_reunion';
+        
+        if (isset($request['user']) && $request['user']) {
+
+            $user_id = $request['user'];
+            $user = WikiAf5MeetingsUsers::find($user_id);
+
+            if (isset($user->id)){
+
+                $user->update($request->all());
+
+                return Redirect::route('meetingusers.index', $id)->with('success', '¡Usuario de reunión editado correctamente!');
+            }
+        } 
+        abort(404);
     }
 
     /**
@@ -109,8 +145,22 @@ class WikiAf5MeetingsUsersController extends Controller
      * @param  \App\Models\WikiAf5MeetingsUsers  $wikiAf5MeetingsUsers
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WikiAf5MeetingsUsers $wikiAf5MeetingsUsers)
+    public function destroy($id, Request $request)
     {
-        //
+        $slug_action = 'eliminar_usuario_reunion';
+
+        if (isset($request['user']) && $request['user']) {
+
+            $user_id = $request['user'];
+            $user = WikiAf5MeetingsUsers::find($user_id);
+
+            if (isset($user->id)){
+
+                $user->delete();
+
+                return redirect()->back()->with('success', 'Usuario de reunión borrado correctamente');
+            }
+        } 
+        abort(404);        
     }
 }

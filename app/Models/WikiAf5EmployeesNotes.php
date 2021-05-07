@@ -9,6 +9,8 @@ class WikiAf5EmployeesNotes extends Model
 {
     use HasFactory;
     
+    protected $table = 'wiki_af5_employees_notes';
+
     protected $fillable = [
         'user_id',
         'type',

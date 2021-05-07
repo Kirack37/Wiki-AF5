@@ -17,6 +17,8 @@ class WikiAf5CompanyController extends Controller
      */
     public function index(Request $request)
     {
+        $slug_action = 'listado_empresas';
+
         $companies = WikiAf5Company::query()
         ->orderBy('name','ASC')
         ->when($request->term, function ($query, $term ){
@@ -40,6 +42,8 @@ class WikiAf5CompanyController extends Controller
      */
     public function create()
     {
+        $slug_action = 'carga_form_creacion_empresa';
+
         return Inertia::render('Companies/CompanyForm');
     }
 
@@ -51,6 +55,9 @@ class WikiAf5CompanyController extends Controller
      */
     public function store(Request $request)
     {
+        
+        $slug_action = 'guardar_form_creacion_empresa';
+
         $request->validate(
             [   
                 'name' => 'required',
@@ -71,6 +78,8 @@ class WikiAf5CompanyController extends Controller
      */
     public function show(Request $request)
     {
+        $slug_action = 'carga_vista_empresa';
+
         if (isset($request['company']) && $request['company']) {
 
             $company_id = $request['company'];
@@ -92,6 +101,8 @@ class WikiAf5CompanyController extends Controller
      */
     public function edit(Request $request)
     {
+        $slug_action = 'carga_form_edicion_empresa';
+
         if (isset($request['company']) && $request['company']) {
 
             $company_id = $request['company'];
@@ -114,6 +125,8 @@ class WikiAf5CompanyController extends Controller
      */
     public function update(Request $request)
     {
+        $slug_action = 'guardar_form_edicion_empresa';
+
         if (isset($request['company']) && $request['company']) {
 
             $company_id = $request['company'];
@@ -136,6 +149,8 @@ class WikiAf5CompanyController extends Controller
      */
     public function destroy(Request $request)
     {
+        $slug_action = 'eliminar_empresa';
+
         if (isset($request['company']) && $request['company']) {
 
             $company_id = $request['company'];

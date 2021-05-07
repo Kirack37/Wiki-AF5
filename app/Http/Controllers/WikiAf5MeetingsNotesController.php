@@ -18,6 +18,8 @@ class WikiAf5MeetingsNotesController extends Controller
      */
     public function index($id, Request $request)
     {
+        $slug_action = 'listado_notas_reuniones';
+
         $meetings = WikiAf5Meetings::where('id', $id)->get();
         $notes = WikiAf5MeetingsNotes::where('meeting_id' , $id)
                 ->orderBy('created_at', 'asc')
@@ -44,6 +46,8 @@ class WikiAf5MeetingsNotesController extends Controller
      */
     public function create($id)
     {   
+        $slug_action = 'carga_form_creacion_nota_reunion';
+
         $user_id = Auth::id();
         $meetings = WikiAf5Meetings::where('id', $id)->get();
 
@@ -58,6 +62,8 @@ class WikiAf5MeetingsNotesController extends Controller
      */
     public function store($id, Request $request)
     {
+        $slug_action = 'guardar_form_creacion_nota_reunion';
+
         $request->validate(
             [   
                 'subjects' => 'required',
@@ -67,7 +73,7 @@ class WikiAf5MeetingsNotesController extends Controller
 
         WikiAf5MeetingsNotes::create($request->all());
 
-        return Redirect::route('note.index', $id)->with('success', '¡Nota de reunión creada correctamente!');
+        return Redirect::route('meetingnotes.index', $id)->with('success', '¡Nota de reunión creada correctamente!');
     }
 
 
@@ -90,10 +96,13 @@ class WikiAf5MeetingsNotesController extends Controller
      */
     public function edit($id, Request $request)
     {
+        $slug_action = 'carga_form_edicion_nota_reunion';
+
         $user_id = Auth::id();
         $meeting = WikiAf5Meetings::where('id', $id)->get();
         
         if (isset($request['note']) && $request['note']) {
+
             $note_id = $request['note'];
             $note = WikiAf5MeetingsNotes::find($note_id);
 
@@ -114,12 +123,18 @@ class WikiAf5MeetingsNotesController extends Controller
      */
     public function update($id, Request $request)
     {
+        $slug_action = 'guardar_form_edicion_nota_reunion';
+
         if (isset($request['note']) && $request['note']) {
+
             $note_id = $request['note'];
             $note = WikiAf5MeetingsNotes::find($note_id);
+
             if (isset($note->id)){
+
                 $note->update($request->all());
-                return Redirect::route('note.index', $id)->with('success', '¡Nota de reunión editada correctamente!');
+                
+                return Redirect::route('meetingnotes.index', $id)->with('success', '¡Nota de reunión editada correctamente!');
             }
         } 
         abort(404);
@@ -134,11 +149,17 @@ class WikiAf5MeetingsNotesController extends Controller
      */
     public function destroy($id, Request $request)
     {
+        $slug_action = 'eliminar_nota_reunion';
+
         if (isset($request['note']) && $request['note']) {
+
             $note_id = $request['note'];
             $note = WikiAf5MeetingsNotes::find($note_id);
+
             if (isset($note->id)){
+
                 $note->delete();
+
                 return redirect()->back()->with('success', 'Nota de reunión borrada correctamente');
             }
         } 

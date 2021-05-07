@@ -18,6 +18,8 @@ class WikiAf5ProjectIncidencesController extends Controller
      */
     public function index($id, Request $request)
     {
+        $slug_action = 'listado_incidencias_proyectos';
+
         $project = WikiAf5Projects::where('id', $id)->get();
         $incidences = WikiAf5ProjectIncidences::where('project_id' , $id)
                 ->orderBy('created_at', 'asc')
@@ -44,6 +46,8 @@ class WikiAf5ProjectIncidencesController extends Controller
      */
     public function create($id)
     {   
+        $slug_action = 'carga_form_creacion_incidencia_proyecto';
+
         $user_id = Auth::id();
         $projects = WikiAf5Projects::where('id', $id)->get();
 
@@ -58,6 +62,8 @@ class WikiAf5ProjectIncidencesController extends Controller
      */
     public function store($id, Request $request)
     {
+        $slug_action = 'guardar_form_creacion_incidencia_proyecto';
+
         $request->validate(
             [   
                 'description' => 'required',

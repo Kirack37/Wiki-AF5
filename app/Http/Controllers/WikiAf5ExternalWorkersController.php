@@ -19,7 +19,8 @@ class WikiAf5ExternalWorkersController extends Controller
     public function index(Request $request)
     {   
         // $users = User::all();
-        
+        $slug_action = 'listado_trabajadores_externos';
+
          $workers = WikiAf5ExternalWorkers::query()
             ->orderBy('user_id', 'ASC')
             ->when($request->term, function ($query, $term ){
@@ -55,6 +56,8 @@ class WikiAf5ExternalWorkersController extends Controller
      */
     public function create()
     {
+        $slug_action = 'carga_form_creacion_trabajador_externo';
+
         $users = User::where('user_type_id', 3)->get();
         $companies = WikiAf5Company::all();
         return Inertia::render('ExternalWorkers/WorkerForm')->with('users', $users)->with('companies', $companies);
@@ -68,6 +71,8 @@ class WikiAf5ExternalWorkersController extends Controller
      */
     public function store(Request $request)
     {
+        $slug_action = 'guardar_form_creacion_trabajador_externo';
+
         $request->validate(
             [   
                 'user_id' => 'required',
@@ -87,6 +92,8 @@ class WikiAf5ExternalWorkersController extends Controller
      */
     public function show(Request $request)
     {   
+        $slug_action = 'carga_vista_trabajador_externo';
+
         if (isset($request['externalworker']) && $request['externalworker']) {
 
             $worker_id = $request['externalworker'];
@@ -113,7 +120,8 @@ class WikiAf5ExternalWorkersController extends Controller
      */
     public function edit(Request $request)
     {
-        
+        $slug_action = 'carga_form_edicion_trabajador_externo';
+
         if (isset($request['externalworker']) && $request['externalworker']) {
 
             $worker_id = $request['externalworker'];
@@ -139,6 +147,8 @@ class WikiAf5ExternalWorkersController extends Controller
      */
     public function update(Request $request)
     {
+        $slug_action = 'guardar_form_edicion_trabajador_externo';
+
         if (isset($request['externalworker']) && $request['externalworker']) {
 
             $worker_id = $request['externalworker'];
@@ -162,6 +172,8 @@ class WikiAf5ExternalWorkersController extends Controller
      */
     public function destroy(Request $request)
     {
+        $slug_action = 'eliminar_trabajador_externo';
+
         if (isset($request['externalworker']) && $request['externalworker']) {
 
             $worker_id = $request['externalworker'];

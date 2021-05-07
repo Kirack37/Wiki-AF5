@@ -19,6 +19,7 @@ class WikiAf5PatternWorksController extends Controller
     public function index(Request $request)
     {   
 
+        $slug_action = 'listado_patrones_trabajos';
         
          $patterns = WikiAf5PatternWork::query()
             ->orderBy('name', 'ASC')
@@ -44,6 +45,7 @@ class WikiAf5PatternWorksController extends Controller
      */
     public function create()
     {
+        $slug_action = 'carga_form_creacion_patron_trabajo';
         // $users = User::where('user_type_id', 3)->get();
         $patterns = WikiAf5PatternWork::all();
         return Inertia::render('PatternWorks/PatternForm')->with('patterns', $patterns);
@@ -57,6 +59,8 @@ class WikiAf5PatternWorksController extends Controller
      */
     public function store(Request $request)
     {
+        $slug_action = 'guardar_form_creacion_patron_trabajo';
+
         $request->validate(
             [   
                 'name' => 'required',
@@ -78,6 +82,8 @@ class WikiAf5PatternWorksController extends Controller
      */
     public function show(Request $request)
     {   
+        $slug_action = 'carga_vista_patron_trabajo';
+
         if (isset($request['patternwork']) && $request['patternwork']) {
 
             $patternwork_id = $request['patternwork'];
@@ -99,6 +105,7 @@ class WikiAf5PatternWorksController extends Controller
      */
     public function edit(Request $request)
     {
+        $slug_action = 'carga_form_edicion_patron_trabajo';
         
         if (isset($request['patternwork']) && $request['patternwork']) {
 
@@ -123,6 +130,8 @@ class WikiAf5PatternWorksController extends Controller
      */
     public function update(Request $request)
     {
+        $slug_action = 'guardar_form_edicion_patron_trabajo';
+
         if (isset($request['patternwork']) && $request['patternwork']) {
 
             $patternwork_id = $request['patternwork'];
@@ -146,6 +155,8 @@ class WikiAf5PatternWorksController extends Controller
      */
     public function destroy(Request $request)
     {
+        $slug_action = 'eliminar_patron_trabajo';
+
         if (isset($request['patternwork']) && $request['patternwork']) {
 
             $patternwork_id = $request['patternwork'];

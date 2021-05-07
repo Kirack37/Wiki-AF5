@@ -9,7 +9,7 @@
       <flash-messages />
       <div class="select-stuff mb-20 flex">
         <search id="search" class="w-full max-w-md mr-10"  v-model:search="term" @keyup="searchFor" @click="resetQuery()"></search>
-        <inertia-link class="flex-none ml-auto border-2 border-double rounded border-gray-100 p-3 bg-yellow-600 text-white" :href="'note/create'">Crear una nueva nota</inertia-link>
+        <inertia-link class="flex-none ml-auto border-2 border-double rounded border-gray-100 p-3 bg-yellow-600 text-white" :href="'meetingnotes/create'">Crear una nueva nota</inertia-link>
       </div>
       <div class="recent-items">
         <div class="recent-items-titles bg-white p-3 flex mb-2">
@@ -40,7 +40,7 @@
               class="inside-item text-blue-600"
               method="get"
               as="button"
-              :href="route('note.edit', [meetings[0].id, note.id])">
+              :href="route('meetingnotes.edit', [meetings[0].id, note.id])">
               <font-awesome-icon :icon="['fas', 'edit']" size="lg" />
             </inertia-link>
           </div>
@@ -107,7 +107,7 @@ export default {
   methods: {
     
     resetQuery() {
-      this.$inertia.replace(this.route('note.index', [this.meetings[0].id, '']))
+      this.$inertia.replace(this.route('meetingnotes.index', [this.meetings[0].id, '']))
       var inputs = document.getElementsByTagName('input');
       for (var i=0 ; i < inputs.length ; i++){
         if (inputs[i].type == "text"){
@@ -116,7 +116,7 @@ export default {
       }
     },
     searchFor() {
-      this.$inertia.replace(this.route('note.index', {meetings: this.meetings[0].id}, {term:this.term}))
+      this.$inertia.replace(this.route('meetingnotes.index', {meetings: this.meetings[0].id}, {term:this.term}))
       
     },
     async doDelete(note) {
@@ -126,7 +126,7 @@ export default {
           okButton: 'Eliminar',
       })
       if (ok) {
-          this.$inertia.delete(this.route('note.destroy', [this.meetings[0].id, note]));
+          this.$inertia.delete(this.route('meetingnotes.destroy', [this.meetings[0].id, note]));
       } 
     },
   },

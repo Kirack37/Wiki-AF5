@@ -14,7 +14,7 @@ class WikiAf5PermissionsController extends Controller
      */
     public function index()
     {
-        //
+        $slug_action = 'listado_permisos';
     }
 
     /**
@@ -24,7 +24,7 @@ class WikiAf5PermissionsController extends Controller
      */
     public function create()
     {
-        //
+        $slug_action = 'carga_form_creacion_permiso';
     }
 
     /**
@@ -35,7 +35,7 @@ class WikiAf5PermissionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $slug_action = 'guardar_form_creacion_permiso';
     }
 
     /**
@@ -57,7 +57,7 @@ class WikiAf5PermissionsController extends Controller
      */
     public function edit(WikiAf5Permission $wikiAf5Permission)
     {
-        //
+        $slug_action = 'carga_form_edicion_permiso';
     }
 
     /**
@@ -69,7 +69,7 @@ class WikiAf5PermissionsController extends Controller
      */
     public function update(Request $request, WikiAf5Permission $wikiAf5Permission)
     {
-        //
+        $slug_action = 'guardar_form_edicion_permiso';
     }
 
     /**
@@ -80,6 +80,6 @@ class WikiAf5PermissionsController extends Controller
      */
     public function destroy(WikiAf5Permission $wikiAf5Permission)
     {
-        //
+        $slug_action = 'eliminar_permiso';
     }
 }

@@ -17,7 +17,8 @@ class WikiAf5ContactController extends Controller
      */
     public function index(Request $request)
     {
-        
+        $slug_action = 'listado_contactos';
+
         $contacts = WikiAf5Contact::query()
             ->orderBy('user_id','ASC')
             ->when($request->term, function ($query, $term ){
@@ -42,6 +43,8 @@ class WikiAf5ContactController extends Controller
      */
     public function create()
     {   
+        $slug_action = 'carga_form_creacion_contacto';
+
         $users = User::where('user_type_id', '>', 1)->get();
         
         return Inertia::render('Contacts/ContactForm')->with('users', $users);
@@ -55,6 +58,8 @@ class WikiAf5ContactController extends Controller
      */
     public function store(Request $request)
     {   
+        $slug_action = 'guardar_form_creacion_contacto';
+
         $request->validate(
             [   
                 'type' => 'required',
@@ -76,6 +81,8 @@ class WikiAf5ContactController extends Controller
      */
     public function show(Request $request)
     {   
+        $slug_action = 'carga_vista_contacto';
+
         if (isset($request['contact']) && $request['contact']) {
 
             $contact_id = $request['contact'];
@@ -100,6 +107,8 @@ class WikiAf5ContactController extends Controller
      */
     public function edit(Request $request)
     {
+        $slug_action = 'carga_form_edicion_contacto';
+
         if (isset($request['contact']) && $request['contact']) {
 
             $contact_id = $request['contact'];
@@ -124,6 +133,8 @@ class WikiAf5ContactController extends Controller
      */
     public function update(Request $request)
     { 
+        $slug_action = 'guardar_form_edicion_contacto';
+
         if (isset($request['contact']) && $request['contact']) {
 
             $contact_id = $request['contact'];
@@ -147,6 +158,8 @@ class WikiAf5ContactController extends Controller
      */
     public function destroy(Request $request)
     {
+        $slug_action = 'eliminar_contacto';
+
         if (isset($request['contact']) && $request['contact']) {
 
             $contact_id = $request['contact'];
