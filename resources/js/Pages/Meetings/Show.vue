@@ -30,7 +30,7 @@
               <inertia-link class="bg-blue-400 rounded p-4 mt-8" :href="route('logs.index', meeting.id)">Log de la reunión</inertia-link>
             </div>
             <div class="flex-1">
-              <inertia-link class="bg-blue-400 rounded p-4 mt-8" :href="route('note.index', meeting.id)">Notas de la reunión</inertia-link>
+              <inertia-link class="bg-blue-400 rounded p-4 mt-8" :href="route('meetingnotes.index', meeting.id)">Notas de la reunión</inertia-link>
             </div>
             <div class="flex-1">
               <inertia-link class="bg-blue-400 rounded p-4 mt-8" :href="route('reports.index', meeting.id)">Acta de la reunión</inertia-link>

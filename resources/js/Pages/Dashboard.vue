@@ -6,6 +6,7 @@
             </h2>
         </template>
         <div class="container mx-auto my-10">
+            <flash-messages />
             <div class="wiki-info mb-20">
                 <h3>Información general</h3>
                 <p>Esta es la Wiki oficial de <span>Área F5</span>.</p>
@@ -71,10 +72,12 @@
 
 <script>
     import AppLayout from '@/Layouts/AppLayout'
+    import FlashMessages from '@/Shared/FlashMessages'
 
     export default {
         components: {
-            AppLayout
+            AppLayout,
+            FlashMessages
         },
     }
 </script>

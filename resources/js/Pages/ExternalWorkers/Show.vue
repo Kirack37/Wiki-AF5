@@ -17,12 +17,12 @@
             <h3 class="inline-block mr-4">Nombre de la empresa:</h3> <p class="inline-block text-black">{{ companies[0].name }}</p>
           </div>
           <div class="flex-1">
-            <h3 class="inline-block mr-6">Anotaciones positivas:</h3><p class="inline-block text-black">{{client.strengths}}</p>
+            <h3 class="inline-block mr-6">Anotaciones positivas:</h3><p class="inline-block text-black">{{worker.strengths}}</p>
           </div>
         </div>
         <div class="flex items-center mb-8">
           <div class="flex-1">
-            <h3 class="mr-24 inline-block">Anotaciones negativas:</h3> <p class="inline-block text-black">{{client.weaknesses}}</p>
+            <h3 class="mr-24 inline-block">Anotaciones negativas:</h3> <p class="inline-block text-black">{{worker.weaknesses}}</p>
           </div>
         </div>
         <!-- <div class="flex items-center mb-14">

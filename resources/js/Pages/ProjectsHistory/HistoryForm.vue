@@ -2,11 +2,15 @@
   <app-layout>
     <template #header>
         <h2 class="font-semibold text-xl text-white leading-tight">
-            Proyecto
+            Creación de historial del proyecto
         </h2>
     </template>
     <div class="container mx-auto my-10 bg-white">
       <form @submit.prevent="submit">
+        <div class="mt-14">
+          <label class="mr-12" for="title">Título del historial:</label>
+          <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.title" />
+        </div>
         <div class="mt-14">
           <label for="description">Descripción del historial:</label>
           <div id="app" class="mt-4">
@@ -60,8 +64,8 @@ export default {
       remember: 'form',
       form: this.$inertia.form({
         user_id: this.user_id,
-        date: '2021-04-21',
         project_id: this.projects[0].id,
+        title: null,
         description: null,
         publicado: null,
       }),

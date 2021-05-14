@@ -11,6 +11,12 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 
+use App\Models\WikiAf5Meetings;
+
+
+
+use DB;
+
 class User extends Authenticatable
 {
     use HasApiTokens;
@@ -20,6 +26,8 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+
+    protected $table = 'users';
     /**
      * The attributes that are mass assignable.
      *
@@ -59,13 +67,76 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
+
+    /**
+     * Al invocar esta función desde un usuario obtienes el listado de roles del mismo.
+     * $user->roles;
+     * @author María Correa
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(WikiAf5Role::class, 'wiki_af5_role_user', 'user_id', 'role_id')->withTimestamps();
+    }
+
+    /**
+     * Al invocar esta función desde un usuario obtienes el listado de roles del mismo.
+     * $user->meetings;
+     * @author María Correa
+     */
+    public function meetings()
+    {
+        return $this->belongsToMany(WikiAf5Meetings::class, 'wiki_af5_meetings_users', 'user_id', 'meeting_id')->withTimestamps();
+    }
+
+    /**
+     * Al invocar esta función desde un usuario obtienes el listado de proyectos del mismo.
+     * $user->WikiAf5Projects;
+     * @author María Correa
+     */
     public function WikiAf5Projects(){
         return $this->hasMany(WikiAf5Projects::class);
     }
+
+    /**
+     * Al invocar esta función desde un usuario obtienes el tipo de usuario del mismo.
+     * $user->userType;
+     * @author María Correa
+     */
     public function userType(){
         return $this->belongsTo(WikiAf5UsersType::class);
     }
+
+    /**
+     * Al invocar esta función desde un usuario obtienes el listado de empresas del mismo.
+     * $user->company;
+     * @author María Correa
+     */
+
     public function company(){
         return $this->belongsTo(WikiAf5Company::class);
+    }
+
+     /**
+     * Devuelve si el usuario puede realizar la acción
+     * $user->can_action();
+     * @author María Correa
+     * @param string slug
+     * @return boolean
+     */
+    public function can_action($slug){
+
+        $can = false;
+        
+
+        foreach($this->roles as $role){
+            foreach($role->permissions as $permission){
+                if($permission->slug == $slug){
+                    $can = true;
+                }
+            }
+            
+        }
+
+        return $can;
     }
 }

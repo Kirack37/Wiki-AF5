@@ -18,23 +18,31 @@ class WikiAf5ReportsController extends Controller
      */
     public function index($id, Request $request)
     {
-        $meetings = WikiAf5Meetings::where('id', $id)->get();
-        $reports = WikiAf5Reports::where('meeting_id' , $id)
-                ->orderBy('created_at', 'asc')
-                ->when($request->term, function ($query, $term ){
-                    $query->where('subjects','LIKE','%' . $term . '%');})
-                ->with('client')
-                ->with('meetings')
-                ->paginate(10)
-                ->withQueryString()
-                ->sortBy('name');
+        $slug_action = 'listado_actas';
 
-        return Inertia::render('MeetingsReports/Index', [
-            'meetings' => $meetings,
-            'reports' =>  $reports,
-            'paginator' =>WikiAf5Reports::paginate(10)
-      
-     ]);
+        if(Auth::user()->can_action($slug_action)){
+
+            $meetings = WikiAf5Meetings::where('id', $id)->get();
+            $reports = WikiAf5Reports::where('meeting_id' , $id)
+                    ->orderBy('created_at', 'asc')
+                    ->when($request->term, function ($query, $term ){
+                        $query->where('subjects','LIKE','%' . $term . '%');})
+                    ->with('client')
+                    ->with('meetings')
+                    ->paginate(10)
+                    ->withQueryString()
+                    ->sortBy('name');
+
+            return Inertia::render('MeetingsReports/Index', [
+                'meetings' => $meetings,
+                'reports' =>  $reports,
+                'paginator' =>WikiAf5Reports::paginate(10)
+        
+            ]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -44,10 +52,18 @@ class WikiAf5ReportsController extends Controller
      */
     public function create($id)
     {   
-        $user_id = Auth::id();
-        $meetings = WikiAf5Meetings::where('id', $id)->get();
+        $slug_action = 'carga_form_creacion_acta';
 
-        return Inertia::render('MeetingsReports/ReportForm', ['meetings' => $meetings, 'user_id' => $user_id]);
+        if(Auth::user()->can_action($slug_action)){
+
+            $user_id = Auth::id();
+            $meetings = WikiAf5Meetings::where('id', $id)->get();
+
+            return Inertia::render('MeetingsReports/ReportForm', ['meetings' => $meetings, 'user_id' => $user_id]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -58,15 +74,23 @@ class WikiAf5ReportsController extends Controller
      */
     public function store($id, Request $request)
     {
-        $request->validate(
-            [   
-                'description' => 'required',
-            ]
-        );
+        $slug_action = 'guardar_form_creacion_acta';
 
-        WikiAf5Reports::create($request->all());
+        if(Auth::user()->can_action($slug_action)){
 
-        return Redirect::route('reports.index', $id)->with('success', '¡Acta de la reunión creada correctamente!');
+            $request->validate(
+                [   
+                    'description' => 'required',
+                ]
+            );
+
+            WikiAf5Reports::create($request->all());
+
+            return Redirect::route('reports.index', $id)->with('success', '¡Acta de la reunión creada correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
     /**
      * Display the specified resource.
@@ -87,19 +111,27 @@ class WikiAf5ReportsController extends Controller
      */
     public function edit($id, Request $request)
     {
-        $user_id = Auth::id();
-        $meeting = WikiAf5Meetings::where('id', $id)->get();
-        
-        if (isset($request['report']) && $request['report']) {
-            $report_id = $request['report'];
-            $report = WikiAf5Reports::find($report_id);
+        $slug_action = 'carga_form_edicion_acta';
 
-            if (isset($report->id)){
-                
-                return Inertia::render('MeetingsReports/ReportEditForm', ['meeting' =>  $meeting, 'report' => $report, 'user_id' => $user_id]);
-            }
-        } 
-        abort(404);
+        if(Auth::user()->can_action($slug_action)){
+
+            $user_id = Auth::id();
+            $meeting = WikiAf5Meetings::where('id', $id)->get();
+            
+            if (isset($request['report']) && $request['report']) {
+                $report_id = $request['report'];
+                $report = WikiAf5Reports::find($report_id);
+
+                if (isset($report->id)){
+                    
+                    return Inertia::render('MeetingsReports/ReportEditForm', ['meeting' =>  $meeting, 'report' => $report, 'user_id' => $user_id]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
 
@@ -112,15 +144,27 @@ class WikiAf5ReportsController extends Controller
      */
     public function update($id, Request $request)
     {
-        if (isset($request['report']) && $request['report']) {
-            $report_id = $request['report'];
-            $report = WikiAf5Reports::find($report_id);
-            if (isset($report->id)){
-                $report->update($request->all());
-                return Redirect::route('reports.index', $id)->with('success', '¡Acta de la reunión editada correctamente!');
-            }
-        } 
-        abort(404);
+        $slug_action = 'guardar_form_edicion_acta';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['report']) && $request['report']) {
+
+                $report_id = $request['report'];
+                $report = WikiAf5Reports::find($report_id);
+
+                if (isset($report->id)){
+
+                    $report->update($request->all());
+
+                    return Redirect::route('reports.index', $id)->with('success', '¡Acta de la reunión editada correctamente!');
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -131,14 +175,26 @@ class WikiAf5ReportsController extends Controller
      */
     public function destroy($id, Request $request)
     {
-        if (isset($request['report']) && $request['report']) {
-            $report_id = $request['report'];
-            $report = WikiAf5Reports::find($report_id);
-            if (isset($report->id)){
-                $report->delete();
-                return redirect()->back()->with('success', 'Acta de la reunión borrada correctamente');
-            }
-        } 
-        abort(404);        
+        $slug_action = 'eliminar_acta';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['report']) && $request['report']) {
+
+                $report_id = $request['report'];
+                $report = WikiAf5Reports::find($report_id);
+
+                if (isset($report->id)){
+
+                    $report->delete();
+
+                    return redirect()->back()->with('success', 'Acta de la reunión borrada correctamente');
+                }
+            } 
+            abort(404);  
+            
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 }

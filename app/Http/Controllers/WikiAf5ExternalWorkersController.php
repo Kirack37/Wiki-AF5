@@ -8,6 +8,7 @@ use App\Models\WikiAf5Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class WikiAf5ExternalWorkersController extends Controller
 {
@@ -21,32 +22,38 @@ class WikiAf5ExternalWorkersController extends Controller
         // $users = User::all();
         $slug_action = 'listado_trabajadores_externos';
 
-         $workers = WikiAf5ExternalWorkers::query()
-            ->orderBy('user_id', 'ASC')
-            ->when($request->term, function ($query, $term ){
-                $query->where('company_id','LIKE','%' . $term . '%');})
-            ->with('user')
-            ->with('company')
-            ->paginate(10)
-            ->withQueryString()
-            ->sortBy('name');
+        if(Auth::user()->can_action($slug_action)){
 
-        // $workers = WikiAf5ExternalWorkers::query()
-	    // ->join('users','users.id','=','wiki_af5_external_workers.user_id')
-        //     ->where('users.firstname', 'LIKE', '%' . $request->term . '%')
-        //     //->orderBy('users.name', 'ASC')
-        //     ->with('user')
-        //     ->with('company')
-        //     ->paginate(10)
-        //     ->withQueryString()
-        //     ->sortBy('users.firstname');
+            $workers = WikiAf5ExternalWorkers::query()
+                ->orderBy('user_id', 'ASC')
+                ->when($request->term, function ($query, $term ){
+                    $query->where('company_id','LIKE','%' . $term . '%');})
+                ->with('user')
+                ->with('company')
+                ->paginate(10)
+                ->withQueryString()
+                ->sortBy('name');
 
-        return Inertia::render('ExternalWorkers/Index', [
-       
-            'workers' =>  $workers,
-            'paginator' =>WikiAf5ExternalWorkers::paginate(10)
-          
-         ]);
+            // $workers = WikiAf5ExternalWorkers::query()
+            // ->join('users','users.id','=','wiki_af5_external_workers.user_id')
+            //     ->where('users.firstname', 'LIKE', '%' . $request->term . '%')
+            //     //->orderBy('users.name', 'ASC')
+            //     ->with('user')
+            //     ->with('company')
+            //     ->paginate(10)
+            //     ->withQueryString()
+            //     ->sortBy('users.firstname');
+
+            return Inertia::render('ExternalWorkers/Index', [
+        
+                'workers' =>  $workers,
+                'paginator' =>WikiAf5ExternalWorkers::paginate(10)
+            
+            ]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -58,9 +65,16 @@ class WikiAf5ExternalWorkersController extends Controller
     {
         $slug_action = 'carga_form_creacion_trabajador_externo';
 
-        $users = User::where('user_type_id', 3)->get();
-        $companies = WikiAf5Company::all();
-        return Inertia::render('ExternalWorkers/WorkerForm')->with('users', $users)->with('companies', $companies);
+        if(Auth::user()->can_action($slug_action)){
+
+            $users = User::where('user_type_id', 3)->get();
+            $companies = WikiAf5Company::all();
+            return Inertia::render('ExternalWorkers/WorkerForm')->with('users', $users)->with('companies', $companies);
+
+            
+    }else{
+        return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+    }
     }
 
     /**
@@ -73,15 +87,21 @@ class WikiAf5ExternalWorkersController extends Controller
     {
         $slug_action = 'guardar_form_creacion_trabajador_externo';
 
-        $request->validate(
-            [   
-                'user_id' => 'required',
-            ]
-        );
+        if(Auth::user()->can_action($slug_action)){
 
-        WikiAf5ExternalWorkers::create($request->all());
+            $request->validate(
+                [   
+                    'user_id' => 'required',
+                ]
+            );
 
-        return Redirect::route('externalworkers')->with('success', '¡Trabajador externo creado correctamente!');
+            WikiAf5ExternalWorkers::create($request->all());
+
+            return Redirect::route('externalworkers')->with('success', '¡Trabajador externo creado correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -94,22 +114,29 @@ class WikiAf5ExternalWorkersController extends Controller
     {   
         $slug_action = 'carga_vista_trabajador_externo';
 
-        if (isset($request['externalworker']) && $request['externalworker']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $worker_id = $request['externalworker'];
-            $worker = WikiAf5ExternalWorkers::find($worker_id);
+            if (isset($request['externalworker']) && $request['externalworker']) {
 
-            if (isset($worker->id)){
+                $worker_id = $request['externalworker'];
+                $worker = WikiAf5ExternalWorkers::find($worker_id);
 
-                $user_id = $worker->user_id;
-                $users = User::where('id', $user_id)->get();
-                $company_id = $worker->company_id;
-                $companies = WikiAf5Company::where('id', $company_id)->get();
+                if (isset($worker->id)){
 
-                return Inertia::render('Clients/Show', ['worker' =>  $worker, 'users' => $users, 'companies' => $companies]);
-            }
-        } 
-        abort(404);
+                    $user_id = $worker->user_id;
+                    $users = User::where('id', $user_id)->get();
+                    $company_id = $worker->company_id;
+                    $companies = WikiAf5Company::where('id', $company_id)->get();
+
+                    return Inertia::render('ExternalWorkers/Show', ['worker' =>  $worker, 'users' => $users, 'companies' => $companies]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
+
     }
 
     /**
@@ -122,20 +149,26 @@ class WikiAf5ExternalWorkersController extends Controller
     {
         $slug_action = 'carga_form_edicion_trabajador_externo';
 
-        if (isset($request['externalworker']) && $request['externalworker']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $worker_id = $request['externalworker'];
-            $worker = WikiAf5ExternalWorkers::find($worker_id);
-            
-            if (isset($worker->id)){
+            if (isset($request['externalworker']) && $request['externalworker']) {
 
-                $users = User::where('user_type_id', 3)->get();
-                $companies = WikiAf5Company::all();
+                $worker_id = $request['externalworker'];
+                $worker = WikiAf5ExternalWorkers::find($worker_id);
+                
+                if (isset($worker->id)){
 
-                return Inertia::render('ExternalWorkers/WorkerEditForm', ['worker' =>  $worker, 'users' => $users, 'companies' => $companies]);
-            }
-        } 
-        abort(404);
+                    $users = User::where('user_type_id', 3)->get();
+                    $companies = WikiAf5Company::all();
+
+                    return Inertia::render('ExternalWorkers/WorkerEditForm', ['worker' =>  $worker, 'users' => $users, 'companies' => $companies]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -149,19 +182,24 @@ class WikiAf5ExternalWorkersController extends Controller
     {
         $slug_action = 'guardar_form_edicion_trabajador_externo';
 
-        if (isset($request['externalworker']) && $request['externalworker']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $worker_id = $request['externalworker'];
-            $worker = WikiAf5ExternalWorkers::find($worker_id);
+            if (isset($request['externalworker']) && $request['externalworker']) {
 
-            if (isset($worker->id)){
+                $worker_id = $request['externalworker'];
+                $worker = WikiAf5ExternalWorkers::find($worker_id);
 
-                $worker->update($request->all());
+                if (isset($worker->id)){
 
-                return Redirect::route('externalworkers')->with('success', '¡Trabajador externo editado correctamente!');
-            }
-        } 
-        abort(404);
+                    $worker->update($request->all());
+
+                    return Redirect::route('externalworkers')->with('success', '¡Trabajador externo editado correctamente!');
+                }
+            } 
+            abort(404);
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -174,18 +212,24 @@ class WikiAf5ExternalWorkersController extends Controller
     {
         $slug_action = 'eliminar_trabajador_externo';
 
-        if (isset($request['externalworker']) && $request['externalworker']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $worker_id = $request['externalworker'];
-            $worker = WikiAf5ExternalWorkers::find($worker_id);
+            if (isset($request['externalworker']) && $request['externalworker']) {
 
-            if (isset($worker->id)){
+                $worker_id = $request['externalworker'];
+                $worker = WikiAf5ExternalWorkers::find($worker_id);
 
-                $worker->delete();
+                if (isset($worker->id)){
 
-                return redirect()->back()->with('success', 'Trabajador externo borrado correctamente');
-            }
-        } 
-        abort(404);     
+                    $worker->delete();
+
+                    return redirect()->back()->with('success', 'Trabajador externo borrado correctamente');
+                }
+            } 
+            abort(404);  
+            
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 }

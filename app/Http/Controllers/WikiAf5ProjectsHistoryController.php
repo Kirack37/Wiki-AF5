@@ -18,23 +18,31 @@ class WikiAf5ProjectsHistoryController extends Controller
      */
     public function index($id, Request $request)
     {
-        $project = WikiAf5Projects::where('id', $id)->get();
-        $histories = WikiAf5ProjectsHistory::where('project_id' , $id)
-                ->orderBy('created_at', 'asc')
-                ->when($request->term, function ($query, $term ){
-                    $query->where('description','LIKE','%' . $term . '%');})
-                ->with('users')
-                ->with('projects')
-                ->paginate(10)
-                ->withQueryString()
-                ->sortBy('name');
+        $slug_action = 'listado_historiales_proyecto';
 
-        return Inertia::render('ProjectsHistory/Index', [
-            'project' => $project,
-            'histories' =>  $histories,
-            'paginator' =>WikiAf5ProjectsHistory::paginate(10)
-      
-     ]);
+        if(Auth::user()->can_action($slug_action)){
+
+            $project = WikiAf5Projects::where('id', $id)->get();
+            $histories = WikiAf5ProjectsHistory::where('project_id' , $id)
+                    ->orderBy('created_at', 'asc')
+                    ->when($request->term, function ($query, $term ){
+                        $query->where('description','LIKE','%' . $term . '%');})
+                    ->with('users')
+                    ->with('projects')
+                    ->paginate(10)
+                    ->withQueryString()
+                    ->sortBy('name');
+
+            return Inertia::render('ProjectsHistory/Index', [
+                'project' => $project,
+                'histories' =>  $histories,
+                'paginator' =>WikiAf5ProjectsHistory::paginate(10)
+        
+        ]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -44,10 +52,18 @@ class WikiAf5ProjectsHistoryController extends Controller
      */
     public function create($id)
     {   
-        $user_id = Auth::id();
-        $projects = WikiAf5Projects::where('id', $id)->get();
+        $slug_action = 'carga_form_creacion_historial_proyecto';
 
-        return Inertia::render('ProjectsHistory/HistoryForm', ['projects' => $projects, 'user_id' => $user_id])->with('status', '¡Historial creado correctamente!');
+        if(Auth::user()->can_action($slug_action)){
+
+            $user_id = Auth::id();
+            $projects = WikiAf5Projects::where('id', $id)->get();
+
+            return Inertia::render('ProjectsHistory/HistoryForm', ['projects' => $projects, 'user_id' => $user_id])->with('status', '¡Historial creado correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -58,15 +74,23 @@ class WikiAf5ProjectsHistoryController extends Controller
      */
     public function store($id, Request $request)
     {
-        $request->validate(
-            [   
-                'description' => 'required',
-            ]
-        );
+        $slug_action = 'guardar_form_creacion_historial_proyecto';
 
-        WikiAf5ProjectsHistory::create($request->all());
+        if(Auth::user()->can_action($slug_action)){
 
-        return Redirect::route('history.index', $id)->with('success', '¡Historial creado correctamente!');
+            $request->validate(
+                [   
+                    'description' => 'required',
+                ]
+            );
+
+            WikiAf5ProjectsHistory::create($request->all());
+
+            return Redirect::route('history.index', $id)->with('success', '¡Historial creado correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -98,19 +122,30 @@ class WikiAf5ProjectsHistoryController extends Controller
      */
     public function edit($id, Request $request)
     {
-        $user_id = Auth::id();
-        $project = WikiAf5Projects::where('id', $id)->get();
-        
-        if (isset($request['history']) && $request['history']) {
-            $history_id = $request['history'];
-            $history = WikiAf5ProjectsHistory::find($history_id);
+        $slug_action = 'carga_form_edicion_historial_proyecto';
 
-            if (isset($history->id)){
-                $history->description = strip_tags($history->description);
-                return Inertia::render('ProjectsHistory/HistoryEditForm', ['project' =>  $project, 'history' => $history, 'user_id' => $user_id]);
-            }
-        } 
-        abort(404);
+        if(Auth::user()->can_action($slug_action)){
+
+            $user_id = Auth::id();
+            $project = WikiAf5Projects::where('id', $id)->get();
+            
+            if (isset($request['history']) && $request['history']) {
+
+                $history_id = $request['history'];
+                $history = WikiAf5ProjectsHistory::find($history_id);
+
+                if (isset($history->id)){
+
+                    $history->description = strip_tags($history->description);
+
+                    return Inertia::render('ProjectsHistory/HistoryEditForm', ['project' =>  $project, 'history' => $history, 'user_id' => $user_id]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -122,15 +157,27 @@ class WikiAf5ProjectsHistoryController extends Controller
      */
     public function update($id, Request $request)
     {
-        if (isset($request['history']) && $request['history']) {
-            $history_id = $request['history'];
-            $history = WikiAf5ProjectsHistory::find($history_id);
-            if (isset($history->id)){
-                $history->update($request->all());
-                return Redirect::route('history.index', $id)->with('success', '¡Historial editado correctamente!');
-            }
-        } 
-        abort(404);
+        $slug_action = 'guardar_form_edicion_historial_proyecto';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['history']) && $request['history']) {
+
+                $history_id = $request['history'];
+                $history = WikiAf5ProjectsHistory::find($history_id);
+
+                if (isset($history->id)){
+
+                    $history->update($request->all());
+
+                    return Redirect::route('history.index', $id)->with('success', '¡Historial editado correctamente!');
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -141,14 +188,27 @@ class WikiAf5ProjectsHistoryController extends Controller
      */
     public function destroy($id, Request $request)
     {
-        if (isset($request['history']) && $request['history']) {
-            $history_id = $request['history'];
-            $history = WikiAf5ProjectsHistory::find($history_id);
-            if (isset($history->id)){
-                $history->delete();
-                return redirect()->back()->with('success', 'Historial borrado correctamente');
-            }
-        } 
-        abort(404);        
+        $slug_action = 'eliminar_historial_proyecto';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['history']) && $request['history']) {
+
+                $history_id = $request['history'];
+                $history = WikiAf5ProjectsHistory::find($history_id);
+
+                if (isset($history->id)){
+
+                    $history->delete();
+
+                    return redirect()->back()->with('success', 'Historial borrado correctamente');
+                }
+            } 
+            abort(404);    
+            
+            
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 }

@@ -6,9 +6,11 @@ use App\Models\WikiAf5Clients;
 use App\Models\User;
 use App\Models\WikiAf5Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use DB;
+
 
 class WikiAf5ClientsController extends Controller
 {
@@ -19,40 +21,46 @@ class WikiAf5ClientsController extends Controller
      */
     public function index(Request $request)
     {
-        $slug_action = 'listado_clientes';   
-        // $users = User::all();
+        $slug_action = 'listado_clientes';  
+
+        if(Auth::user()->can_action($slug_action)){
+        $users = User::all();
         // $sql = 'SELECT * FROM `wiki_af5_clients`
         // JOIN `users` ON `users`.id = `wiki_af5_clients`.user_id
         // ORDER BY `users`.name ASC';
         // $results = DB::select($sql, ['id' => 1]);
 
-        // $clients = WikiAf5Clients::query()
-        //     ->orderBy('user_id', 'ASC')
-        //     ->when($request->term, function ($query, $term ){
-        //         $query->where('company_id','LIKE','%' . $term . '%');})
-        //     ->with('user')
-        //     ->with('company')
-        //     ->paginate(10)
-        //     ->withQueryString()
-        //     ->sortBy('name');
-
         $clients = WikiAf5Clients::query()
-	    ->join('users','users.id','=','wiki_af5_clients.user_id')
-        ->when($request->term, function ($query, $term ){      
-            $query->where('users.firstname', 'LIKE', '%' . $term . '%');})
-            //->orderBy('users.name', 'ASC')
+            ->orderBy('user_id', 'ASC')
+            ->when($request->term, function ($query, $term ){
+                $query->where('company_id','LIKE','%' . $term . '%');})
             ->with('user')
             ->with('company')
             ->paginate(10)
             ->withQueryString()
             ->sortBy('name');
 
+        // $clients = WikiAf5Clients::query()
+	    // ->join('users','users.id','=','wiki_af5_clients.user_id')
+        // ->when($request->term, function ($query, $term ){      
+        //     $query->where('users.firstname', 'LIKE', '%' . $term . '%');})
+        //     //->orderBy('users.name', 'ASC')
+        //     ->with('user')
+        //     ->with('company')
+        //     ->paginate(10)
+        //     ->withQueryString()
+        //     ->sortBy('name');
+
         return Inertia::render('Clients/Index', [
        
             'clients' =>  $clients,
             'paginator' =>WikiAf5Clients::paginate(10)
           
-         ]);
+        ]);
+
+        }else{
+            return Redirect::route('dashboard')->with('error', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -64,9 +72,15 @@ class WikiAf5ClientsController extends Controller
     {
         $slug_action = 'carga_form_creacion_cliente';
 
-        $users = User::where('user_type_id', 2)->get();
-        $companies = WikiAf5Company::all();
-        return Inertia::render('Clients/ClientForm')->with('users', $users)->with('companies', $companies);
+        if(Auth::user()->can_action($slug_action)){
+
+            $users = User::where('user_type_id', 2)->get();
+            $companies = WikiAf5Company::all();
+            return Inertia::render('Clients/ClientForm')->with('users', $users)->with('companies', $companies);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -79,15 +93,21 @@ class WikiAf5ClientsController extends Controller
     {
         $slug_action = 'guardar_form_creacion_cliente';
 
-        $request->validate(
-            [   
-                'user_id' => 'required',
-            ]
-        );
+            if(Auth::user()->can_action($slug_action)){
 
-        WikiAf5Clients::create($request->all());
+            $request->validate(
+                [   
+                    'user_id' => 'required',
+                ]
+            );
 
-        return Redirect::route('clients')->with('success', '¡Cliente creado correctamente!');
+            WikiAf5Clients::create($request->all());
+
+            return Redirect::route('clients')->with('success', '¡Cliente creado correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -100,22 +120,28 @@ class WikiAf5ClientsController extends Controller
     {   
         $slug_action = 'carga_vista_cliente';
 
-        if (isset($request['client']) && $request['client']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $client_id = $request['client'];
-            $client = WikiAf5Clients::find($client_id);
+            if (isset($request['client']) && $request['client']) {
 
-            if (isset($client->id)){
+                $client_id = $request['client'];
+                $client = WikiAf5Clients::find($client_id);
 
-                $user_id = $client->user_id;
-                $users = User::where('id', $user_id)->get();
-                $company_id = $client->company_id;
-                $companies = WikiAf5Company::where('id', $company_id)->get();
+                if (isset($client->id)){
 
-                return Inertia::render('Clients/Show', ['client' =>  $client, 'users' => $users, 'companies' => $companies]);
-            }
-        } 
-        abort(404);
+                    $user_id = $client->user_id;
+                    $users = User::where('id', $user_id)->get();
+                    $company_id = $client->company_id;
+                    $companies = WikiAf5Company::where('id', $company_id)->get();
+
+                    return Inertia::render('Clients/Show', ['client' =>  $client, 'users' => $users, 'companies' => $companies]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -128,20 +154,26 @@ class WikiAf5ClientsController extends Controller
     {
         $slug_action = 'carga_form_edicion_cliente';
 
-        if (isset($request['client']) && $request['client']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $client_id = $request['client'];
-            $client = WikiAf5Clients::find($client_id);
+            if (isset($request['client']) && $request['client']) {
 
-            if (isset($client->id)){
+                $client_id = $request['client'];
+                $client = WikiAf5Clients::find($client_id);
 
-                $users = User::where('user_type_id', 2)->get();
-                $companies = WikiAf5Company::all();
+                if (isset($client->id)){
 
-                return Inertia::render('Clients/ClientEditForm', ['client' =>  $client, 'users' => $users, 'companies' => $companies]);
-            }
-        } 
-        abort(404);
+                    $users = User::where('user_type_id', 2)->get();
+                    $companies = WikiAf5Company::all();
+
+                    return Inertia::render('Clients/ClientEditForm', ['client' =>  $client, 'users' => $users, 'companies' => $companies]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -153,21 +185,29 @@ class WikiAf5ClientsController extends Controller
      */
     public function update(Request $request)
     {
+
         $slug_action = 'guardar_form_edicion_cliente';
+        
+        if(Auth::user()->can_action($slug_action)){
 
-        if (isset($request['client']) && $request['client']) {
+            if (isset($request['client']) && $request['client']) {
 
-            $client_id = $request['client'];
-            $client = WikiAf5Clients::find($client_id);
+                $client_id = $request['client'];
+                $client = WikiAf5Clients::find($client_id);
 
-            if (isset($client->id)){
+                if (isset($client->id)){
 
-                $client->update($request->all());
-                
-                return Redirect::route('clients')->with('success', '¡Cliente editado correctamente!');
-            }
-        } 
-        abort(404);
+                    $client->update($request->all());
+                    
+                    return Redirect::route('clients')->with('success', '¡Cliente editado correctamente!');
+                }
+            } 
+            abort(404);
+
+            
+    }else{
+        return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+    }
     }
 
     /**
@@ -180,14 +220,20 @@ class WikiAf5ClientsController extends Controller
     {
         $slug_action = 'eliminar_cliente';
 
-        if (isset($request['client']) && $request['client']) {
-            $client_id = $request['client'];
-            $client = WikiAf5Clients::find($client_id);
-            if (isset($client->id)){
-                $client->delete();
-                return redirect()->back()->with('success', 'Cliente borrado correctamente');
-            }
-        } 
-        abort(404);     
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['client']) && $request['client']) {
+                $client_id = $request['client'];
+                $client = WikiAf5Clients::find($client_id);
+                if (isset($client->id)){
+                    $client->delete();
+                    return redirect()->back()->with('success', 'Cliente borrado correctamente');
+                }
+            } 
+            abort(404);  
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }   
     }
+    
 }

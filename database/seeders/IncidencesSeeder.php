@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\WikiAf5ProjectsHistory;
 
-class wiki_af5_projects_historySeeder extends Seeder
+class IncidencesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +13,6 @@ class wiki_af5_projects_historySeeder extends Seeder
      */
     public function run()
     {
-        WikiAf5ProjectsHistory::factory(30)->create();   
+        //
     }
 }

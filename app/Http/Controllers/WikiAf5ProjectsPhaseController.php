@@ -19,22 +19,30 @@ class WikiAf5ProjectsPhaseController extends Controller
      */
     public function index($id, Request $request)
     {
-        $enviroment = WikiAf5ProjectsEnviroments::where('id', $id)->get();
-        $phases = WikiAf5ProjectsPhase::where('project_enviroment_id' , $id)
-                ->orderBy('created_at', 'asc')
-                ->when($request->term, function ($query, $term ){
-                    $query->where('repository_name','LIKE','%' . $term . '%');})
-                ->with('projects')
-                ->paginate(10)
-                ->withQueryString()
-                ->sortBy('name');
+        $slug_action = 'listado_fases_proyectos';
 
-        return Inertia::render('ProjectsGITs/Index', [
-            'enviroment' => $enviroment,
-            'phases' => $phases,
-            'paginator' =>WikiAf5ProjectsPhase::paginate(10)
-        
-        ]);
+        if(Auth::user()->can_action($slug_action)){
+
+            $enviroment = WikiAf5ProjectsEnviroments::where('id', $id)->get();
+            $phases = WikiAf5ProjectsPhase::where('project_enviroment_id' , $id)
+                    ->orderBy('created_at', 'asc')
+                    ->when($request->term, function ($query, $term ){
+                        $query->where('repository_name','LIKE','%' . $term . '%');})
+                    ->with('projects')
+                    ->paginate(10)
+                    ->withQueryString()
+                    ->sortBy('name');
+
+            return Inertia::render('ProjectsGITs/Index', [
+                'enviroment' => $enviroment,
+                'phases' => $phases,
+                'paginator' =>WikiAf5ProjectsPhase::paginate(10)
+            
+            ]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
     /**
      * Show the form for creating a new resource.
@@ -43,9 +51,16 @@ class WikiAf5ProjectsPhaseController extends Controller
      */
     public function create($id)
     {   
-        $enviroment = WikiAf5ProjectsEnviroments::where('id', $id)->get();
+        $slug_action = 'carga_form_creacion_fase_proyecto';
 
-        return Inertia::render('ProjectsPhases/PhaseForm', ['enviroment' => $enviroment]);
+        if(Auth::user()->can_action($slug_action)){
+
+            $enviroment = WikiAf5ProjectsEnviroments::where('id', $id)->get();
+
+            return Inertia::render('ProjectsPhases/PhaseForm', ['enviroment' => $enviroment]);
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -56,15 +71,23 @@ class WikiAf5ProjectsPhaseController extends Controller
      */
     public function store($id, Request $request)
     {
-        $request->validate(
-            [   
-                'name' => 'required',
-            ]
-        );
+        $slug_action = 'guardar_form_creacion_fase_proyecto';
 
-        WikiAf5ProjectsPhase::create($request->all());
+        if(Auth::user()->can_action($slug_action)){
 
-        return Redirect::route('phases.index', $id)->with('success', '¡Fase creada correctamente!');
+            $request->validate(
+                [   
+                    'name' => 'required',
+                ]
+            );
+
+            WikiAf5ProjectsPhase::create($request->all());
+
+            return Redirect::route('phases.index', $id)->with('success', '¡Fase creada correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -86,19 +109,27 @@ class WikiAf5ProjectsPhaseController extends Controller
      */
     public function edit($id, Request $request)
     {
-        $enviroment = WikiAf5ProjectsEnviroments::where('id', $id)->get();
-        
-        if (isset($request['phase']) && $request['phase']) {
+        $slug_action = 'carga_form_edicion_fase_proyecto';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            $enviroment = WikiAf5ProjectsEnviroments::where('id', $id)->get();
             
-            $phase_id = $request['phase'];
-            $phase = WikiAf5ProjectsPhase::find($phase_id);
+            if (isset($request['phase']) && $request['phase']) {
+                
+                $phase_id = $request['phase'];
+                $phase = WikiAf5ProjectsPhase::find($phase_id);
 
-            if (isset($phase->id)){
+                if (isset($phase->id)){
 
-                return Inertia::render('ProjectsPhases/PhaseEditForm', ['enviroment' => $enviroment, 'phase' => $phase]);
-            }
-        } 
-        abort(404);
+                    return Inertia::render('ProjectsPhases/PhaseEditForm', ['enviroment' => $enviroment, 'phase' => $phase]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -110,15 +141,27 @@ class WikiAf5ProjectsPhaseController extends Controller
      */
     public function update($id, Request $request)
     {
-        if (isset($request['phase']) && $request['phase']) {
-            $phase_id = $request['phase'];
-            $phase = WikiAf5ProjectsPhase::find($phase_id);
-            if (isset($phase->id)){
-                $phase->update($request->all());
-                return Redirect::route('phases.index', $id)->with('success', '¡Fase editada correctamente!');
-            }
-        } 
-        abort(404);
+        $slug_action = 'guardar_form_edicion_fase_proyecto';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['phase']) && $request['phase']) {
+
+                $phase_id = $request['phase'];
+                $phase = WikiAf5ProjectsPhase::find($phase_id);
+
+                if (isset($phase->id)){
+
+                    $phase->update($request->all());
+
+                    return Redirect::route('phases.index', $id)->with('success', '¡Fase editada correctamente!');
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
 
@@ -130,14 +173,26 @@ class WikiAf5ProjectsPhaseController extends Controller
      */
     public function destroy($id, Request $request)
     {
-        if (isset($request['phase']) && $request['phase']) {
-            $phase_id = $request['phase'];
-            $phase = WikiAf5ProjectsPhase::find($phase_id);
-            if (isset($phase->id)){
-                $phase->delete();
-                return redirect()->back()->with('success', 'Fase borrada correctamente');
-            }
-        } 
-        abort(404);        
+        $slug_action = 'eliminar_fase_proyecto';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['phase']) && $request['phase']) {
+
+                $phase_id = $request['phase'];
+                $phase = WikiAf5ProjectsPhase::find($phase_id);
+
+                if (isset($phase->id)){
+
+                    $phase->delete();
+
+                    return redirect()->back()->with('success', 'Fase borrada correctamente');
+                }
+            } 
+            abort(404);
+            
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 }

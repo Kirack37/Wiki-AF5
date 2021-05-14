@@ -14,7 +14,7 @@
             <div v-if="errors.name">El nombre es requerido</div>
           </div>
         </div>
-        <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Añadir nota </button>
+        <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Añadir entorno </button>
         <inertia-link class="inside-project text-yellow-600" :href="route('enviroments.index', projects[0].id)">
           Volver atrás
         </inertia-link>

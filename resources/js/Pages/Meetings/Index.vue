@@ -27,7 +27,7 @@
             <p>{{ moment(meeting.date).format("DD-MM-YYYY") }}</p>
           </div>
           <div class="item-data flex-1">
-            <p>{{ meeting.users.firstname }} {{ meeting.users.lastname }}</p>
+            <p>{{ meeting.owner.firstname }} {{ meeting.owner.lastname }}</p>
           </div>
            <div class="item-data flex-1">
             <p v-if="meeting.status == 0">Pendiente de aprobar</p>

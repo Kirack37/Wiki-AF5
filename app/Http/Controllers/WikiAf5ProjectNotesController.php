@@ -18,23 +18,31 @@ class WikiAf5ProjectNotesController extends Controller
      */
     public function index($id, Request $request)
     {
-        $project = WikiAf5Projects::where('id', $id)->get();
-        $notes = WikiAf5ProjectNotes::where('project_id' , $id)
-                ->orderBy('created_at', 'asc')
-                ->when($request->term, function ($query, $term ){
-                    $query->where('subject','LIKE','%' . $term . '%');})
-                ->with('users')
-                ->with('projects')
-                ->paginate(10)
-                ->withQueryString()
-                ->sortBy('name');
+        $slug_action = 'listado_notas_proyectos';
 
-        return Inertia::render('ProjectsNotes/Index', [
-            'project' => $project,
-            'notes' =>  $notes,
-            'paginator' =>WikiAf5ProjectNotes::paginate(10)
-        
-        ]);
+        if(Auth::user()->can_action($slug_action)){
+
+            $project = WikiAf5Projects::where('id', $id)->get();
+            $notes = WikiAf5ProjectNotes::where('project_id' , $id)
+                    ->orderBy('created_at', 'asc')
+                    ->when($request->term, function ($query, $term ){
+                        $query->where('subject','LIKE','%' . $term . '%');})
+                    ->with('users')
+                    ->with('projects')
+                    ->paginate(10)
+                    ->withQueryString()
+                    ->sortBy('name');
+
+            return Inertia::render('ProjectsNotes/Index', [
+                'project' => $project,
+                'notes' =>  $notes,
+                'paginator' =>WikiAf5ProjectNotes::paginate(10)
+            
+            ]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -44,10 +52,18 @@ class WikiAf5ProjectNotesController extends Controller
      */
     public function create($id)
     {   
-        $user_id = Auth::id();
-        $projects = WikiAf5Projects::where('id', $id)->get();
+        $slug_action = 'carga_form_creacion_nota_proyecto';
 
-        return Inertia::render('ProjectsNotes/NoteForm', ['projects' => $projects, 'user_id' => $user_id]);
+        if(Auth::user()->can_action($slug_action)){
+
+            $user_id = Auth::id();
+            $projects = WikiAf5Projects::where('id', $id)->get();
+
+            return Inertia::render('ProjectsNotes/NoteForm', ['projects' => $projects, 'user_id' => $user_id]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -58,16 +74,24 @@ class WikiAf5ProjectNotesController extends Controller
      */
     public function store($id, Request $request)
     {
-        $request->validate(
-            [   
-                'subject' => 'required',
-                'note' => 'required',
-            ]
-        );
+        $slug_action = 'guardar_form_creacion_nota_proyecto';
 
-        WikiAf5ProjectNotes::create($request->all());
+        if(Auth::user()->can_action($slug_action)){
 
-        return Redirect::route('notes.index', $id)->with('success', '¡Nota creada correctamente!');
+            $request->validate(
+                [   
+                    'subject' => 'required',
+                    'note' => 'required',
+                ]
+            );
+
+            WikiAf5ProjectNotes::create($request->all());
+
+            return Redirect::route('notes.index', $id)->with('success', '¡Nota creada correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
     /**
      * Display the specified resource.
@@ -98,22 +122,30 @@ class WikiAf5ProjectNotesController extends Controller
      */
     public function edit($id, Request $request)
     {
-        $user_id = Auth::id();
-        $project = WikiAf5Projects::where('id', $id)->get();
-        
-        if (isset($request['note']) && $request['note']) {
+        $slug_action = 'carga_form_edicion_nota_proyecto';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            $user_id = Auth::id();
+            $project = WikiAf5Projects::where('id', $id)->get();
             
-            $note_id = $request['note'];
-            $note = WikiAf5ProjectNotes::find($note_id);
+            if (isset($request['note']) && $request['note']) {
+                
+                $note_id = $request['note'];
+                $note = WikiAf5ProjectNotes::find($note_id);
 
-            if (isset($note->id)){
+                if (isset($note->id)){
 
-                $note->note = strip_tags($note->note);
+                    $note->note = strip_tags($note->note);
 
-                return Inertia::render('ProjectsNotes/NoteEditForm', ['project' =>  $project, 'note' => $note, 'user_id' => $user_id]);
-            }
-        } 
-        abort(404);
+                    return Inertia::render('ProjectsNotes/NoteEditForm', ['project' =>  $project, 'note' => $note, 'user_id' => $user_id]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -125,16 +157,27 @@ class WikiAf5ProjectNotesController extends Controller
      */
     public function update($id, Request $request)
     {
-        // dd($request);
-        if (isset($request['note']) && $request['note']) {
-            $note_id = $request['note'];
-            $note = WikiAf5ProjectNotes::find($note_id);
-            if (isset($note->id)){
-                $note->update($request->all());
-                return Redirect::route('notes.index', $id)->with('success', '¡Nota editada correctamente!');
-            }
-        } 
-        abort(404);
+        $slug_action = 'guardar_form_edicion_nota_proyecto';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['note']) && $request['note']) {
+
+                $note_id = $request['note'];
+                $note = WikiAf5ProjectNotes::find($note_id);
+
+                if (isset($note->id)){
+
+                    $note->update($request->all());
+
+                    return Redirect::route('notes.index', $id)->with('success', '¡Nota editada correctamente!');
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
     /**
      * Remove the specified resource from storage.
@@ -144,14 +187,26 @@ class WikiAf5ProjectNotesController extends Controller
      */
     public function destroy($id, Request $request)
     {
-        if (isset($request['project']) && $request['note']) {
-            $note_id = $request['project'];
-            $note = WikiAf5ProjectNotes::find($note_id);
-            if (isset($note->id)){
-                $note->delete();
-                return redirect()->back()->with('success', 'Nota borrada correctamente');
-            }
-        } 
-        abort(404);        
+        $slug_action = 'eliminar_nota_proyecto';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['project']) && $request['note']) {
+
+                $note_id = $request['project'];
+                $note = WikiAf5ProjectNotes::find($note_id);
+
+                if (isset($note->id)){
+
+                    $note->delete();
+
+                    return redirect()->back()->with('success', 'Nota borrada correctamente');
+                }
+            } 
+            abort(404);   
+            
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 }

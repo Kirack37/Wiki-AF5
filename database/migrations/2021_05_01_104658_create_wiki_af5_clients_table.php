@@ -34,6 +34,6 @@ class CreateWikiAf5ClientsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wiki_af5_clients');
+        Schema::dropIfExists('clients');
     }
 }

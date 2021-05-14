@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class WikiAf5Meetings extends Model
 {
@@ -18,7 +19,10 @@ class WikiAf5Meetings extends Model
         'status',
     ];
 
-    public function users(){
+    public function meeting_users(){
+        return $this->belongsToMany(User::class, 'wiki_af5_meetings_users', 'meeting_id', 'user_id');
+    }
+    public function owner(){
         return $this->belongsTo(User::class, 'owner_id');
     }
     public function priority(){

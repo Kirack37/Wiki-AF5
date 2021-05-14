@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\WikiAf5MeetingsUsers;
 use App\Models\WikiAf5Meetings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+
 
 class WikiAf5MeetingsUsersController extends Controller
 {
@@ -16,41 +18,33 @@ class WikiAf5MeetingsUsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id, Request $request)
+    public function index(WikiAf5Meetings $WikiAf5Meetings, array $modalProps = [])
     {
         $slug_action = 'listado_usuarios_reuniones';
+        
 
-        $meetings = WikiAf5Meetings::where('id', $id)->get();
-        $users = WikiAf5MeetingsUsers::where('meeting_id' , $id)
-                ->orderBy('created_at', 'asc')
-                ->when($request->term, function ($query, $term ){
-                    $query->where('status','LIKE','%' . $term . '%');})
-                ->with('users')
-                ->with('meetings')
-                ->paginate(10)
-                ->withQueryString()
-                ->sortBy('name');
-
-        return Inertia::render('MeetingsUsers/Index', [
-            'meetings' => $meetings,
-            'users' =>  $users,
-            'paginator' =>WikiAf5MeetingsUsers::paginate(10)
-      
-     ]);
+        return inertia('MeetingsUsers/Index', array_merge([
+            'meeting' => $WikiAf5Meetings,
+            'users' => $WikiAf5Meetings
+                ->meeting_users()
+                ->orderBy('created_at', 'desc')
+                ->paginate(),
+        ], $modalProps));
     }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($id)
+    public function create(WikiAf5Meetings $WikiAf5Meetings)
     {   
         $slug_action = 'carga_form_creacion_usuario_reunion';
 
-        $user_id = Auth::id();
-        $meetings = WikiAf5Meetings::where('id', $id)->get();
+        inertia()->modal('MeetingUsers/CreateModal');
 
-        return Inertia::render('MeetingsNotes/NoteForm', ['meetings' => $meetings, 'user_id' => $user_id]);
+        return $this->index($WikiAf5Meetings, [
+            'users' => User::all(),
+        ]);
     }
 
     /**

@@ -16,7 +16,7 @@ class WikiAf5ProjectsHistory extends Model
         'project_id',
         'user_id',
         'description',
-        'date',
+        'title',
     ];
 
     public function users(){

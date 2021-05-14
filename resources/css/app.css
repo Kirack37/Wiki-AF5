@@ -22,10 +22,14 @@ em {
     color: #797979
 }
 
-.logo-fondo {
+
+/** GENERAL **/
+
+
+/* .logo-fondo {
     background-image: url(../img/normal_logo.png);
     @apply bg-fixed bg-no-repeat bg-center;
-}
+} */
 
 .orange {
     color: #fb6e15;
@@ -65,6 +69,22 @@ h4 {
 
 .items-list .ck.ck-editor__main>.ck-editor__editable:not(.ck-focused) {
     border: none;
+}
+
+
+/** Flash Messages **/
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 1s
+}
+
+.fade-enter,
+.fade-leave-to
+/* .fade-leave-active in <2.1.8 */
+
+{
+    opacity: 0
 }
 
 
@@ -131,10 +151,43 @@ h4 {
 
 /** Footer **/
 
+.container-rrss h6 {
+    font-weight: 600;
+}
+
 .fa-home,
 .fa-envelope,
 .fa-phone {
     margin-right: 0.5em;
+}
+
+.footer-links,
+.footer-copyright {
+    background-color: #212121;
+}
+
+.footer-links strong {
+    color: white;
+}
+
+.footer-info,
+.footer-links {
+    border-right: 1px solid #3b3b3b;
+}
+
+.footer-links a,
+.footer-links p,
+.footer-copyright a,
+.footer-copyright p {
+    color: #a2a2a2;
+}
+
+.footer-contact svg {
+    color: white;
+}
+
+.footer-contact a {
+    color: #fb6e15
 }
 
 .footer-link {

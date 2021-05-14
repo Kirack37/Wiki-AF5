@@ -637,7 +637,7 @@ class PermissionsSeeder extends Seeder
             $action = new WikiAf5Permission;
             $action->name = 'Listado de permisos';
             $action->slug = 'listado_permisos';
-            $action->description = 'Carga la vista de permisos (permissions.index)';
+            $action->description = 'Carga la vista de permisos (WikiAf5Permissions.index)';
             $action->save();
         }
 
@@ -646,7 +646,7 @@ class PermissionsSeeder extends Seeder
             $action = new WikiAf5Permission;
             $action->name = 'Carga de formulario de creación de permisos';
             $action->slug = 'carga_form_creacion_permiso';
-            $action->description = 'Carga la vista del formulario de creación del permiso (permissions.create)';
+            $action->description = 'Carga la vista del formulario de creación del permiso (WikiAf5Permissions.create)';
             $action->save();
         }
 
@@ -655,7 +655,7 @@ class PermissionsSeeder extends Seeder
             $action = new WikiAf5Permission;
             $action->name = 'Guardar permiso';
             $action->slug = 'guardar_form_creacion_permiso';
-            $action->description = 'Guarda en la base de datos el permiso creado (permissions.store)';
+            $action->description = 'Guarda en la base de datos el permiso creado (WikiAf5Permissions.store)';
             $action->save();
         }
 
@@ -664,7 +664,7 @@ class PermissionsSeeder extends Seeder
             $action = new WikiAf5Permission;
             $action->name = 'Carga de formulario de edición de permiso';
             $action->slug = 'carga_form_edicion_permiso';
-            $action->description = 'Carga la vista del formulario de edición del permiso (permissions.edit)';
+            $action->description = 'Carga la vista del formulario de edición del permiso (WikiAf5Permissions.edit)';
             $action->save();
         }
 
@@ -673,7 +673,7 @@ class PermissionsSeeder extends Seeder
             $action = new WikiAf5Permission;
             $action->name = 'Actualizar permiso';
             $action->slug = 'guardar_form_edicion_permiso';
-            $action->description = 'Guarda en la base de datos el patrón del permiso editado (permissions.update)';
+            $action->description = 'Guarda en la base de datos el patrón del permiso editado (WikiAf5Permissions.update)';
             $action->save();
         }
 
@@ -682,7 +682,7 @@ class PermissionsSeeder extends Seeder
             $action = new WikiAf5Permission;
             $action->name = 'Eliminar permiso';
             $action->slug = 'eliminar_permiso';
-            $action->description = 'Elimina de la base de datos el permiso (permissions.destroy)';
+            $action->description = 'Elimina de la base de datos el permiso (WikiAf5Permissions.destroy)';
             $action->save();
         }
  
@@ -703,7 +703,7 @@ class PermissionsSeeder extends Seeder
             $action = new WikiAf5Permission;
             $action->name = 'Carga de formulario de incidencias de proyectos';
             $action->slug = 'carga_form_creacion_incidencia_proyecto';
-            $action->description = 'Carga la vista del formulario de de incidencias de proyectos (incidences.create)';
+            $action->description = 'Carga la vista del formulario de incidencias de proyectos (incidences.create)';
             $action->save();
         }
 
@@ -716,39 +716,640 @@ class PermissionsSeeder extends Seeder
             $action->save();
         }
 
+        $exists = WikiAf5Permission::where('slug', 'carga_vista_incidencia_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de la vista de detalles de incidencia del proyecto';
+            $action->slug = 'carga_vista_incidencia_proyecto';
+            $action->description = 'Carga la vista de detalles de la incidencia del proyecto (incidences.show)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_incidencia_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de edición de incidencias de proyectos';
+            $action->slug = 'carga_form_edicion_incidencia_proyecto';
+            $action->description = 'Carga la vista del formulario de edición de la incidencia del proyecto (incidences.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_incidencia_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar incidencia de proyecto';
+            $action->slug = 'guardar_form_edicion_incidencia_proyecto';
+            $action->description = 'Guarda en la base de datos la indicencia del proyecto (incidences.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_incidencia_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar incidencia de proyecto';
+            $action->slug = 'eliminar_incidencia_proyecto';
+            $action->description = 'Elimina de la base de datos la incidencia del proyecto (incidences.destroy)';
+            $action->save();
+        }
+
+        /** Notas de proyectos **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_notas_proyectos')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de notas de proyectos';
+            $action->slug = 'listado_notas_proyectos';
+            $action->description = 'Carga la vista del listado de notas del proyecto (notes.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_nota_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de notas de proyectos';
+            $action->slug = 'carga_form_creacion_nota_proyecto';
+            $action->description = 'Carga la vista del formulario de notas de proyectos (notes.create)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_creacion_nota_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Guardar nota de proyecto';
+            $action->slug = 'guardar_form_creacion_nota_proyecto';
+            $action->description = 'Guarda en la base de datos la nota de proyecto creada (notes.store)';
+            $action->save();
+        }
+
         // $exists = WikiAf5Permission::where('slug', 'carga_vista_patron_trabajo')->first();
         // if(!isset($exists)){
         //     $action = new WikiAf5Permission;
         //     $action->name = 'Carga de la vista de detalles de patrones de trabajos';
         //     $action->slug = 'carga_vista_patron_trabajo';
-        //     $action->description = 'Carga la vista de detalles de los patrones de trabajos (incidences.show)';
+        //     $action->description = 'Carga la vista de detalles de los patrones de trabajos (notes.show)';
         //     $action->save();
         // }
 
-        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_patron_trabajo')->first();
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_nota_proyecto')->first();
         if(!isset($exists)){
             $action = new WikiAf5Permission;
-            $action->name = 'Carga de formulario de edición de patrones de trabajos';
-            $action->slug = 'carga_form_edicion_patron_trabajo';
-            $action->description = 'Carga la vista del formulario de edición del patrón de trabajo (incidences.edit)';
+            $action->name = 'Carga de formulario de edición de notas de proyectos';
+            $action->slug = 'carga_form_edicion_nota_proyecto';
+            $action->description = 'Carga la vista del formulario de edición de la nota del proyecto (notes.edit)';
             $action->save();
         }
 
-        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_patron_trabajo')->first();
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_nota_proyecto')->first();
         if(!isset($exists)){
             $action = new WikiAf5Permission;
-            $action->name = 'Actualizar patrón de trabajo';
-            $action->slug = 'guardar_form_edicion_patron_trabajo';
-            $action->description = 'Guarda en la base de datos el patrón de trabajo editado (incidences.update)';
+            $action->name = 'Actualizar nota de proyecto';
+            $action->slug = 'guardar_form_edicion_nota_proyecto';
+            $action->description = 'Guarda en la base de datos la nota del proyecto (notes.update)';
             $action->save();
         }
 
-        $exists = WikiAf5Permission::where('slug', 'eliminar_patron_trabajo')->first();
+        $exists = WikiAf5Permission::where('slug', 'eliminar_nota_proyecto')->first();
         if(!isset($exists)){
             $action = new WikiAf5Permission;
-            $action->name = 'Eliminar patrón de trabajo';
-            $action->slug = 'eliminar_patron_trabajo';
-            $action->description = 'Elimina de la base de datos el patrón de trabajo (incidences.destroy)';
+            $action->name = 'Eliminar nota de proyecto';
+            $action->slug = 'eliminar_nota_proyecto';
+            $action->description = 'Elimina de la base de datos la nota del proyecto (notes.destroy)';
+            $action->save();
+        }
+
+        /** Proyectos **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_proyectos')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de proyectos';
+            $action->slug = 'listado_proyectos';
+            $action->description = 'Carga la vista del listado de proyectos (projects.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de proyecto';
+            $action->slug = 'carga_form_creacion_proyecto';
+            $action->description = 'Carga la vista del formulario de proyectos (projects.create)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_creacion_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Guardar proyecto';
+            $action->slug = 'guardar_form_creacion_proyecto';
+            $action->description = 'Guarda en la base de datos el proyecto creado (projects.store)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_vista_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de la vista de detalles de proyectos';
+            $action->slug = 'carga_vista_proyecto';
+            $action->description = 'Carga la vista de detalles de los proyectos (projects.show)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de edición de proyecto';
+            $action->slug = 'carga_form_edicion_proyecto';
+            $action->description = 'Carga la vista del formulario de edición del proyecto (projects.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar proyecto';
+            $action->slug = 'guardar_form_edicion_proyecto';
+            $action->description = 'Guarda en la base de datos el proyecto (projects.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar proyecto';
+            $action->slug = 'eliminar_proyecto';
+            $action->description = 'Elimina de la base de datos el proyecto (projects.destroy)';
+            $action->save();
+        }
+
+        /** Entornos de proyectos **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_entornos_proyectos')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de entornos del proyecto';
+            $action->slug = 'listado_entornos_proyectos';
+            $action->description = 'Carga la vista del listado de entornos del proyecto (enviroments.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_entorno_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de proyecto';
+            $action->slug = 'carga_form_creacion_entorno_proyecto';
+            $action->description = 'Carga la vista del formulario de entornos de proyectos (enviroments.create)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_creacion_entorno_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Guardar entorno de proyecto';
+            $action->slug = 'guardar_form_creacion_entorno_proyecto';
+            $action->description = 'Guarda en la base de datos el entorno de proyecto creado (enviroments.store)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_entorno_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de edición de proyecto';
+            $action->slug = 'carga_form_edicion_entorno_proyecto';
+            $action->description = 'Carga la vista del formulario de edición del entorno del proyecto (enviroments.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_entorno_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar entorno de proyecto';
+            $action->slug = 'guardar_form_edicion_entorno_proyecto';
+            $action->description = 'Guarda en la base de datos el entorno del proyecto (enviroments.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_entorno_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar entorno de proyecto';
+            $action->slug = 'eliminar_entorno_proyecto';
+            $action->description = 'Elimina de la base de datos el entorno del proyecto (enviroments.destroy)';
+            $action->save();
+        }
+
+        
+        /** GITs de proyectos **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_gits')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de GITs del proyecto';
+            $action->slug = 'listado_gits';
+            $action->description = 'Carga la vista del listado de GITs del proyecto (gits.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_git')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de GIT del proyecto';
+            $action->slug = 'carga_form_creacion_git';
+            $action->description = 'Carga la vista del formulario de GIT del proyecto (gits.create)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_creacion_git')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Guardar GIT del proyecto';
+            $action->slug = 'guardar_form_creacion_git';
+            $action->description = 'Guarda en la base de datos el GIT del proyecto creado (gits.store)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_git')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de edición de GIT del proyecto';
+            $action->slug = 'carga_form_edicion_git';
+            $action->description = 'Carga la vista del formulario de edición del GIT del proyecto (gits.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_git')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar GIT del proyecto';
+            $action->slug = 'guardar_form_edicion_git';
+            $action->description = 'Guarda en la base de datos el GIT del proyecto (gits.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_git')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar GIT del proyecto';
+            $action->slug = 'eliminar_git';
+            $action->description = 'Elimina de la base de datos el GIT del proyecto (gits.destroy)';
+            $action->save();
+        }
+
+           
+        /** Historiales de proyectos **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_historiales_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de historiales del proyecto';
+            $action->slug = 'listado_historiales_proyecto';
+            $action->description = 'Carga la vista del listado de historiales del proyecto (history.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_historial_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de historial del proyecto';
+            $action->slug = 'carga_form_creacion_historial_proyecto';
+            $action->description = 'Carga la vista del formulario de historial del proyecto (history.create)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_creacion_historial_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Guardar historial del proyecto';
+            $action->slug = 'guardar_form_creacion_historial_proyecto';
+            $action->description = 'Guarda en la base de datos el historial del proyecto creado (history.store)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_historial_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de edición de historial de proyecto';
+            $action->slug = 'carga_form_edicion_historial_proyecto';
+            $action->description = 'Carga la vista del formulario de edición del historial del proyecto (history.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_historial_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar historial del proyecto';
+            $action->slug = 'guardar_form_edicion_historial_proyecto';
+            $action->description = 'Guarda en la base de datos el historial del proyecto (history.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_historial_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar historial del proyecto';
+            $action->slug = 'eliminar_historial_proyecto';
+            $action->description = 'Elimina de la base de datos el historial del proyecto (history.destroy)';
+            $action->save();
+        }
+
+               
+        /** Fases de proyectos **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_fases_proyectos')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de fases del proyecto';
+            $action->slug = 'listado_fases_proyectos';
+            $action->description = 'Carga la vista del listado de fases del proyecto (phases.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_fase_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de fase del proyecto';
+            $action->slug = 'carga_form_creacion_fase_proyecto';
+            $action->description = 'Carga la vista del formulario de fase del proyecto (phases.create)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_creacion_fase_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Guardar fase del proyecto';
+            $action->slug = 'guardar_form_creacion_fase_proyecto';
+            $action->description = 'Guarda en la base de datos la fase del proyecto creado (phases.store)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_fase_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de edición de fase de proyecto';
+            $action->slug = 'carga_form_edicion_fase_proyecto';
+            $action->description = 'Carga la vista del formulario de edición del fase del proyecto (phases.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_fase_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar fase del proyecto';
+            $action->slug = 'guardar_form_edicion_fase_proyecto';
+            $action->description = 'Guarda en la base de datos la fase del proyecto (phases.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_fase_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar fase del proyecto';
+            $action->slug = 'eliminar_fase_proyecto';
+            $action->description = 'Elimina de la base de datos la fase del proyecto (phases.destroy)';
+            $action->save();
+        }
+                       
+        /** Trellos de proyectos **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_trellos')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de Trellos del proyecto';
+            $action->slug = 'listado_trellos';
+            $action->description = 'Carga la vista del listado de Trellos del proyecto (trello.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_trello')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de Trello del proyecto';
+            $action->slug = 'carga_form_creacion_trello';
+            $action->description = 'Carga la vista del formulario de Trello del proyecto (trello.create)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_creacion_trello')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Guardar Trello del proyecto';
+            $action->slug = 'guardar_form_creacion_trello';
+            $action->description = 'Guarda en la base de datos el Trello del proyecto creado (trello.store)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_trello')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de edición de Trello de proyecto';
+            $action->slug = 'carga_form_edicion_trello';
+            $action->description = 'Carga la vista del formulario de edición del Trello del proyecto (trello.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_trello')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar Trello del proyecto';
+            $action->slug = 'guardar_form_edicion_trello';
+            $action->description = 'Guarda en la base de datos el Trello del proyecto (trello.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_trello')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar Trello del proyecto';
+            $action->slug = 'eliminar_trello';
+            $action->description = 'Elimina de la base de datos el Trello del proyecto (trello.destroy)';
+            $action->save();
+        }
+
+
+        /** Actas de reuniones **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_actas')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de actas de reuniones';
+            $action->slug = 'listado_actas';
+            $action->description = 'Carga la vista del listado de actas de reuniones (reports.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_acta')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de acta de reunión';
+            $action->slug = 'carga_form_creacion_acta';
+            $action->description = 'Carga la vista del formulario de acta de reunión (reports.create)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_creacion_acta')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Guardar de acta de reunión';
+            $action->slug = 'guardar_form_creacion_acta';
+            $action->description = 'Guarda en la base de datos el acta de reunión creado (reports.store)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_acta')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de edición de acta de reunión';
+            $action->slug = 'carga_form_edicion_acta';
+            $action->description = 'Carga la vista del formulario de edición del acta de reunión (reports.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_acta')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar acta de reunión';
+            $action->slug = 'guardar_form_edicion_acta';
+            $action->description = 'Guarda en la base de datos el acta de reunión (reports.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_acta')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar acta de reunión';
+            $action->slug = 'eliminar_acta';
+            $action->description = 'Elimina de la base de datos el acta de reunión (reports.destroy)';
+            $action->save();
+        }
+
+
+        /** Roles **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_roles')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de roles';
+            $action->slug = 'listado_roles';
+            $action->description = 'Carga la vista del listado de actas de reuniones (roles.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_rol')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de rol';
+            $action->slug = 'carga_form_creacion_rol';
+            $action->description = 'Carga la vista del formulario de rol (roles.create)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_creacion_rol')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Guardar rol';
+            $action->slug = 'guardar_form_creacion_rol';
+            $action->description = 'Guarda en la base de datos el rol creado (roles.store)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_vista_rol')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Cargar vista detallada del rol';
+            $action->slug = 'carga_vista_rol';
+            $action->description = 'Carga la vista detallada del rol creado (roles.show)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_rol')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de rol';
+            $action->slug = 'carga_form_edicion_rol';
+            $action->description = 'Carga la vista del formulario de edición del rol (roles.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_rol')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar rol';
+            $action->slug = 'guardar_form_edicion_rol';
+            $action->description = 'Guarda en la base de datos el rol (roles.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_rol')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar rol';
+            $action->slug = 'eliminar_rol';
+            $action->description = 'Elimina de la base de datos el rol (roles.destroy)';
+            $action->save();
+        }
+
+        /** Servicios web **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_servicios_web')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de servicios web';
+            $action->slug = 'listado_servicios_web';
+            $action->description = 'Carga la vista del listado de servicios web (webservices.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_servicio_web')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de servicio web';
+            $action->slug = 'carga_form_creacion_servicio_web';
+            $action->description = 'Carga la vista del formulario de servicio web (webservices.create)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_creacion_servicio_web')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Guardar servicio web';
+            $action->slug = 'guardar_form_creacion_servicio_web';
+            $action->description = 'Guarda en la base de datos el servicio web creado (webservices.store)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_vista_servicio_web')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de la vista de detalles del servicio web';
+            $action->slug = 'carga_vista_servicio_web';
+            $action->description = 'Carga la vista de detalles del servicio web (webservices.show)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_servicio_web')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de servicio web';
+            $action->slug = 'carga_form_edicion_servicio_web';
+            $action->description = 'Carga la vista del formulario de edición del servicio web (webservices.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_servicio_web')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar servicio web';
+            $action->slug = 'guardar_form_edicion_servicio_web';
+            $action->description = 'Guarda en la base de datos el servicio web (webservices.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_servicio_web')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar servicio web';
+            $action->slug = 'eliminar_servicio_web';
+            $action->description = 'Elimina de la base de datos el servicio web (webservices.destroy)';
             $action->save();
         }
 

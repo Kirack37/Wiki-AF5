@@ -22,7 +22,7 @@
                 </ckeditor>
               </div>
             </div>
-            <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Editar el historial </button>
+            <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Editar la nota </button>
             <inertia-link class="inside-project text-yellow-600" :href="route('notes.index', project[0].id)">
               Volver atrás
             </inertia-link>

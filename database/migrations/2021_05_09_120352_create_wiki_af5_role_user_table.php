@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWikiAf5EntitiesTable extends Migration
+class CreateWikiAf5RoleUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateWikiAf5EntitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('wiki_af5_entities', function (Blueprint $table) {
+        Schema::create('wiki_af5_role_user', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug');
-            $table->string('description')->nullable();
+            $table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('role_id')->references('id')->on('wiki_af5_roles');
             $table->timestamps();
-            $table->dateTime('deleted_at')->nullable();
         });
     }
 
@@ -30,6 +28,6 @@ class CreateWikiAf5EntitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('wiki_af5_entities');
+        Schema::dropIfExists('wiki_af5_role_user');
     }
 }

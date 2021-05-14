@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class WikiAf5CompanyController extends Controller
 {
@@ -19,20 +20,26 @@ class WikiAf5CompanyController extends Controller
     {
         $slug_action = 'listado_empresas';
 
-        $companies = WikiAf5Company::query()
-        ->orderBy('name','ASC')
-        ->when($request->term, function ($query, $term ){
-            $query->where('name','LIKE','%' . $term . '%');})
-        ->paginate(10)
-        ->withQueryString()
-        ->sortBy('name');
+        if(Auth::user()->can_action($slug_action)){
+          
+            $companies = WikiAf5Company::query()
+            ->orderBy('name','ASC')
+            ->when($request->term, function ($query, $term ){
+                $query->where('name','LIKE','%' . $term . '%');})
+            ->paginate(10)
+            ->withQueryString()
+            ->sortBy('name');
 
-    return Inertia::render('Companies/Index', [
-   
-        'companies' =>  $companies,
-        'paginator' =>WikiAf5Company::paginate(10)
-      
-     ]);
+            return Inertia::render('Companies/Index', [
+    
+                'companies' =>  $companies,
+                'paginator' =>WikiAf5Company::paginate(10)
+        
+            ]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -44,7 +51,13 @@ class WikiAf5CompanyController extends Controller
     {
         $slug_action = 'carga_form_creacion_empresa';
 
-        return Inertia::render('Companies/CompanyForm');
+        if(Auth::user()->can_action($slug_action)){
+
+            return Inertia::render('Companies/CompanyForm');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -58,16 +71,22 @@ class WikiAf5CompanyController extends Controller
         
         $slug_action = 'guardar_form_creacion_empresa';
 
-        $request->validate(
-            [   
-                'name' => 'required',
-                'description' => 'required',
-            ]
-        );
+        if(Auth::user()->can_action($slug_action)){
 
-        WikiAf5Company::create($request->all());
+            $request->validate(
+                [   
+                    'name' => 'required',
+                    'description' => 'required',
+                ]
+            );
 
-        return Redirect::route('companies')->with('success', '¡Empresa creada correctamente!');
+            WikiAf5Company::create($request->all());
+
+            return Redirect::route('companies')->with('success', '¡Empresa creada correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -80,17 +99,23 @@ class WikiAf5CompanyController extends Controller
     {
         $slug_action = 'carga_vista_empresa';
 
-        if (isset($request['company']) && $request['company']) {
+        // if(Auth::user()->can_action($slug_action)){
 
-            $company_id = $request['company'];
-            $company = WikiAf5Company::find($company_id);
+        //     if (isset($request['company']) && $request['company']) {
 
-            if (isset($company->id)){
-        
-                return Inertia::render('Companies/Show', ['company' =>  $company]);
-            }
-        } 
-        abort(404);
+        //         $company_id = $request['company'];
+        //         $company = WikiAf5Company::find($company_id);
+
+        //         if (isset($company->id)){
+            
+        //             return Inertia::render('Companies/Show', ['company' =>  $company]);
+        //         }
+        //     } 
+        //     abort(404);
+
+        // }else{
+        //     return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        // }
     }
 
     /**
@@ -103,17 +128,23 @@ class WikiAf5CompanyController extends Controller
     {
         $slug_action = 'carga_form_edicion_empresa';
 
-        if (isset($request['company']) && $request['company']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $company_id = $request['company'];
-            $company = WikiAf5Company::find($company_id);
+            if (isset($request['company']) && $request['company']) {
 
-            if (isset($company->id)){
-                
-                return Inertia::render('Companies/CompanyEditForm', ['company' =>  $company]);
-            }
-        } 
-        abort(404);
+                $company_id = $request['company'];
+                $company = WikiAf5Company::find($company_id);
+
+                if (isset($company->id)){
+                    
+                    return Inertia::render('Companies/CompanyEditForm', ['company' =>  $company]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -127,18 +158,24 @@ class WikiAf5CompanyController extends Controller
     {
         $slug_action = 'guardar_form_edicion_empresa';
 
-        if (isset($request['company']) && $request['company']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $company_id = $request['company'];
-            $company = WikiAf5Company::find($company_id);
+            if (isset($request['company']) && $request['company']) {
 
-            if (isset($company->id)){
+                $company_id = $request['company'];
+                $company = WikiAf5Company::find($company_id);
 
-                $company->update($request->all());
-                return Redirect::route('companies')->with('success', '¡Empresa editada correctamente!');
-            }
-        } 
-        abort(404);
+                if (isset($company->id)){
+
+                    $company->update($request->all());
+                    return Redirect::route('companies')->with('success', '¡Empresa editada correctamente!');
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -151,17 +188,22 @@ class WikiAf5CompanyController extends Controller
     {
         $slug_action = 'eliminar_empresa';
 
-        if (isset($request['company']) && $request['company']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $company_id = $request['company'];
-            $company = WikiAf5Company::find($company_id);
+            if (isset($request['company']) && $request['company']) {
 
-            if (isset($company->id)){
+                $company_id = $request['company'];
+                $company = WikiAf5Company::find($company_id);
 
-                $company->delete();
-                return redirect()->back()->with('success', 'Empresa borrada correctamente');
-            }
-        } 
-        abort(404);        
+                if (isset($company->id)){
+
+                    $company->delete();
+                    return redirect()->back()->with('success', 'Empresa borrada correctamente');
+                }
+            } 
+            abort(404); 
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }       
     }
 }

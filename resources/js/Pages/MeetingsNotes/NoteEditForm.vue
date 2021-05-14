@@ -65,7 +65,7 @@ export default {
   methods: {
     submit() {
       this.$inertia.put(
-        route("note.update",[this.meeting[0].id, this.$props.note.id]),this.form);
+        route("meetingnotes.update",[this.meeting[0].id, this.$props.note.id]),this.form);
     },
   }
 }

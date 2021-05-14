@@ -18,6 +18,7 @@ use App\Http\Controllers\WikiAf5WebServicesController;
 use App\Http\Controllers\WikiAf5MeetingsController;
 use App\Http\Controllers\WikiAf5MeetingsLogsController;
 use App\Http\Controllers\WikiAf5MeetingsNotesController;
+use App\Http\Controllers\WikiAf5MeetingsUsersController;
 use App\Http\Controllers\WikiAf5ReportsController;
 use App\Http\Controllers\WikiAf5CompanyController;
 use App\Http\Controllers\WikiAf5ContactController;
@@ -54,12 +55,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 /** Users **/
+Route::resource('users', UsersController::class)
+    ->middleware(['auth:sanctum', 'verified']); 
 
-// Route::get('register', [UsersController::class, 'create'])
-//     ->name('register')
-//     ->middleware(['auth:sanctum', 'verified']);
-// Route::resource('users', UsersController::class)
-//     ->middleware(['auth:sanctum', 'verified']); 
 
 /** Projects **/
 
@@ -113,6 +111,10 @@ Route::resource('projects/{project}/enviroments/{enviroment}/phase', WikiAf5Proj
 
 /** Meetings **/
 
+Route::get('/meetings/data', [WikiAf5MeetingsController::class, 'data'])
+    ->name('meetings.data')
+    ->middleware(['auth:sanctum', 'verified']);
+
 Route::resource('meetings', WikiAf5MeetingsController::class)
     ->middleware(['auth:sanctum', 'verified']);
     
@@ -123,6 +125,11 @@ Route::get('meetings', [WikiAf5MeetingsController::class, 'index'])
     /* Meetings Logs */
 
 Route::resource('meetings/{meeting}/logs', WikiAf5MeetingsLogsController::class)
+    ->middleware(['auth:sanctum', 'verified']);
+
+    /* Meetings Users */
+
+Route::resource('meetings/{meeting}/meetingusers', WikiAf5MeetingsUsersController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
      /* Meetings Notes */

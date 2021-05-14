@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\WikiAf5Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class WikiAf5RolesController extends Controller
 {
@@ -14,7 +17,13 @@ class WikiAf5RolesController extends Controller
      */
     public function index()
     {
-        //
+        $slug_action = 'listado_roles';
+
+        if(Auth::user()->can_action($slug_action)){
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -24,7 +33,13 @@ class WikiAf5RolesController extends Controller
      */
     public function create()
     {
-        //
+        $slug_action = 'carga_form_creacion_rol';
+
+        if(Auth::user()->can_action($slug_action)){
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -35,7 +50,13 @@ class WikiAf5RolesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $slug_action = 'guardar_form_creacion_rol';
+
+        if(Auth::user()->can_action($slug_action)){
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -46,7 +67,13 @@ class WikiAf5RolesController extends Controller
      */
     public function show(WikiAf5Role $wikiAf5Role)
     {
-        //
+        $slug_action = 'carga_vista_rol';
+
+        if(Auth::user()->can_action($slug_action)){
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -57,7 +84,13 @@ class WikiAf5RolesController extends Controller
      */
     public function edit(WikiAf5Role $wikiAf5Role)
     {
-        //
+        $slug_action = 'carga_form_edicion_rol';
+
+        if(Auth::user()->can_action($slug_action)){
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -69,7 +102,13 @@ class WikiAf5RolesController extends Controller
      */
     public function update(Request $request, WikiAf5Role $wikiAf5Role)
     {
-        //
+        $slug_action = 'guardar_form_edicion_rol';
+
+        if(Auth::user()->can_action($slug_action)){
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -80,6 +119,12 @@ class WikiAf5RolesController extends Controller
      */
     public function destroy(WikiAf5Role $wikiAf5Role)
     {
-        //
+        $slug_action = 'eliminar_rol';
+
+        if(Auth::user()->can_action($slug_action)){
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 }

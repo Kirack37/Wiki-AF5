@@ -14,14 +14,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            wiki_af5_users_typeSeeder::class,
-            wiki_af5_companySeeder::class,
-            wiki_af5_prioritiesSeeder::class,
-            usersSeeder::class,
-            wiki_af5_permissionsSeeder::class,
-            wiki_af5_entitiessSeeder::class,
-            wiki_af5_projectsSeeder::class,
-            wiki_af5_projects_historySeeder::class
+            UsersTypeSeeder::class,
+            CompaniesSeeder::class,
+            PrioritiesSeeder::class,
+            UsersSeeder::class,
+            ProjectsSeeder::class,
+            HistoriesSeeder::class,
+            PermissionsSeeder::class,
+            RolesSeeder::class,
         ]);
     }
 }

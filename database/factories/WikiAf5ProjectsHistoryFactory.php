@@ -28,6 +28,7 @@ class WikiAf5ProjectsHistoryFactory extends Factory
             'user_id' => User::where('user_type_id', '1')->inRandomOrder()->first()->id,
             'project_id' => WikiAf5Projects::inRandomOrder()->first()->id,
             'title' => Str::random(10),
+            'description' => $this->faker->paragraphs(6, true),
             'publication' => 'publicado',
         ];
     }

@@ -29,6 +29,11 @@
             <p>{{ incidence.users.firstname }} {{ incidence.users.lastname }}</p>
           </div> -->
           <div class="project-data mr-12">
+            <inertia-link class="inside-item text-yellow-600" :href="route('incidences.show', [project[0].id, incidence.id])">
+              <font-awesome-icon :icon="['fas', 'eye']" size="lg" />
+            </inertia-link>
+          </div>
+          <div class="project-data mr-12">
             <inertia-link
               class="inside-project text-blue-600"
               method="get"

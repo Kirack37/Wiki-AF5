@@ -20,23 +20,29 @@ class WikiAf5MeetingsNotesController extends Controller
     {
         $slug_action = 'listado_notas_reuniones';
 
-        $meetings = WikiAf5Meetings::where('id', $id)->get();
-        $notes = WikiAf5MeetingsNotes::where('meeting_id' , $id)
-                ->orderBy('created_at', 'asc')
-                ->when($request->term, function ($query, $term ){
-                    $query->where('subjects','LIKE','%' . $term . '%');})
-                ->with('users')
-                ->with('meetings')
-                ->paginate(10)
-                ->withQueryString()
-                ->sortBy('name');
+        if(Auth::user()->can_action($slug_action)){
 
-        return Inertia::render('MeetingsNotes/Index', [
-            'meetings' => $meetings,
-            'notes' =>  $notes,
-            'paginator' =>WikiAf5MeetingsNotes::paginate(10)
-      
-     ]);
+            $meetings = WikiAf5Meetings::where('id', $id)->get();
+            $notes = WikiAf5MeetingsNotes::where('meeting_id' , $id)
+                    ->orderBy('created_at', 'asc')
+                    ->when($request->term, function ($query, $term ){
+                        $query->where('subjects','LIKE','%' . $term . '%');})
+                    ->with('users')
+                    ->with('meetings')
+                    ->paginate(10)
+                    ->withQueryString()
+                    ->sortBy('name');
+
+            return Inertia::render('MeetingsNotes/Index', [
+                'meetings' => $meetings,
+                'notes' =>  $notes,
+                'paginator' =>WikiAf5MeetingsNotes::paginate(10)
+        
+            ]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -48,10 +54,17 @@ class WikiAf5MeetingsNotesController extends Controller
     {   
         $slug_action = 'carga_form_creacion_nota_reunion';
 
-        $user_id = Auth::id();
-        $meetings = WikiAf5Meetings::where('id', $id)->get();
+            if(Auth::user()->can_action($slug_action)){
 
-        return Inertia::render('MeetingsNotes/NoteForm', ['meetings' => $meetings, 'user_id' => $user_id]);
+
+            $user_id = Auth::id();
+            $meetings = WikiAf5Meetings::where('id', $id)->get();
+
+            return Inertia::render('MeetingsNotes/NoteForm', ['meetings' => $meetings, 'user_id' => $user_id]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -64,16 +77,22 @@ class WikiAf5MeetingsNotesController extends Controller
     {
         $slug_action = 'guardar_form_creacion_nota_reunion';
 
-        $request->validate(
-            [   
-                'subjects' => 'required',
-                'notes' => 'required',
-            ]
-        );
+        if(Auth::user()->can_action($slug_action)){
 
-        WikiAf5MeetingsNotes::create($request->all());
+            $request->validate(
+                [   
+                    'subjects' => 'required',
+                    'notes' => 'required',
+                ]
+            );
 
-        return Redirect::route('meetingnotes.index', $id)->with('success', '¡Nota de reunión creada correctamente!');
+            WikiAf5MeetingsNotes::create($request->all());
+
+            return Redirect::route('meetingnotes.index', $id)->with('success', '¡Nota de reunión creada correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
 
@@ -98,20 +117,26 @@ class WikiAf5MeetingsNotesController extends Controller
     {
         $slug_action = 'carga_form_edicion_nota_reunion';
 
-        $user_id = Auth::id();
-        $meeting = WikiAf5Meetings::where('id', $id)->get();
-        
-        if (isset($request['note']) && $request['note']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $note_id = $request['note'];
-            $note = WikiAf5MeetingsNotes::find($note_id);
+            $user_id = Auth::id();
+            $meeting = WikiAf5Meetings::where('id', $id)->get();
+            
+            if (isset($request['meetingnote']) && $request['meetingnote']) {
 
-            if (isset($note->id)){
-                
-                return Inertia::render('MeetingsNotes/NoteEditForm', ['meeting' =>  $meeting, 'note' => $note, 'user_id' => $user_id]);
-            }
-        } 
-        abort(404);
+                $note_id = $request['meetingnote'];
+                $note = WikiAf5MeetingsNotes::find($note_id);
+
+                if (isset($note->id)){
+                    
+                    return Inertia::render('MeetingsNotes/NoteEditForm', ['meeting' =>  $meeting, 'note' => $note, 'user_id' => $user_id]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -125,19 +150,25 @@ class WikiAf5MeetingsNotesController extends Controller
     {
         $slug_action = 'guardar_form_edicion_nota_reunion';
 
-        if (isset($request['note']) && $request['note']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $note_id = $request['note'];
-            $note = WikiAf5MeetingsNotes::find($note_id);
+            if (isset($request['meetingnote']) && $request['meetingnote']) {
 
-            if (isset($note->id)){
+                $note_id = $request['meetingnote'];
+                $note = WikiAf5MeetingsNotes::find($note_id);
 
-                $note->update($request->all());
-                
-                return Redirect::route('meetingnotes.index', $id)->with('success', '¡Nota de reunión editada correctamente!');
-            }
-        } 
-        abort(404);
+                if (isset($note->id)){
+
+                    $note->update($request->all());
+                    
+                    return Redirect::route('meetingnotes.index', $id)->with('success', '¡Nota de reunión editada correctamente!');
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
 
@@ -151,18 +182,24 @@ class WikiAf5MeetingsNotesController extends Controller
     {
         $slug_action = 'eliminar_nota_reunion';
 
-        if (isset($request['note']) && $request['note']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $note_id = $request['note'];
-            $note = WikiAf5MeetingsNotes::find($note_id);
+            if (isset($request['meetingnote']) && $request['meetingnote']) {
 
-            if (isset($note->id)){
+                $note_id = $request['meetingnote'];
+                $note = WikiAf5MeetingsNotes::find($note_id);
 
-                $note->delete();
+                if (isset($note->id)){
 
-                return redirect()->back()->with('success', 'Nota de reunión borrada correctamente');
-            }
-        } 
-        abort(404);        
+                    $note->delete();
+
+                    return redirect()->back()->with('success', 'Nota de reunión borrada correctamente');
+                }
+            } 
+            abort(404);
+            
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 }

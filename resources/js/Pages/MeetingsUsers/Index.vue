@@ -2,12 +2,12 @@
   <app-layout>
     <template #header>
         <h2 class="font-semibold text-xl text-white leading-tight">
-            Logs de {{meetings[0].id}}
+            Hola
         </h2>
     </template>
     <div class="container mx-auto my-10">
       <flash-messages />
-      <div class="select-stuff mb-20 flex">
+      <!-- <div class="select-stuff mb-20 flex">
         <search id="search" class="w-full max-w-md mr-10"  v-model:search="term" @keyup="searchFor" @click="resetQuery()"></search>
         <inertia-link class="flex-none ml-auto border-2 border-double rounded border-gray-100 p-3 bg-yellow-600 text-white" :href="'log/create'">Crear un nuevo log</inertia-link>
       </div>
@@ -15,7 +15,7 @@
         <div class="recent-items-titles bg-white p-3 flex mb-2">
           <div class="item-title flex-1"><h3 class="text-gray-600">Mensaje del log</h3></div>
           <div class="item-title flex-1"><h3 class="text-gray-600">Fecha del log</h3></div>
-          <!-- <div class="item-title flex-1"><h3 class="text-gray-600">Creador del log</h3></div> -->
+
           <div class="item-title flex-initial mr-24 ml-28"><h3 class="text-gray-600">Acciones</h3></div>
         </div>
         <div v-for="log in logs" :key="log.id" class="item-card flex border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
@@ -25,14 +25,10 @@
           <div class="item-data flex-1">
             <p>{{ moment(log.created_at).format("DD-MM-YYYY") }}</p>
           </div>
-          <!-- <div class="item-data flex-1">
-            <p>{{ log.users.firstname }} {{ log.users.lastname }}</p>
-          </div> -->
+
           <div class="item-data mr-12">
             
-            <!-- <inertia-link class="inside-item text-yellow-600" :href="route('meetings.show', meeting.id)">
-              <font-awesome-icon :icon="['fas', 'eye']" size="lg" />
-            </inertia-link> -->
+  
 
           </div>
           <div class="item-data mr-12">
@@ -51,7 +47,7 @@
             <confirm-dialogue ref="confirmDialogue"></confirm-dialogue>
           </div>
         </div>
-      </div>
+      </div> -->
       <Paginator :paginator="paginator" />
     </div>
   </app-layout>

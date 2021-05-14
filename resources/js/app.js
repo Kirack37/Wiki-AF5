@@ -15,6 +15,10 @@ import { faPhone, faEye, faEdit, faTrash, faHome, faEnvelope } from "@fortawesom
 import { faFacebookSquare, faTwitterSquare, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import ReadMore from 'vue-read-more';
+import Vue from 'vue';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+import { useModal } from "./useModal";
 
 
 library.add(faPhone, faEye, faEdit, faTrash, faFacebookSquare, faTwitterSquare, faLinkedin, faHome, faEnvelope);
@@ -23,6 +27,7 @@ library.add(faPhone, faEye, faEdit, faTrash, faFacebookSquare, faTwitterSquare, 
 const el = document.getElementById('app');
 
 createApp({
+        mixins: [useModal],
         render: () =>
             h(InertiaApp, {
                 initialPage: JSON.parse(el.dataset.page),
@@ -30,14 +35,15 @@ createApp({
             }),
 
     })
-    .mixin({ methods: { route } })
-
-.use(InertiaPlugin)
+    .mixin({ methods: { route, useModal } })
+    .mixin(useModal)
+    .use(InertiaPlugin)
     // .component("Modalable", Modalable)
     // .component("ToModal", ToModal)
     .use(library)
     .use(PortalVue)
     .use(ReadMore)
+    .use(VueAxios, axios)
     .use(VueFinalModal())
     .component('font-awesome-icon', FontAwesomeIcon)
     .mount(el);

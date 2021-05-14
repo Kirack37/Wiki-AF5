@@ -5,9 +5,9 @@ namespace Database\Seeders;
 use App\Models\WikiAf5Projects;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
-class wiki_af5_projectsSeeder extends Seeder
+
+class ProjectsSeeder extends Seeder
 {
     /**
      * Run the database seeds.

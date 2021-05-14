@@ -20,23 +20,29 @@ class WikiAf5MeetingsLogsController extends Controller
     {
         $slug_action = 'listado_logs_reuniones';
 
-        $meetings = WikiAf5Meetings::where('id', $id)->get();
-        $logs = WikiAf5MeetingsLogs::where('meeting_id' , $id)
-                ->orderBy('created_at', 'asc')
-                ->when($request->term, function ($query, $term ){
-                    $query->where('message','LIKE','%' . $term . '%');})
-                ->with('users')
-                ->with('meetings')
-                ->paginate(10)
-                ->withQueryString()
-                ->sortBy('name');
+        if(Auth::user()->can_action($slug_action)){
 
-        return Inertia::render('MeetingsLogs/Index', [
-            'meetings' => $meetings,
-            'logs' =>  $logs,
-            'paginator' =>WikiAf5MeetingsLogs::paginate(10)
-      
-     ]);
+            $meetings = WikiAf5Meetings::where('id', $id)->get();
+            $logs = WikiAf5MeetingsLogs::where('meeting_id' , $id)
+                    ->orderBy('created_at', 'asc')
+                    ->when($request->term, function ($query, $term ){
+                        $query->where('message','LIKE','%' . $term . '%');})
+                    ->with('users')
+                    ->with('meetings')
+                    ->paginate(10)
+                    ->withQueryString()
+                    ->sortBy('name');
+
+            return Inertia::render('MeetingsLogs/Index', [
+                'meetings' => $meetings,
+                'logs' =>  $logs,
+                'paginator' =>WikiAf5MeetingsLogs::paginate(10)
+        
+            ]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -48,10 +54,16 @@ class WikiAf5MeetingsLogsController extends Controller
     {   
         $slug_action = 'carga_form_creacion_log_reunion';
 
-        // $user_id = Auth::id();
-        $meetings = WikiAf5Meetings::where('id', $id)->get();
+        if(Auth::user()->can_action($slug_action)){
 
-        return Inertia::render('MeetingsLogs/LogForm', ['meetings' => $meetings]);
+            // $user_id = Auth::id();
+            $meetings = WikiAf5Meetings::where('id', $id)->get();
+
+            return Inertia::render('MeetingsLogs/LogForm', ['meetings' => $meetings]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -64,15 +76,21 @@ class WikiAf5MeetingsLogsController extends Controller
     {
         $slug_action = 'guardar_form_creacion_log_reunion';
 
-        $request->validate(
-            [   
-                'message' => 'required',
-            ]
-        );
+        if(Auth::user()->can_action($slug_action)){
 
-        WikiAf5MeetingsLogs::create($request->all());
+            $request->validate(
+                [   
+                    'message' => 'required',
+                ]
+            );
 
-        return Redirect::route('logs.index', $id)->with('success', '¡Log de la reunión creado correctamente!');
+            WikiAf5MeetingsLogs::create($request->all());
+
+            return Redirect::route('logs.index', $id)->with('success', '¡Log de la reunión creado correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -96,19 +114,25 @@ class WikiAf5MeetingsLogsController extends Controller
     {
         $slug_action = 'carga_form_edicion_log_reunion';
 
-        $user_id = Auth::id();
-        $meeting = WikiAf5Meetings::where('id', $id)->get();
-        
-        if (isset($request['log']) && $request['log']) {
-            $log_id = $request['log'];
-            $log = WikiAf5MeetingsLogs::find($log_id);
+        if(Auth::user()->can_action($slug_action)){
 
-            if (isset($log->id)){
-                
-                return Inertia::render('MeetingsLogs/LogEditForm', ['meeting' =>  $meeting, 'log' => $log, 'user_id' => $user_id]);
-            }
-        } 
-        abort(404);
+            $user_id = Auth::id();
+            $meeting = WikiAf5Meetings::where('id', $id)->get();
+            
+            if (isset($request['log']) && $request['log']) {
+                $log_id = $request['log'];
+                $log = WikiAf5MeetingsLogs::find($log_id);
+
+                if (isset($log->id)){
+                    
+                    return Inertia::render('MeetingsLogs/LogEditForm', ['meeting' =>  $meeting, 'log' => $log, 'user_id' => $user_id]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -122,19 +146,25 @@ class WikiAf5MeetingsLogsController extends Controller
     {
         $slug_action = 'guardar_form_edicion_log_reunion';
 
-        if (isset($request['log']) && $request['log']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $log_id = $request['log'];
-            $log = WikiAf5MeetingsLogs::find($log_id);
+            if (isset($request['log']) && $request['log']) {
 
-            if (isset($log->id)){
+                $log_id = $request['log'];
+                $log = WikiAf5MeetingsLogs::find($log_id);
 
-                $log->update($request->all());
+                if (isset($log->id)){
 
-                return Redirect::route('logs.index', $id)->with('success', '¡Log de la reunión editado correctamente!');
-            }
-        } 
-        abort(404);
+                    $log->update($request->all());
+
+                    return Redirect::route('logs.index', $id)->with('success', '¡Log de la reunión editado correctamente!');
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -147,18 +177,24 @@ class WikiAf5MeetingsLogsController extends Controller
     {
         $slug_action = 'eliminar_log_reunion';
 
-        if (isset($request['log']) && $request['log']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $log_id = $request['log'];
-            $log = WikiAf5MeetingsLogs::find($log_id);
+            if (isset($request['log']) && $request['log']) {
 
-            if (isset($log->id)){
+                $log_id = $request['log'];
+                $log = WikiAf5MeetingsLogs::find($log_id);
 
-                $log->delete();
-                
-                return redirect()->back()->with('success', 'Log de historial borrado correctamente');
-            }
-        } 
-        abort(404);        
+                if (isset($log->id)){
+
+                    $log->delete();
+                    
+                    return redirect()->back()->with('success', 'Log de historial borrado correctamente');
+                }
+            } 
+            abort(404);
+            
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 }

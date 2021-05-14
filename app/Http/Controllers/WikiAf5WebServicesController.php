@@ -18,22 +18,30 @@ class WikiAf5WebServicesController extends Controller
      */
     public function index($id, Request $request)
     {
-        $project = WikiAf5Projects::where('id', $id)->get();
-        $web_services = WikiAf5WebServices::where('project_id' , $id)
-                ->orderBy('created_at', 'asc')
-                ->when($request->term, function ($query, $term ){
-                    $query->where('name','LIKE','%' . $term . '%');})
-                ->with('projects')
-                ->paginate(10)
-                ->withQueryString()
-                ->sortBy('name');
+        $slug_action = 'listado_servicios_web';
 
-        return Inertia::render('ProjectsWebServices/Index', [
-            'project' => $project,
-            'webServices' =>  $web_services,
-            'paginator' =>WikiAf5WebServices::paginate(10)
-      
-     ]);
+        if(Auth::user()->can_action($slug_action)){
+
+            $project = WikiAf5Projects::where('id', $id)->get();
+            $web_services = WikiAf5WebServices::where('project_id' , $id)
+                    ->orderBy('created_at', 'asc')
+                    ->when($request->term, function ($query, $term ){
+                        $query->where('name','LIKE','%' . $term . '%');})
+                    ->with('projects')
+                    ->paginate(10)
+                    ->withQueryString()
+                    ->sortBy('name');
+
+            return Inertia::render('ProjectsWebServices/Index', [
+                'project' => $project,
+                'webservices' =>  $web_services,
+                'paginator' =>WikiAf5WebServices::paginate(10)
+        
+            ]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -43,10 +51,18 @@ class WikiAf5WebServicesController extends Controller
      */
     public function create($id)
     {   
-        // $user_id = Auth::id();
-        $projects = WikiAf5Projects::where('id', $id)->get();
+        $slug_action = 'carga_form_creacion_servicio_web';
 
-        return Inertia::render('ProjectsWebServices/WebServicesForm', ['projects' => $projects])->with('status', '¡Web service creado correctamente!');
+        if(Auth::user()->can_action($slug_action)){
+
+            // $user_id = Auth::id();
+            $projects = WikiAf5Projects::where('id', $id)->get();
+
+            return Inertia::render('ProjectsWebServices/WebServiceForm', ['projects' => $projects])->with('status', '¡Web service creado correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
 
@@ -58,15 +74,23 @@ class WikiAf5WebServicesController extends Controller
      */
     public function store($id, Request $request)
     {
-        $request->validate(
-            [   
-                'name' => 'required',
-            ]
-        );
+        $slug_action = 'guardar_form_creacion_servicio_web';
 
-        WikiAf5WebServices::create($request->all());
+        if(Auth::user()->can_action($slug_action)){
 
-        return Redirect::route('webservices.index', $id)->with('success', '¡Web service creado correctamente!');
+            $request->validate(
+                [   
+                    'name' => 'required',
+                ]
+            );
+
+            WikiAf5WebServices::create($request->all());
+
+            return Redirect::route('webservices.index', $id)->with('success', '¡Web service creado correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -75,9 +99,30 @@ class WikiAf5WebServicesController extends Controller
      * @param  \App\Models\WikiAf5WebServices  $wikiAf5WebServices
      * @return \Illuminate\Http\Response
      */
-    public function show(WikiAf5WebServices $wikiAf5WebServices)
+    public function show($id, Request $request)
     {
-        //
+        $slug_action = 'carga_vista_servicio_web';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            // $user_id = Auth::id();
+            $project = WikiAf5Projects::where('id', $id)->get();
+            
+            if (isset($request['webservice']) && $request['webservice']) {
+
+                $web_service_id = $request['webservice'];
+                $web_service = WikiAf5WebServices::find($web_service_id);
+
+                if (isset($web_service->id)){
+                    
+                    return Inertia::render('ProjectsWebServices/Show', ['project' =>  $project, 'webservice' => $web_service]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -88,19 +133,28 @@ class WikiAf5WebServicesController extends Controller
      */
     public function edit($id, Request $request)
     {
-        // $user_id = Auth::id();
-        $project = WikiAf5Projects::where('id', $id)->get();
-        
-        if (isset($request['web_service']) && $request['web_service']) {
-            $web_service_id = $request['web_service'];
-            $web_service = WikiAf5WebServices::find($web_service_id);
+        $slug_action = 'carga_form_edicion_servicio_web';
 
-            if (isset($web_service->id)){
-                
-                return Inertia::render('ProjectsHistory/HistoryEditForm', ['project' =>  $project, 'webService' => $web_service]);
-            }
-        } 
-        abort(404);
+        if(Auth::user()->can_action($slug_action)){
+
+            // $user_id = Auth::id();
+            $project = WikiAf5Projects::where('id', $id)->get();
+            
+            if (isset($request['webservice']) && $request['webservice']) {
+
+                $web_service_id = $request['webservice'];
+                $web_service = WikiAf5WebServices::find($web_service_id);
+
+                if (isset($web_service->id)){
+                    
+                    return Inertia::render('ProjectsWebServices/WebServiceEditForm', ['project' =>  $project, 'webservices' => $web_service]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -112,15 +166,27 @@ class WikiAf5WebServicesController extends Controller
      */
     public function update($id, Request $request)
     {
-        if (isset($request['web_service']) && $request['web_service']) {
-            $web_service_id = $request['web_service'];
-            $web_service = WikiAf5WebServices::find($web_service_id);
-            if (isset($web_service->id)){
-                $web_service->update($request->all());
-                return Redirect::route('webservices.index', $id)->with('success', '¡Web service editado correctamente!');
-            }
-        } 
-        abort(404);
+        $slug_action = 'guardar_form_edicion_servicio_web';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['webservice']) && $request['webservice']) {
+
+                $web_service_id = $request['webservice'];
+                $web_service = WikiAf5WebServices::find($web_service_id);
+
+                if (isset($web_service->id)){
+
+                    $web_service->update($request->all());
+
+                    return Redirect::route('webservices.index', $id)->with('success', '¡Web service editado correctamente!');
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -131,14 +197,26 @@ class WikiAf5WebServicesController extends Controller
      */
     public function destroy($id, Request $request)
     {
-        if (isset($request['web_service']) && $request['web_service']) {
-            $web_service_id = $request['web_service'];
-            $web_service = WikiAf5WebServices::find($web_service_id);
-            if (isset($web_service->id)){
-                $web_service->delete();
-                return redirect()->back()->with('success', 'Web service borrado correctamente');
-            }
-        } 
-        abort(404);        
+        $slug_action = 'eliminar_servicio_web';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['webservice']) && $request['webservice']) {
+
+                $web_service_id = $request['webservice'];
+                $web_service = WikiAf5WebServices::find($web_service_id);
+
+                if (isset($web_service->id)){
+
+                    $web_service->delete();
+
+                    return redirect()->back()->with('success', 'Web service borrado correctamente');
+                }
+            } 
+            abort(404);   
+            
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 }

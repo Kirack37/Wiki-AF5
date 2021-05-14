@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     submit() {
-      this.$inertia.post(route('note.store', this.meetings[0].id), this.form);
+      this.$inertia.post(route('meetingnotes.store', this.meetings[0].id), this.form);
     },
   }
 }

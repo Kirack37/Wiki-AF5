@@ -9,7 +9,7 @@
       <flash-messages />
       <div class="select-stuff mb-20 flex">
         <search id="search" class="w-full max-w-md mr-10"  v-model:search="term" @keyup="searchFor" @click="resetQuery()"></search>
-        <inertia-link class="flex-none ml-auto border-2 border-double rounded border-gray-100 p-3 bg-yellow-600 text-white" :href="'trello/create'">Crear un nuevo Trello</inertia-link>
+        <inertia-link class="flex-none ml-auto border-2 border-double rounded border-gray-100 p-3 bg-yellow-600 text-white" :href="'trello/create'">Crear una nueva Fase</inertia-link>
       </div>
       <div class="recent-items">
         <div class="recent-items-titles bg-white p-3 flex mb-2">

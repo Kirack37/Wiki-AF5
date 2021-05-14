@@ -15,7 +15,10 @@
         <div v-for="history in histories" :key="history.id" class="item-card border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
         <div class="item-info flex">
           <div class="item-data flex-1">
-              <p><strong class="text-black ml-4">Creador del historial: </strong>{{ history.users.firstname }} {{ history.users.lastname }}</p>
+              <p><strong class="text-black ml-4">Título del historial: </strong>{{ history.title }}</p>
+            </div>
+          <div class="item-data flex-1 mr-32">
+              <p><strong class="text-black">Creador del historial: </strong>{{ history.users.firstname }} {{ history.users.lastname }}</p>
             </div>
             <div class="item-data flex-end mr-8">
               <p><strong class="text-black">Fecha de creación: </strong>{{ moment(history.created_at).format("DD-MM-YYYY") }}</p>

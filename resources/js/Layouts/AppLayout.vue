@@ -205,13 +205,18 @@
 
             <!-- Page Content -->
             <main>
-                <div class="opacity-90">
+                <div class="main-content">
                     <slot></slot>
+                    <Component
+                        v-bind="$page.props"
+                        v-if="$root.modalComponent"
+                        :is="$root.modalComponent"
+                    />
                 </div>
             </main>
             <footer>
                 <!-- Footer -->
-            <div class="page-footer-container opacity-90 mt-12">
+            <div class="page-footer-container mt-12">
                 <div class="z-0" style="backgroundColor: #EA891B">
                     <div class="container-rrss">
                         <div class="py-4 flex justify-between">
@@ -226,31 +231,36 @@
                         </div>
                     </div>
                 </div>
-                <div class="footer-links flex mt-10 bg-white z-0">
-                    <div class="footer-info flex-1 ml-6">
+                <div class="footer-links flex pt-10 bg-white z-0">
+                    <div class="footer-info flex-1 ml-6 mr-10">
                         <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Área F5</strong></h6>
                         <p>Wiki oficial de la empresa Área F5.</p>
+                        <img class="mt-12" src="/../../images/logo_blanco.png">
+                        
+                        
+                        
                     </div>
-                    <div class="footer-links flex-1">
+                    <div class="footer-links flex-1 mr-10">
                         <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Enlaces de interés</strong></h6>
                         <p class="footer-link"><a href="https://areaf5.es/">Página oficial Área F5</a></p>
-                        <p class="footer-link"><a href="#!">Guía de estilo Área F5</a></p>
+                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Guía de estilo Área F5</p></inertia-link>
                         <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Patrones de trabajo</p></inertia-link>
-                        <!-- <p class="footer-link"><a href="#!">Patrones de trabajo</a></p> -->
-                        <p class="footer-link"><a href="#!">Incidencias frecuentes</a></p>
-                        <p class="footer-link"><a href="#!">Memes (proximamente)</a></p>
+                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Aviso legal</p></inertia-link>
+                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Política de privacidad</p></inertia-link>
+                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Política de cookies</p></inertia-link>
                     </div>
                     <div class="footer-contact flex-1">
                         <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Contacto</strong></h6>
                         <p class="footer-link"><font-awesome-icon :icon="['fas', 'home']" size="lg"/>Calle Melilla 1, Local 21, Churriana de la Vega (Granada).</p>
-                        <a href="mailto:info@areaf5.es" target="_blank"><p class="footer-icons footer-link"><font-awesome-icon :icon="['fas', 'envelope']" size="lg"/>info@areaf5.es</p></a>
-                        <p class="footer-icons footer-link"><font-awesome-icon :icon="['fas', 'phone']" size="lg"/>Granada: 633 65 99 20</p>
-                        <p class="footer-icons footer-link"><font-awesome-icon :icon="['fas', 'phone']" size="lg"/>Dúrcal: 679 749 395</p>
+                        <p class="footer-icons footer-link"><font-awesome-icon :icon="['fas', 'envelope']" size="lg"/><a href="mailto:info@areaf5.es" target="_blank">info@areaf5.es</a></p>
+                        <p class="footer-icons footer-link"><font-awesome-icon :icon="['fas', 'phone']" size="lg"/>Granada: <a href="tel:633659920">633 65 99 20</a></p>
+                        <p class="footer-icons footer-link"><font-awesome-icon :icon="['fas', 'phone']" size="lg"/>Dúrcal: <a href="tel:679749395">679 749 395</a></p>
+                        <p class="footer-icons footer-link"><font-awesome-icon :icon="['fas', 'phone']" size="lg"/>Córdoba: <a href="tel:622326229">622 326 229</a></p>
                     </div>
                 </div>
-                <div class="footer-copyright text-center mt-8 mb-10">
+                <div class="footer-copyright text-center pt-8 pb-10">
                     <div fluid>
-                        &copy; 2021 Copyright: <a href="https://www.areaf5.es"> Área F5 </a>
+                        <p>&copy; 2021 Copyright: <a href="https://www.areaf5.es"> Área F5 </a></p>
                     </div>
                 </div>
             </div>

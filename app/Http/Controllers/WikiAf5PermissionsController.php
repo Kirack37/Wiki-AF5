@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\WikiAf5Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WikiAf5PermissionsController extends Controller
 {
@@ -41,10 +42,10 @@ class WikiAf5PermissionsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\WikiAf5Permission  $wikiAf5Permission
+     * @param  \App\Models\WikiAf5Permission  $WikiAf5Permission
      * @return \Illuminate\Http\Response
      */
-    public function show(WikiAf5Permission $wikiAf5Permission)
+    public function show(WikiAf5Permission $WikiAf5Permission)
     {
         //
     }
@@ -52,10 +53,10 @@ class WikiAf5PermissionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\WikiAf5Permission  $wikiAf5Permission
+     * @param  \App\Models\WikiAf5Permission  $WikiAf5Permission
      * @return \Illuminate\Http\Response
      */
-    public function edit(WikiAf5Permission $wikiAf5Permission)
+    public function edit(WikiAf5Permission $WikiAf5Permission)
     {
         $slug_action = 'carga_form_edicion_permiso';
     }
@@ -64,10 +65,10 @@ class WikiAf5PermissionsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\WikiAf5Permission  $wikiAf5Permission
+     * @param  \App\Models\WikiAf5Permission  $WikiAf5Permission
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, WikiAf5Permission $wikiAf5Permission)
+    public function update(Request $request, WikiAf5Permission $WikiAf5Permission)
     {
         $slug_action = 'guardar_form_edicion_permiso';
     }
@@ -75,10 +76,10 @@ class WikiAf5PermissionsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\WikiAf5Permission  $wikiAf5Permission
+     * @param  \App\Models\WikiAf5Permission  $WikiAf5Permission
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WikiAf5Permission $wikiAf5Permission)
+    public function destroy(WikiAf5Permission $WikiAf5Permission)
     {
         $slug_action = 'eliminar_permiso';
     }

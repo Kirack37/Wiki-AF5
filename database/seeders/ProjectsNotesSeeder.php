@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class wiki_af5_projectsNotesSeeder extends Seeder
+class ProjectsNotesSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -22,25 +22,32 @@ class WikiAf5EmployeesNotesController extends Controller
 
         $slug_action = 'listado_notas_personales';
 
-        $user_id = Auth::id();
-        $notes = WikiAf5EmployeesNotes::query()
-            ->orderBy('title', 'ASC')
-            ->where('user_id', $user_id)
-            ->when($request->term, function ($query, $term ){
-                $query->where('title','LIKE','%' . $term . '%');})
-            ->with('user')
-            ->paginate(10)
-            ->withQueryString()
-            ->sortBy('name');
+        
+        if(Auth::user()->can_action($slug_action)){
+
+            $user_id = Auth::id();
+            $notes = WikiAf5EmployeesNotes::query()
+                ->orderBy('title', 'ASC')
+                ->where('user_id', $user_id)
+                ->when($request->term, function ($query, $term ){
+                    $query->where('title','LIKE','%' . $term . '%');})
+                ->with('user')
+                ->paginate(10)
+                ->withQueryString()
+                ->sortBy('name');
 
 
-        return Inertia::render('EmployeesNotes/Index', [
-       
-            'user_id' => $user_id,
-            'notes' =>  $notes,
-            'paginator' =>WikiAf5EmployeesNotes::paginate(10)
-          
-         ]);
+            return Inertia::render('EmployeesNotes/Index', [
+        
+                'user_id' => $user_id,
+                'notes' =>  $notes,
+                'paginator' =>WikiAf5EmployeesNotes::paginate(10)
+            
+            ]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
 
@@ -53,10 +60,16 @@ class WikiAf5EmployeesNotesController extends Controller
     {   
         $slug_action = 'carga_form_creacion_nota_personal';
 
-        $user_id = Auth::id();
-        $notes = WikiAf5EmployeesNotes::where('id', $user_id)->get();
+        if(Auth::user()->can_action($slug_action)){
 
-        return Inertia::render('EmployeesNotes/NoteForm', ['notes' => $notes, 'user_id' => $user_id]);
+            $user_id = Auth::id();
+            $notes = WikiAf5EmployeesNotes::where('id', $user_id)->get();
+
+            return Inertia::render('EmployeesNotes/NoteForm', ['notes' => $notes, 'user_id' => $user_id]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -69,17 +82,23 @@ class WikiAf5EmployeesNotesController extends Controller
     {
         $slug_action = 'guardar_form_creacion_nota_personal';
 
-        $request->validate(
-            [   
-                'user_id' => 'required',
-                'type' => 'required',
-                'title' => 'required',
-                'description' => 'required',
-            ]
-        );
-        WikiAf5EmployeesNotes::create($request->all());
+        if(Auth::user()->can_action($slug_action)){
 
-        return Redirect::route('personalnotes')->with('success', '¡Nota personal creada correctamente!');
+            $request->validate(
+                [   
+                    'user_id' => 'required',
+                    'type' => 'required',
+                    'title' => 'required',
+                    'description' => 'required',
+                ]
+            );
+            WikiAf5EmployeesNotes::create($request->all());
+
+            return Redirect::route('personalnotes')->with('success', '¡Nota personal creada correctamente!');
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -103,18 +122,24 @@ class WikiAf5EmployeesNotesController extends Controller
     {
         $slug_action = 'carga_form_edicion_nota_personal';
 
-        $user_id = Auth::id();
-        
-        if (isset($request['personalnote']) && $request['personalnote']) {
-            $note_id = $request['personalnote'];
-            $note = WikiAf5EmployeesNotes::find($note_id);
+        if(Auth::user()->can_action($slug_action)){
 
-            if (isset($note->id)){
-                
-                return Inertia::render('EmployeesNotes/NoteEditForm', ['note' =>  $note, 'user_id' => $user_id]);
-            }
-        } 
-        abort(404);
+            $user_id = Auth::id();
+            
+            if (isset($request['personalnote']) && $request['personalnote']) {
+                $note_id = $request['personalnote'];
+                $note = WikiAf5EmployeesNotes::find($note_id);
+
+                if (isset($note->id)){
+                    
+                    return Inertia::render('EmployeesNotes/NoteEditForm', ['note' =>  $note, 'user_id' => $user_id]);
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
 
@@ -129,19 +154,25 @@ class WikiAf5EmployeesNotesController extends Controller
     {
         $slug_action = 'guardar_form_edicion_nota_personal';
 
-        if (isset($request['personalnote']) && $request['personalnote']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $note_id = $request['personalnote'];
-            $note = WikiAf5EmployeesNotes::find($note_id);
+            if (isset($request['personalnote']) && $request['personalnote']) {
 
-            if (isset($note->id)){
+                $note_id = $request['personalnote'];
+                $note = WikiAf5EmployeesNotes::find($note_id);
 
-                $note->update($request->all());
+                if (isset($note->id)){
 
-                return Redirect::route('personalnotes')->with('success', '¡Nota personal editada correctamente!');
-            }
-        } 
-        abort(404);
+                    $note->update($request->all());
+
+                    return Redirect::route('personalnotes')->with('success', '¡Nota personal editada correctamente!');
+                }
+            } 
+            abort(404);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
 
@@ -155,18 +186,24 @@ class WikiAf5EmployeesNotesController extends Controller
     {
         $slug_action = 'eliminar_nota_personal';
 
-        if (isset($request['personalnote']) && $request['personalnote']) {
+        if(Auth::user()->can_action($slug_action)){
 
-            $note_id = $request['personalnote'];
-            $note = WikiAf5EmployeesNotes::find($note_id);
+            if (isset($request['personalnote']) && $request['personalnote']) {
 
-            if (isset($note->id)){
+                $note_id = $request['personalnote'];
+                $note = WikiAf5EmployeesNotes::find($note_id);
 
-                $note->delete();
+                if (isset($note->id)){
 
-                return redirect()->back()->with('success', 'Nota personal borrada correctamente');
-            }
-        } 
-        abort(404);        
+                    $note->delete();
+
+                    return redirect()->back()->with('success', 'Nota personal borrada correctamente');
+                }
+            } 
+            abort(404);    
+            
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 }

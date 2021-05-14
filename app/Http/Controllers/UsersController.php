@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\WikiAf5Company;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Models\WikiAf5UsersType;
+use Illuminate\Support\Facades\Auth;
+
 
 class UsersController extends Controller
 {
@@ -16,8 +15,34 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {   
+    {
+        //
+    }
+
+     /**
+     * Display a listing of all the users in data to make an AjaX CALL.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function data()
+    {
+        // $data = [];
+
+        // return User::paginate();
         
+        // $users = User::get();
+
+        // foreach($users as $user){
+            
+        //     $data[] = [
+        //         $user->username,
+        //         $user->fisrtname,
+        //         $user->lastname,
+        //         $user->userType,
+        //     ];
+        // }
+            
+        // return json_encode(["data" => $data]);
     }
 
     /**
@@ -27,12 +52,23 @@ class UsersController extends Controller
      */
     public function create()
     {
-        // $usersType = WikiAf5UsersType::all();
-        // $companies = WikiAf5Company::all();
+        $data = [];
 
-        // return Inertia::render('Auth/Register', [
-        //     'usersType' => $usersType, 'companies' => $companies
-        //  ]);
+        
+        
+        $users = User::get();
+
+        foreach($users as $user){
+            
+            $data[] = [
+                $user->username,
+                $user->fisrtname,
+                $user->lastname,
+                $user->userType,
+            ];
+        }
+            
+        return json_encode(["data" => $data]);
     }
 
     /**

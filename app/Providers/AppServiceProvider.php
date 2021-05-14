@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Routing\ResponseFactory;
+use Inertia\ResponseFactory;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Session;
 
@@ -27,14 +27,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        ResponseFactory::macro('modal', function ($modal) { 
-            inertia()->share(['modal' => $modal]); 
+        ResponseFactory::macro('modal', function ($modal) {
+            inertia()->share(['modal' => $modal]);
         });
         
 
         Inertia::share('flash', function () {
             return [
                 'success' => Session::get('success'),
+                'error' => Session::get('error'),
             ];
         });
     }

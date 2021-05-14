@@ -2,7 +2,7 @@
   <app-layout>
     <template #header>
         <h2 class="font-semibold text-xl text-white leading-tight">
-            Logs de {{meetings[0].id}}
+            Acta de {{meetings[0].subjects}}
         </h2>
     </template>
     <div class="container mx-auto my-10">
