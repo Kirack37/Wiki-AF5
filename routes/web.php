@@ -129,6 +129,11 @@ Route::resource('meetings/{meeting}/logs', WikiAf5MeetingsLogsController::class)
 
     /* Meetings Users */
 
+Route::get('meetingusers.create', function () {
+    inertia()->modal('meetingusers.create');
+    
+    return inertia('meetings.edit');
+});
 Route::resource('meetings/{meeting}/meetingusers', WikiAf5MeetingsUsersController::class)
     ->middleware(['auth:sanctum', 'verified']);
 

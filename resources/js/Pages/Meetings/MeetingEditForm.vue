@@ -84,6 +84,7 @@ import axios from 'axios/dist/axios';
 
 
 
+
 export default {
   
   mounted() {
@@ -165,7 +166,7 @@ export default {
       },
       form: this.$inertia.form({
         subjects: this.meeting.subjects,
-        meeting_users: this.meeting_users,
+        meeting_users: this.tmp_meeting_users,
         date: this.meeting.date,
         description: this.meeting.description,
         owner_id: this.meeting.owner_id,
@@ -176,6 +177,14 @@ export default {
   },
   methods: {  
     submit() {
+
+      var tmp_meeting_users= new Array();
+      $('.meeting_users:checked').each(function() {
+        console.log("Checkbox " + $(this).prop("id") +  " (" + $(this).val() + ") Seleccionado");
+        tmp_meeting_users.push($(this).val());
+      });
+      console.log(tmp_meeting_users);
+      this.form.meeting_users = tmp_meeting_users;
       this.$inertia.put(
         route("meetings.update", this.$props.meeting.id),
         this.form

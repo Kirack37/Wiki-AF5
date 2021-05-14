@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
+use App\Support\Utils\OctaModal;
+
 
 class WikiAf5MeetingsUsersController extends Controller
 {
@@ -23,13 +25,13 @@ class WikiAf5MeetingsUsersController extends Controller
         $slug_action = 'listado_usuarios_reuniones';
         
 
-        return inertia('MeetingsUsers/Index', array_merge([
-            'meeting' => $WikiAf5Meetings,
-            'users' => $WikiAf5Meetings
-                ->meeting_users()
-                ->orderBy('created_at', 'desc')
-                ->paginate(),
-        ], $modalProps));
+        // return inertia('MeetingsUsers/Index', array_merge([
+        //     'meeting' => $WikiAf5Meetings,
+        //     'users' => $WikiAf5Meetings
+        //         ->meeting_users()
+        //         ->orderBy('created_at', 'desc')
+        //         ->paginate(),
+        // ], $modalProps));
     }
     /**
      * Show the form for creating a new resource.
@@ -40,11 +42,15 @@ class WikiAf5MeetingsUsersController extends Controller
     {   
         $slug_action = 'carga_form_creacion_usuario_reunion';
 
-        inertia()->modal('MeetingUsers/CreateModal');
+        // inertia()->modal('MeetingUsers/CreateModal');
 
-        return $this->index($WikiAf5Meetings, [
-            'users' => User::all(),
-        ]);
+        // return $this->index($WikiAf5Meetings, [
+        //     'users' => User::all(),
+        // ]);
+        // return OctaModal::create()
+        //     ->title("Create Post")
+        //     ->route('meetingusers.store')
+        //     ->get();
     }
 
     /**

@@ -81,9 +81,9 @@ class WikiAf5MeetingsController extends Controller
             }
             
             if($exists){
-                $checkbox =  ' <input type="checkbox" name="meeting_users[]" value="'.$mu->id.'" checked />';
+                $checkbox =  ' <input type="checkbox" class="meeting_users" name="meeting_users[]" value="'.$mu->id.'" checked />';
             }else {
-                $checkbox =  ' <input type="checkbox" name="meeting_users[]" value="'.$mu->id.' "/>';
+                $checkbox =  ' <input type="checkbox" class="meeting_users" name="meeting_users[]" value="'.$mu->id.'"/>';
             }
             
             

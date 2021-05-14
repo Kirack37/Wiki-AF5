@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // $this->registerInertia();
     }
 
     /**
@@ -39,4 +39,24 @@ class AppServiceProvider extends ServiceProvider
             ];
         });
     }
+    // public function registerInertia()
+    // {
+    //     Inertia::version(function () {
+    //         return md5_file(public_path('mix-manifest.json'));
+    //     });
+
+    //     Inertia::share([
+    //         OctaModal::key => fn () => Session::has(OctaModal::key) ? Cache::pull(Session::get(OctaModal::key)) : null,
+    //         OctaResponse::key => fn () => Session::has(OctaResponse::key) ? Cache::pull(Session::get(OctaResponse::key)) : null,
+    //         'flash' => fn () => [
+    //             'success' => Session::get('success'),
+    //             'error' => Session::get('error'),
+    //         ],
+    //         'errors' => fn () => Session::get('errors')
+    //             ? Session::get('errors')
+    //             ->getBag('default')
+    //             ->getMessages()
+    //             : (object) [],
+    //     ]);
+    // }
 }
