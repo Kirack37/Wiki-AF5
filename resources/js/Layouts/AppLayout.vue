@@ -32,24 +32,49 @@
                                     Reuniones
                                 </jet-nav-link>
                             </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('clients')" :active="route().current('clients')">
-                                    Clientes
-                                </jet-nav-link>
+                            <div class="group inline-block hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <button class="outline-none focus:outline-none bg-white rounded-sm flex items-center min-w-32">
+                                    <p class="pr-1 text-sm text-gray-900 flex-1">Personal externo</p>
+                                    <svg
+                                        class="fill-current h-4 w-4 transform group-hover:-rotate-180
+                                        transition duration-150 ease-in-out"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                    >
+                                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                                    </svg>
+                                </button>
+                                <ul class="mt-14 bg-white border rounded-sm transform scale-0 group-hover:scale-100 absolute 
+                                transition duration-150 ease-in-out origin-top min-w-32">
+                                    <li class="rounded-sm px-3 py-1 hover:bg-gray-100">
+                                        <jet-nav-link :href="route('clients')" :active="route().current('clients')">Clientes</jet-nav-link>
+                                    </li>
+                                    <li class="rounded-sm px-3 py-1 hover:bg-gray-100">
+                                        <jet-nav-link :href="route('externalworkers')" :active="route().current('externalworkers')">Trabajadores Externos</jet-nav-link>
+                                    </li>
+                                    <li class="rounded-sm px-3 py-1 hover:bg-gray-100">
+                                        <jet-nav-link :href="route('contacts')" :active="route().current('contacts')">Contactos</jet-nav-link>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <!-- <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('contacts')" :active="route().current('contacts')">
                                     Contactos
                                 </jet-nav-link>
-                            </div>
-                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                <jet-nav-link :href="route('externalworkers')" :active="route().current('externalworkers')">
-                                    Trabajadores Externos
-                                </jet-nav-link>
-                            </div>
+                            </div> -->
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('companies')" :active="route().current('companies')">
                                     Empresas
+                                </jet-nav-link>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('wikiusers')" :active="route().current('wikiusers')">
+                                    Usuarios
+                                </jet-nav-link>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('roles')" :active="route().current('roles')">
+                                    Roles
                                 </jet-nav-link>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -207,11 +232,11 @@
             <main>
                 <div class="main-content">
                     <slot></slot>
-                    <Component
+                    <!-- <Component
                         v-bind="$page.props"
                         v-if="$root.modalComponent"
                         :is="$root.modalComponent"
-                    />
+                    /> -->
                 </div>
             </main>
             <footer>
@@ -231,7 +256,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="footer-links flex pt-10 bg-white z-0">
+                <div class="footer-container flex pt-10 bg-white z-0">
                     <div class="footer-info flex-1 ml-6 mr-10">
                         <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Área F5</strong></h6>
                         <p>Wiki oficial de la empresa Área F5.</p>
@@ -243,11 +268,11 @@
                     <div class="footer-links flex-1 mr-10">
                         <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Enlaces de interés</strong></h6>
                         <p class="footer-link"><a href="https://areaf5.es/">Página oficial Área F5</a></p>
-                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Guía de estilo Área F5</p></inertia-link>
-                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Patrones de trabajo</p></inertia-link>
-                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Aviso legal</p></inertia-link>
-                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Política de privacidad</p></inertia-link>
-                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="mb-6">Política de cookies</p></inertia-link>
+                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="footer-link mb-6">Guía de estilo Área F5</p></inertia-link>
+                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="footer-link mb-6">Patrones de trabajo</p></inertia-link>
+                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="footer-link mb-6">Aviso legal</p></inertia-link>
+                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="footer-link mb-6">Política de privacidad</p></inertia-link>
+                        <inertia-link class="footer-link" :href="route('patternworks')"><p class="footer-link mb-6">Política de cookies</p></inertia-link>
                     </div>
                     <div class="footer-contact flex-1">
                         <h6 class="mb-8"><strong class="underlined-footer-text uppercase font-bold border-b-2 border-yellow-600 pb-1">Contacto</strong></h6>
@@ -268,6 +293,27 @@
         </div>  
     </div>
 </template>
+
+<style>
+  /* since nested groupes are not supported we have to use 
+     regular css for the nested dropdowns 
+  */
+  li>ul                 { transform: translatex(100%) scale(0) }
+  li:hover>ul           { transform: translatex(101%) scale(1) }
+  li > button svg       { transform: rotate(-90deg) }
+  li:hover > button svg { transform: rotate(-270deg) }
+
+  /* Below styles fake what can be achieved with the tailwind config
+     you need to add the group-hover variant to scale and define your custom
+     min width style.
+  	 See https://codesandbox.io/s/tailwindcss-multilevel-dropdown-y91j7?file=/index.html
+  	 for implementation with config file
+  */
+  .group:hover .group-hover\:scale-100 { transform: scale(1) }
+  .group:hover .group-hover\:-rotate-180 { transform: rotate(180deg) }
+  .scale-0 { transform: scale(0) }
+  .min-w-32 { min-width: 8rem }
+</style>
 
 <script>
     import JetApplicationMark from '@/Jetstream/ApplicationMark'

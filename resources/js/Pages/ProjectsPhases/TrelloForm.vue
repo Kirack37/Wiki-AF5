@@ -11,7 +11,7 @@
           <div class="flex-1">
             <label class="mr-12" for="name">URL del Trello:</label >
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="url" v-model="form.url" />
-            <div v-if="errors.name">La URL es requerida</div>
+            <div v-if="errors.name">La URL es necesaria</div>
           </div>
         </div>
         <div class="flex items-center mb-8">

@@ -46,28 +46,62 @@ class WikiAf5ProjectsController extends Controller
         }
     }
 
-    // public function data()
-    // {
-    //     $data = [];
-        
-    //     $projects = WikiAf5Projects::get();
-    
+     /**
+     * Devuelve todas los usuarios para cargar datatables vía ajax.
+     * @author María Correa
+     * @return array
+     */
+    public function data()
+    {
+        $slug_action = 'carga_lista_usuarios_proyectos';
 
-    //     foreach($projects as $p){
-            
-    //         $data[] = [
-    //             $p->name,
-    //             $p->priority_id,
-    //             $p->responsible_id,
-    //             $p->start_date,
-    //             $p->alias
-    //         ];
-    //     }
+        if(Auth::user()->can_action($slug_action)){
 
-    //     // Auth::user()->add_action('carga_lista_empresas', json_encode($data));
+            $data = [];
             
-    //     return json_encode(["data" => $data]);
-    // }
+            $all_users = User::get();
+
+            if(isset($_GET['id'])){
+
+                $projects = WikiAf5Projects::find($_GET['id']);
+            }
+            
+
+            foreach($all_users as $pu){
+
+                $exists = false;
+
+                if(isset($_GET['id'])){
+
+                    foreach($projects->all_users as $user){
+
+                        if($pu->id == $user->id){
+                            $exists = true;
+                        }
+                    }
+                }
+                
+                if($exists){
+                    $checkbox =  ' <input type="checkbox" class="all_users" name="all_users[]" value="'.$pu->id.'" checked />';
+                }else {
+                    $checkbox =  ' <input type="checkbox" class="all_users" name="all_users[]" value="'.$pu->id.'"/>';
+                }
+                
+                
+                $data[] = [
+                    $checkbox,
+                    $pu->firstname,
+                    $pu->lastname,
+                    $pu->user_type->name,        
+                ];
+            }
+
+                
+            return json_encode(["data" => $data]);
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -114,6 +148,18 @@ class WikiAf5ProjectsController extends Controller
 
             WikiAf5Projects::create($request->all());
 
+            if(!is_null($request->all_users)){
+                foreach ($request->all_users as $user){
+                   
+                    DB::table('wiki_af5_projects_users')->insert([
+                        'project_id' => $request->id,
+                        'user_id' => $user,
+                        'accept_invitation' => 'aceptada',
+                        'status' => 1
+                    ]);
+                }
+            }
+
             return Redirect::route('projects')->with('success', '¡Proyecto creado correctamente!');
 
         }else{
@@ -140,7 +186,7 @@ class WikiAf5ProjectsController extends Controller
 
                 if (isset($project->id)){
 
-                    $project->description = strip_tags($project->description);
+                    // $project->description = strip_tags($project->description);
                     $history = WikiAf5ProjectsHistory::where('project_id', $project_id)->get();
                     $responsible_id = $project->responsible_id;
                     $responsible = User::where('id', $responsible_id)->get();
@@ -163,7 +209,7 @@ class WikiAf5ProjectsController extends Controller
      * @param  \App\Models\WikiAf5Projects  $wikiAf5Projects
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit(Request $request, $id)
     {
         $slug_action = 'carga_form_edicion_proyecto';
 
@@ -176,11 +222,11 @@ class WikiAf5ProjectsController extends Controller
 
                 if (isset($project->id)){
 
-                    $project->description = strip_tags($project->description);
+                    // $project->description = strip_tags($project->description);
                     $responsibles = User::where('user_type_id', 1)->get();
                     $priorities = WikiAf5Priorities::all();
 
-                    return Inertia::render('Projects/ProjectEditForm', ['project' =>  $project, 'priorities' => $priorities, 'responsibles' => $responsibles]);
+                    return Inertia::render('Projects/ProjectEditForm', ['project' =>  $project, 'priorities' => $priorities, 'responsibles' => $responsibles, 'id' => $id]);
                 }
             } 
             abort(404);
@@ -197,7 +243,7 @@ class WikiAf5ProjectsController extends Controller
      * @param  \App\Models\WikiAf5Projects  $wikiAf5Projects
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $slug_action = 'guardar_form_edicion_proyecto';
 
@@ -211,6 +257,23 @@ class WikiAf5ProjectsController extends Controller
                 if (isset($project->id)){
 
                     $project->update($request->all());
+
+                    foreach($project->all_users as $user){
+                        DB::table('wiki_af5_meetings_users')->where('meeting_id', $id)->delete();
+                    }
+                    
+                    if(!is_null($request->all_users)){
+                        foreach ($request->all_users as $user){
+                           
+                            DB::table('wiki_af5_projects_users')->insert([
+                                'project_id' => $id,
+                                'user_id' => $user,
+                                'accept_invitation' => 'aceptada',
+                                'status' => 1
+                            ]);
+                        }
+                    }
+        
 
                     return Redirect::route('projects')->with('success', '¡Proyecto editado correctamente!');
                 }

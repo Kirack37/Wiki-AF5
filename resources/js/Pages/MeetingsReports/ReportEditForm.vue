@@ -11,7 +11,7 @@
           <div class="flex-1">
             <label class="mr-12" for="subjects">Estado del acta:</label >
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="subjects" v-model="form.aprobbed" />
-            <div class="text-bold text-red-600" v-if="errors.aprobbed">El asunto es requerido</div>
+            <div class="text-bold text-red-600" v-if="errors.aprobbed">El asunto es necesario</div>
           </div>
           <div class="flex-1">
             <label class="mr-4" for="responsible">Aprobación del acta:</label>
@@ -28,7 +28,7 @@
             :editor="editor"
             :config="editorConfig"
             ></ckeditor>
-            <div v-if="errors.description">La descripción es requerida</div>
+            <div v-if="errors.description">La descripción es necesaria</div>
           </div>
         </div>
         <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Editar acta </button>

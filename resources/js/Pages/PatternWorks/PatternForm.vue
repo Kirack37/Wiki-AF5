@@ -11,13 +11,13 @@
           <div class="flex-1">
             <label class="mr-12" for="subjects">Título del patrón de trabajo:</label >
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="title" v-model="form.name" />
-            <div class="text-bold text-red-600" v-if="errors.name">El título es requerido</div>
+            <div class="text-bold text-red-600" v-if="errors.name">El título es necesario</div>
           </div>
           <div class="flex-1">
             <label class="mr-8" for="alias">Tipo del patrón:</label>
             <select class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="type" v-model="form.project_type">
               <option v-for="(project_type, index) in project_type" :key="index">{{project_type.name}}</option>
-              <div class="text-bold text-red-600" v-if="errors.project_type">El tipo es requerido</div>
+              <div class="text-bold text-red-600" v-if="errors.project_type">El tipo es necesario</div>
             </select>
           </div>
         </div>

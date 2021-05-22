@@ -18,31 +18,31 @@ class UsersTypeSeeder extends Seeder
         $exists = WikiAf5UsersType::where('name', 'Empleado')->first();
         if(!isset($exists)){
             
-            $userType = new WikiAf5UsersType;
-            $userType->name = 'Empleado';
-            $userType->description = 'Empleado de Área F5';
-            $userType->status = '1';
-            $userType->save();
+            $user_type = new WikiAf5UsersType;
+            $user_type->name = 'Empleado';
+            $user_type->description = 'Empleado de Área F5';
+            $user_type->status = '1';
+            $user_type->save();
         }
 
         $exists = WikiAf5UsersType::where('name', 'Cliente')->first();
         if(!isset($exists)){
             
-            $userType = new WikiAf5UsersType;
-            $userType->name = 'Cliente';
-            $userType->description = 'Cliente de Área F5';
-            $userType->status = '1';
-            $userType->save();
+            $user_type = new WikiAf5UsersType;
+            $user_type->name = 'Cliente';
+            $user_type->description = 'Cliente de Área F5';
+            $user_type->status = '1';
+            $user_type->save();
         }
 
         $exists = WikiAf5UsersType::where('name', 'Trabajador Externo')->first();
         if(!isset($exists)){
             
-            $userType = new WikiAf5UsersType;
-            $userType->name = 'Trabajador Externo';
-            $userType->description = 'Trabajador de empresa externa';
-            $userType->status = '1';
-            $userType->save();
+            $user_type = new WikiAf5UsersType;
+            $user_type->name = 'Trabajador Externo';
+            $user_type->description = 'Trabajador de empresa externa';
+            $user_type->status = '1';
+            $user_type->save();
         }
     }
 }

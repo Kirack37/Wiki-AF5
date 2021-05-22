@@ -27,9 +27,6 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        // $usersType = WikiAf5UsersType::get();
-        // $companies = WikiAf5Company::get();
-
         Validator::make($input, [
 
             // 'fistname' => ['required', 'string', 'max:255'],

@@ -11,24 +11,24 @@
           <div class="flex-1">
             <label class="mr-12" for="title">Nombre del servicio web:</label>
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.name" />
-            <div v-if="errors.name">El título es requerido</div>
+            <div v-if="errors.name">El título es necesario</div>
           </div>
           <div class="flex-1">
             <label class="mr-12" for="title">Método del servicio web:</label>
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.methods" />
-            <div v-if="errors.methods">el método es requerido</div>
+            <div v-if="errors.methods">el método es necesario</div>
           </div>
         </div>
         <div class="flex items-center mb-8">
           <div class="flex-1">
             <label class="mr-12" for="title">URL del servicio web:</label>
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.url" />
-            <div v-if="errors.url">La URL es requerida</div>
+            <div v-if="errors.url">La URL es necesaria</div>
           </div>
           <div class="flex-1">
             <label class="mr-12" for="title">Tipo de respuesta del servicio web:</label>
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.data_request_type" />
-            <div v-if="errors.data_request_type">El título es requerido</div>
+            <div v-if="errors.data_request_type">El título es necesario</div>
           </div>
         </div>
         <div class="mt-14">
@@ -38,7 +38,7 @@
             :editor="editor"
             :config="editorConfig"
             ></ckeditor>
-            <div v-if="errors.description">La descripción es requerida</div>
+            <div v-if="errors.description">La descripción es necesaria</div>
           </div>
         </div>
         <div class="mt-14">
@@ -48,7 +48,7 @@
             :editor="editor"
             :config="editorConfig"
             ></ckeditor>
-            <div v-if="errors.description">La descripción es requerida</div>
+            <div v-if="errors.description">La descripción es necesaria</div>
           </div>
         </div>
         <div class="mt-14">
@@ -58,7 +58,7 @@
             :editor="editor"
             :config="editorConfig"
             ></ckeditor>
-            <div v-if="errors.description">La descripción es requerida</div>
+            <div v-if="errors.description">La descripción es necesaria</div>
           </div>
         </div>
         <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Añadir servicio web </button>

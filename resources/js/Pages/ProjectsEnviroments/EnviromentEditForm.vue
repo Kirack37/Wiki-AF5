@@ -10,7 +10,7 @@
             <div class="flex-1">
               <label class="mr-12" for="name">Título del entorno:</label >
               <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.name" />
-              <div v-if="errors.name">El nombre es requerido</div>
+              <div v-if="errors.name">El nombre es necesario</div>
             </div>
             <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Editar el entorno </button>
             <inertia-link class="inside-project text-yellow-600" :href="route('enviroments.index', project[0].id)">

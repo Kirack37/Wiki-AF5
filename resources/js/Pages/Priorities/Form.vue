@@ -10,7 +10,7 @@
         <div>
           <label for="name">Nombre:</label >
           <input id="name" v-model="form.name" />
-          <div v-if="errors.name">El Nombre es requerido</div>
+          <div v-if="errors.name">El Nombre es necesario</div>
         </div>
         <div>
           <label for="description">Descripción</label>

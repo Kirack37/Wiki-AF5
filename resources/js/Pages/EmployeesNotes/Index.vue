@@ -112,7 +112,6 @@ export default {
   },
 
   methods: {
-  
     resetQuery() {
       this.$inertia.replace(this.route('personalnotes.index', ''))
       var inputs = document.getElementsByTagName('input');
@@ -123,7 +122,6 @@ export default {
       }
     },
     searchFor() {
-
       this.$inertia.replace(this.route('personalnotes.index', {term: this.term}))
       
     },
@@ -136,7 +134,7 @@ export default {
       if (ok) {
           this.$inertia.delete(this.route('personalnotes.destroy', note));
       } 
-  },
+    },
   },
 };
 </script>

@@ -11,13 +11,13 @@
           <div class="flex-1">
             <label class="mr-12" for="subjects">Título de la nota:</label >
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="title" v-model="form.title" />
-            <div class="text-bold text-red-600" v-if="errors.title">El título es requerido</div>
+            <div class="text-bold text-red-600" v-if="errors.title">El título es necesario</div>
           </div>
           <div class="flex-1">
             <label class="mr-8" for="alias">Tipo de nota:</label>
             <select class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="type" v-model="form.type">
               <option v-for="(type, index) in type" :key="index">{{type.name}}</option>
-              <div class="text-bold text-red-600" v-if="errors.type">El tipo es requerido</div>
+              <div class="text-bold text-red-600" v-if="errors.type">El tipo es necesario</div>
             </select>
           </div>
         </div>
@@ -30,7 +30,14 @@
             ></ckeditor>
           </div>
         </div>
-        <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Editar la nota personal </button>
+        <div class="flex">          
+          <div class="flex-1 mt-8"> 
+            <button class="bg-yellow-500 rounded p-4" type="submit"> Editar la nota personal </button>
+          </div>
+          <div class="flex-end mt-12"> 
+            <inertia-link class="bg-gray-200 rounded p-4" :href="route('personalnotes')">Volver atrás</inertia-link>
+          </div>
+        </div>
       </form>
     </div>
   </app-layout>

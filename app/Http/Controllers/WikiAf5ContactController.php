@@ -83,20 +83,21 @@ class WikiAf5ContactController extends Controller
     {   
         $slug_action = 'carga_vista_contacto';
 
-        if (isset($request['contact']) && $request['contact']) {
+        // if (isset($request['contact']) && $request['contact']) {
 
-            $contact_id = $request['contact'];
-            $contact = WikiAf5Contact::find($contact_id);
+            // $contact_id = $request['contact'];
+            // $contact = WikiAf5Contact::find($contact_id);
+            // dd($contact);
+            // // if (isset($contact->id)){
 
-            if (isset($contact->id)){
+            //     $user_id = $contact->user_id;
+            //     $users = User::where('id', $user_id)->get();
+            //     $contacts = WikiAf5Contact::where('id', $user_id)->get();
 
-                $users_id = $contact->user_id;
-                $users = User::where('id', $users_id)->get();
-
-                return Inertia::render('Contacts/Show', ['contact' =>  $contact, 'users' => $users]);
-            }
-        } 
-        abort(404);
+            //     return Inertia::render('Contacts/Show', ['contacts' =>  $contacts, 'users' => $users]);
+        //     }
+        // } 
+        // abort(404);
     }
 
     /**

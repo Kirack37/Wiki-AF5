@@ -34,7 +34,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'user_type_id', 'firstname', 'lastname', 'name', 'email', 'password', 'company_id', 'status'
+        'user_type_id', 'firstname', 'lastname', 'name', 'email', 'password', 'status'
     ];
 
     /**
@@ -93,17 +93,17 @@ class User extends Authenticatable
      * $user->WikiAf5Projects;
      * @author María Correa
      */
-    public function WikiAf5Projects(){
-        return $this->hasMany(WikiAf5Projects::class);
+    public function projects(){
+        return $this->belongsToMany(WikiAf5Projects::class, 'wiki_af5_projects_users', 'user_id', 'project_id');
     }
 
     /**
      * Al invocar esta función desde un usuario obtienes el tipo de usuario del mismo.
-     * $user->userType;
+     * $user->user_type;
      * @author María Correa
      */
-    public function userType(){
-        return $this->belongsTo(WikiAf5UsersType::class);
+    public function user_type(){
+        return $this->belongsTo(WikiAf5UsersType::class, 'user_type_id');
     }
 
     /**

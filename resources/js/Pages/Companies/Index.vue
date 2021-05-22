@@ -13,9 +13,9 @@
       </div>
       <div class="recent-items">
         <div class="recent-items-titles bg-white p-3 flex mb-2">
-          <div class="item-title flex-1 mr-4"><h3 class="text-gray-600">Nombre</h3></div>
-          <div class="item-title flex-1"><h3 class="text-gray-600">Descripción</h3></div>
-          <div class="item-title flex-initial mr-24 ml-28"><h3 class="text-gray-600">Acciones</h3></div>
+          <div class="item-title flex-1"><h3 class="text-gray-600">Nombre</h3></div>
+          <div class="item-title flex-1 mr-8"><h3 class="text-gray-600">Descripción</h3></div>
+          <div class="item-title flex-initial mr-16 ml-8"><h3 class="text-gray-600">Acciones</h3></div>
         </div>
         <div v-for="company in companies" :key="company.id" class="project-card flex border-2 rounded border-double border-gray-300 mb-3 p-3 bg-white">
           <div class="item-data flex-1">
@@ -26,9 +26,9 @@
           </div>
           <div class="item-data mr-12">
             
-            <inertia-link class="inside-item text-yellow-600" :href="route('companies.show', company.id)">
+            <!-- <inertia-link class="inside-item text-yellow-600" :href="route('companies.show', company.id)">
               <font-awesome-icon :icon="['fas', 'eye']" size="lg" />
-            </inertia-link>
+            </inertia-link> -->
 
           </div>
           <div class="item-data mr-12">

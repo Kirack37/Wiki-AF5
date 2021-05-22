@@ -43,7 +43,9 @@
             :config="editorConfig" >  
           </ckeditor>
         </div>
-        <button class="bg-gray-200 rounded p-4 mt-8"><a href="/externalworkers">Volver a la página de trabajadores externos</a></button>
+        <div class="mt-12"> 
+          <inertia-link class="bg-gray-200 rounded p-4" :href="route('externalworkers')">Volver atrás</inertia-link>
+        </div>
       </div>
     </main>
   </app-layout>

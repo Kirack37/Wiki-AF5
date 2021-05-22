@@ -58,7 +58,17 @@
               :config="editorConfig" >  
             </ckeditor>
           </div>
-          <button class="bg-gray-200 rounded p-4 mt-8"><a href="/meetings">Volver a la página de reuniones</a></button>
+          <div class="flex items-center mt-8">
+            <div class="flex-1">
+              <h3 class="inline-block mr-4">Asistentes de la reunión:</h3> 
+              <ul class="list-disc">
+                <li class="ml-12 text-black" v-for="assistant in assistants" :key="assistant.id" :value="assistant.id">{{ assistant }}</li>
+              </ul>     
+            </div>
+          </div>
+          <div class="mt-12"> 
+          <inertia-link class="bg-gray-200 rounded p-4" :href="route('meetings')">Volver atrás</inertia-link>
+        </div>
       </div>
     </main>
   </app-layout>
@@ -80,6 +90,7 @@ export default {
     owner: Object,
     meeting: Object,
     priority: Object,
+    assistants: Object,
     responsible: Object,
   },
   data() {

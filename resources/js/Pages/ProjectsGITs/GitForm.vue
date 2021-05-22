@@ -11,14 +11,14 @@
               <div class="flex-1">
                 <label class="mr-12" for="name">URL del repositorio de GIT:</label>
                 <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="url" v-model="form.repository_url" />
-                <div v-if="errors.repository_url">La URL es requerida</div>
+                <div v-if="errors.repository_url">La URL es necesaria</div>
               </div>
             </div>
             <div class="flex items-center mb-8">
               <div class="flex-1">
                 <label class="mr-12" for="name">Nombre del repositorio de GIT:</label>
                 <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.repository_name" />
-                <div v-if="errors.repository_name">El nombre es requerido</div>
+                <div v-if="errors.repository_name">El nombre es necesario</div>
               </div>
             </div>
         <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Añadir GIT </button>

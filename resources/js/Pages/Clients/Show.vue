@@ -27,7 +27,7 @@
         </div>
         <!-- <div class="flex items-center mb-14">
           <div class="flex-1">
-            <inertia-link class="bg-blue-400 rounded p-4 mt-8" :href="route('contact.index', users.id)">Contacto del cliente</inertia-link>
+            <inertia-link class="bg-blue-400 rounded p-4 mt-8" :href="route('contacts.show', client.id)">Contacto del cliente</inertia-link>
           </div>
         </div> -->
         <div class="item-attribute mt-14">
@@ -43,7 +43,9 @@
             :config="editorConfig" >  
           </ckeditor>
         </div>
-        <button class="bg-gray-200 rounded p-4 mt-8"><a href="/clients">Volver a la página de clientes</a></button>
+        <div class="mt-12"> 
+          <inertia-link class="bg-gray-200 rounded p-4" :href="route('clients')">Volver atrás</inertia-link>
+        </div>
       </div>
     </main>
   </app-layout>

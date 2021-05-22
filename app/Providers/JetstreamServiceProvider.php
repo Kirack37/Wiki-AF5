@@ -9,11 +9,15 @@ use App\Actions\Jetstream\DeleteUser;
 use App\Actions\Jetstream\InviteTeamMember;
 use App\Actions\Jetstream\RemoveTeamMember;
 use App\Actions\Jetstream\UpdateTeamName;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Laravel\Fortify\Fortify;
 use Laravel\Jetstream\Jetstream;
 use App\Models\WikiAf5UsersType;
+
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -44,15 +48,22 @@ class JetstreamServiceProvider extends ServiceProvider
         Jetstream::deleteTeamsUsing(DeleteTeam::class);
         Jetstream::deleteUsersUsing(DeleteUser::class);
 
-        Fortify::registerView(function () {
+       
 
-            $usersType = WikiAf5UsersType::all();
+    
+        // Fortify::registerView(function () {
+            
 
-            return Inertia::render('Auth/Register', [
-                'usersType' => $usersType
-            ]);
-        });
-        
+        //         $usersType = WikiAf5UsersType::all();
+
+        //         return Inertia::render('Auth/Register', [
+        //             'usersType' => $usersType,
+        //         ]);
+
+
+        //     });
+            
+           
     }
 
     /**

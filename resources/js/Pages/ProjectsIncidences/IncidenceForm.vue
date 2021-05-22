@@ -11,7 +11,7 @@
           <div class="flex-1">
             <label class="mr-12" for="name">Título de la incidencia:</label >
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.title" />
-            <div class="text-bold text-red-600" v-if="errors.title">El título es requerido</div>
+            <div class="text-bold text-red-600" v-if="errors.title">El título es necesario</div>
           </div>
         </div>
         <div class="mt-14">
@@ -21,7 +21,7 @@
             :editor="editor"
             :config="editorConfig"
             ></ckeditor>
-            <div class="text-bold text-red-600" v-if="errors.reason">El motivo es requerido</div>
+            <div class="text-bold text-red-600" v-if="errors.reason">El motivo es necesario</div>
           </div>
         </div>
         <div class="mt-14">
@@ -31,7 +31,7 @@
             :editor="editor"
             :config="editorConfig"
             ></ckeditor>
-            <div class="text-bold text-red-600" v-if="errors.description">La descripción es requerida</div>
+            <div class="text-bold text-red-600" v-if="errors.description">La descripción es necesaria</div>
           </div>
         </div>
         <div class="mt-14">

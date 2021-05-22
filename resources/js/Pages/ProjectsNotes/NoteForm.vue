@@ -11,7 +11,7 @@
           <div class="flex-1">
             <label class="mr-12" for="name">Título de la nota:</label >
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.subject" />
-            <div v-if="errors.name">El título es requerido</div>
+            <div v-if="errors.name">El título es necesario</div>
           </div>
         </div>
         <div class="mt-14">
@@ -21,7 +21,7 @@
             :editor="editor"
             :config="editorConfig"
             ></ckeditor>
-            <div v-if="errors.note">La descripción es requerida</div>
+            <div v-if="errors.note">La descripción es necesaria</div>
           </div>
         </div>
         <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Añadir nota </button>

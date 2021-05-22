@@ -27,7 +27,7 @@
             <div class="mt-4">  
                 <jet-label for="user_type_id" value="Tipo de usuario" />
                 <select class="mt-1 relative px-6 py-3 w-50 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="user_type_id" v-model="form.user_type_id">
-                    <option id="usersType" v-for="userType in usersType" :key="userType.id" :value="userType.id" data-id="userType.id">{{ userType.name }} </option>
+                    <option id="usersType" v-for="user_type in usersType" :key="user_type.id" :value="user_type.id" data-id="user_type.id">{{ user_type.name }} </option>
                 </select>
             </div>
             <div class="mt-4">
@@ -40,7 +40,7 @@
                 <jet-input id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" required autocomplete="new-password" />
             </div>
 
-            <div class="mt-4" v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature">
+            <!-- <div class="mt-4" v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature">
                 <jet-label for="terms">
                     <div class="flex items-center">
                         <jet-checkbox name="terms" id="terms" v-model:checked="form.terms" />
@@ -50,16 +50,11 @@
                         </div>
                     </div>
                 </jet-label>
-            </div>
+            </div> -->
 
             <div class="flex items-center justify-end mt-4">
-                <inertia-link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    ¿Ya estás registrado?
-                </inertia-link>
 
-                <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Registrar usuario
-                </jet-button>
+                <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Añadir usuario </button>
             </div>
         </form>
     </jet-authentication-card>
@@ -86,6 +81,7 @@
         },
          props: {
             usersType: Object,
+            user: Object
         },
 
         data() {

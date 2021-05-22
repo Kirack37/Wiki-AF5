@@ -12,14 +12,14 @@
                 <label class="mr-12" for="subjects">Nombre del cliente:</label >
                 <select class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="user_id" v-model="form.user_id">
                     <option v-for="user in users" :key="user.id" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
-                    <div class="text-bold text-red-600" v-if="errors.client_id">El nombre es requerido</div>
+                    <div class="text-bold text-red-600" v-if="errors.client_id">El nombre es necesario</div>
                 </select>
               </div>
               <div class="flex-1">
                 <label class="mr-8" for="alias">Nombre de la empresa:</label>
                 <select class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="company_id" v-model="form.company_id">
                     <option v-for="company in companies" :key="company.id" :value="company.id">{{company.name}}</option>
-                    <div class="text-bold text-red-600" v-if="errors.company_id">La empresa es requerida</div>
+                    <div class="text-bold text-red-600" v-if="errors.company_id">La empresa es necesaria</div>
                 </select>
               </div>
             </div>
@@ -42,7 +42,14 @@
                 ></ckeditor>
               </div>
           </div>
-        <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Editar el cliente </button>
+          <div class="flex">          
+            <div class="flex-1 mt-8"> 
+              <button class="bg-yellow-500 rounded p-4" type="submit"> Editar la empresa </button>
+            </div>
+            <div class="flex-end mt-12"> 
+              <inertia-link class="bg-gray-200 rounded p-4" :href="route('clients')">Volver atrás</inertia-link>
+            </div>
+          </div>
       </form>
     </div>
   </app-layout>

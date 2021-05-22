@@ -25,7 +25,7 @@ class WikiAf5Role extends Model
      * $role->users;
      * @author María Correa
      */
-    public function users()
+    public function all_users()
     {
         return $this->belongsToMany(User::class, 'wiki_af5_role_user', 'role_id', 'user_id')->withTimestamps();
     }

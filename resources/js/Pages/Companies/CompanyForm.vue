@@ -11,7 +11,7 @@
           <div class="flex-1">
             <label class="mr-12" for="name">Nombre de la empresa:</label >
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="name" v-model="form.name" />
-            <div v-if="errors.name">El Nombre es requerido</div>
+            <div v-if="errors.name">El Nombre es necesario</div>
           </div>
           <div class="flex-1">
             <label class="mr-8" for="alias">Descripción de la empresa:</label>

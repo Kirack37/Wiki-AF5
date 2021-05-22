@@ -11,12 +11,12 @@
           <div class="flex-1">
             <label class="mr-12" for="subjects">Asunto de la reunión:</label >
             <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="subject" v-model="form.subjects" />
-            <div class="text-bold text-red-600" v-if="errors.subjects">El asunto es requerido</div>
+            <div class="text-bold text-red-600" v-if="errors.subjects">El asunto es necesario</div>
           </div>
           <div class="flex-1">
             <label class="mr-8" for="alias">Fecha de la reunión:</label>
             <input class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" type="date" id="date" v-model="form.date"/>
-            <div class="text-bold text-red-600" v-if="errors.date">La fecha inicial es requerida</div>
+            <div class="text-bold text-red-600" v-if="errors.date">La fecha inicial es necesaria</div>
           </div>
         </div>
         <div class="flex items-center mb-8">
@@ -24,14 +24,14 @@
             <label class="mr-4" for="owner">Organizador de la reunión:</label>
             <select class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="responsible_id" v-model="form.owner_id">
                 <option v-for="user in users" :key="user.id" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
-                <div class="text-bold text-red-600" v-if="errors.owner_id">El asunto es requerido</div>
+                <div class="text-bold text-red-600" v-if="errors.owner_id">El asunto es necesario</div>
             </select>
           </div>
           <div class="flex-1">
             <label class="mr-6" for="priority">Prioridad de la reunión:</label>
             <select class="relative px-6 py-3 w-32 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="priority_id" v-model="form.priority_id">
                 <option id="priority_id" v-for="priority in priorities" :key="priority.id" :value="priority.id" data-id="priority.id">{{ priority.level }} </option>
-                <div class="text-bold text-red-600" v-if="errors.priority_id">El asunto es requerido</div>
+                <div class="text-bold text-red-600" v-if="errors.priority_id">El asunto es necesario</div>
             </select>
           </div>
         </div>

@@ -12,7 +12,7 @@
             <label class="mr-12" for="subjects">Nombre del trabajador externo:</label >
             <select class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="user_id" v-model="form.user_id">
                 <option v-for="user in users" :key="user.id" :value="user.id">{{user.firstname}} {{user.lastname}}</option>
-                <div class="text-bold text-red-600" v-if="errors.client_id">El nombre es requerido</div>
+                <div class="text-bold text-red-600" v-if="errors.client_id">El nombre es necesario</div>
             </select>
           </div>
           <div class="flex-1">

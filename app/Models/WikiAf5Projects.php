@@ -27,4 +27,7 @@ class WikiAf5Projects extends Model
     public function priority(){
         return $this->belongsTo(WikiAf5Priorities::class);
     }
+    public function all_users(){
+        return $this->belongsToMany(User::class, 'wiki_af5_projects_users', 'project_id', 'user_id');
+    }
 }

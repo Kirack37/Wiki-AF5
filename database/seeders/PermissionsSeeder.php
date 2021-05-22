@@ -342,6 +342,15 @@ class PermissionsSeeder extends Seeder
             $action->save();
         }
 
+        $exists = WikiAf5Permission::where('slug', 'carga_lista_usuarios_reuniones')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de usuarios en reuniones';
+            $action->slug = 'carga_lista_usuarios_reuniones';
+            $action->description = 'Carga la vista del listado de usuarios para añadirlos a reuniones (meetings.data)';
+            $action->save();
+        }
+
         $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_reunion')->first();
         if(!isset($exists)){
             $action = new WikiAf5Permission;
@@ -828,6 +837,15 @@ class PermissionsSeeder extends Seeder
             $action->save();
         }
 
+        $exists = WikiAf5Permission::where('slug', 'carga_lista_usuarios_proyectos')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de usuarios en proyectos';
+            $action->slug = 'carga_lista_usuarios_proyectos';
+            $action->description = 'Carga la vista del listado de usuarios para añadirlos a proyectos (projects.data)';
+            $action->save();
+        }
+
         $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_proyecto')->first();
         if(!isset($exists)){
             $action = new WikiAf5Permission;
@@ -1234,6 +1252,24 @@ class PermissionsSeeder extends Seeder
             $action->save();
         }
 
+        $exists = WikiAf5Permission::where('slug', 'carga_lista_usuarios_roles')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de usuarios en roles';
+            $action->slug = 'carga_lista_usuarios_roles';
+            $action->description = 'Carga la vista del listado de usuarios para añadirlos a roles (roles.index)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_lista_permisos_roles')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de permisos en roles';
+            $action->slug = 'carga_lista_permisos_roles';
+            $action->description = 'Carga la vista del listado de permisos para añadirlos a roles (roles.data)';
+            $action->save();
+        }
+
         $exists = WikiAf5Permission::where('slug', 'carga_form_creacion_rol')->first();
         if(!isset($exists)){
             $action = new WikiAf5Permission;
@@ -1270,12 +1306,48 @@ class PermissionsSeeder extends Seeder
             $action->save();
         }
 
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_usuario_rol')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario deusuario en rol';
+            $action->slug = 'carga_form_edicion_usuario_rol';
+            $action->description = 'Carga la vista del formulario de edición del usuario en el rol (editusers)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_permiso_rol')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de permiso em rol';
+            $action->slug = 'carga_form_edicion_permiso_rol';
+            $action->description = 'Carga la vista del formulario de edición del permiso en el rol (editpermissions)';
+            $action->save();
+        }
+
         $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_rol')->first();
         if(!isset($exists)){
             $action = new WikiAf5Permission;
             $action->name = 'Actualizar rol';
             $action->slug = 'guardar_form_edicion_rol';
             $action->description = 'Guarda en la base de datos el rol (roles.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_usuario_rol')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar usuario en rol';
+            $action->slug = 'guardar_form_edicion_usuario_rol';
+            $action->description = 'Guarda en la base de datos el usuario del rol (updateroles)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_permisos_rol')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar permiso en el rol';
+            $action->slug = 'guardar_form_edicion_permisos_rol';
+            $action->description = 'Guarda en la base de datos el permiso del rol (updatepermissions)';
             $action->save();
         }
 
@@ -1352,6 +1424,72 @@ class PermissionsSeeder extends Seeder
             $action->description = 'Elimina de la base de datos el servicio web (webservices.destroy)';
             $action->save();
         }
+
+        /** Usuarios **/
+
+        $exists = WikiAf5Permission::where('slug', 'listado_usuarios')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Listado de usuarios';
+            $action->slug = 'listado_usuarios';
+            $action->description = 'Carga la vista del listado de usuarios (wikiusers.index)';
+            $action->save();
+        }
+    
+        $exists = WikiAf5Permission::where('slug', 'carga_vista_usuario')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de la vista de detalles de usuarios';
+            $action->slug = 'carga_vista_usuario';
+            $action->description = 'Carga la vista de detalles del usuario (wikiusers.show)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_usuario')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga de formulario de usuario';
+            $action->slug = 'carga_form_edicion_usuario';
+            $action->description = 'Carga la vista del formulario de edición del usuario (wikiusers.edit)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'guardar_form_edicion_usuario')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Actualizar usuario';
+            $action->slug = 'guardar_form_edicion_usuario';
+            $action->description = 'Guarda en la base de datos el usuario (wikiusers.update)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'eliminar_usuario')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Eliminar usuario';
+            $action->slug = 'eliminar_usuario';
+            $action->description = 'Elimina de la base de datos el usuario (wikiusers.destroy)';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'cargar_registro_usuarios')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Registro de usuario';
+            $action->slug = 'cargar_registro_usuarios';
+            $action->description = 'Entrar al registro del usuario';
+            $action->save();
+        }
+
+        $exists = WikiAf5Permission::where('slug', 'crear_usuario')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Crear usuario';
+            $action->slug = 'crear_usuario';
+            $action->description = 'Crear un nuevo usuario';
+            $action->save();
+        }
+
 
     }
 }

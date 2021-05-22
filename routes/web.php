@@ -55,11 +55,19 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 /** Users **/
-Route::resource('users', UsersController::class)
+Route::resource('wikiusers', UsersController::class)
     ->middleware(['auth:sanctum', 'verified']); 
+
+Route::get('wikiusers', [UsersController::class, 'index'])
+    ->name('wikiusers')
+    ->middleware(['auth:sanctum', 'verified']);
 
 
 /** Projects **/
+
+Route::get('/projects/data', [WikiAf5ProjectsController::class, 'data'])
+    ->name('projects.data')
+    ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('projects', WikiAf5ProjectsController::class)
     ->middleware(['auth:sanctum', 'verified']); 
@@ -93,7 +101,7 @@ Route::resource('projects/{project}/webservices', WikiAf5WebServicesController::
 Route::resource('projects/{project}/enviroments', WikiAf5ProjectsEnviromentsController::class)
     ->middleware(['auth:sanctum', 'verified']);
 
-        /* Projects GIT */
+    /* Projects GIT */
 
 Route::resource('projects/{project}/enviroments/{enviroment}/git', WikiAf5ProjectsGitController::class)
     ->middleware(['auth:sanctum', 'verified']);
@@ -129,13 +137,13 @@ Route::resource('meetings/{meeting}/logs', WikiAf5MeetingsLogsController::class)
 
     /* Meetings Users */
 
-Route::get('meetingusers.create', function () {
-    inertia()->modal('meetingusers.create');
+// Route::get('meetingusers.create', function () {
+//     inertia()->modal('meetingusers.create');
     
-    return inertia('meetings.edit');
-});
-Route::resource('meetings/{meeting}/meetingusers', WikiAf5MeetingsUsersController::class)
-    ->middleware(['auth:sanctum', 'verified']);
+//     return inertia('meetings.edit');
+// });
+// Route::resource('meetings/{meeting}/meetingusers', WikiAf5MeetingsUsersController::class)
+//     ->middleware(['auth:sanctum', 'verified']);
 
      /* Meetings Notes */
 
@@ -204,6 +212,30 @@ Route::get('patternworks', [WikiAf5PatternWorksController::class, 'index'])
     ->middleware(['auth:sanctum', 'verified']);
 
 /** Roles **/
+
+Route::get('/roles/datausers', [WikiAf5RolesController::class, 'datausers'])
+    ->name('roles.datausers')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::get('/roles/datapermissions', [WikiAf5RolesController::class, 'datapermissions'])
+    ->name('roles.datapermissions')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::get('/roles/{role}/editusers', [WikiAf5RolesController::class, 'editusers'])
+    ->name('roles.editusers')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::get('/roles/{role}/editpermissions', [WikiAf5RolesController::class, 'editpermissions'])
+    ->name('roles.editpermissions')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::put('/roles/{role}/updateusers', [WikiAf5RolesController::class, 'updateusers'])
+    ->name('roles.updateusers')
+    ->middleware(['auth:sanctum', 'verified']);
+
+Route::put('/roles/{role}/updatepermissions', [WikiAf5RolesController::class, 'updatepermissions'])
+    ->name('roles.updatepermissions')
+    ->middleware(['auth:sanctum', 'verified']);
 
 Route::resource('roles', WikiAf5RolesController::class)
     ->middleware(['auth:sanctum', 'verified']); 

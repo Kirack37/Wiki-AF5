@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\WikiAf5Meetings;
 use App\Models\User;
+use App\Models\WikiAf5MeetingsUsers;
 use App\Models\WikiAf5Priorities;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -56,47 +57,53 @@ class WikiAf5MeetingsController extends Controller
     {
         $slug_action = 'carga_lista_usuarios_reuniones';
 
-        $data = [];
-        
-        $meeting_users = User::get();
+        if(Auth::user()->can_action($slug_action)){
 
-        if(isset($_GET['id'])){
-
-            $meetings = WikiAf5Meetings::find($_GET['id']);
-        }
-        
-
-        foreach($meeting_users as $mu){
-
-            $exists = false;
+            $data = [];
+            
+            $all_users = User::get();
 
             if(isset($_GET['id'])){
 
-                foreach($meetings->meeting_users as $user){
+                $meetings = WikiAf5Meetings::find($_GET['id']);
+            }
+            
 
-                    if($mu->id == $user->id){
-                        $exists = true;
+            foreach($all_users as $mu){
+
+                $exists = false;
+
+                if(isset($_GET['id'])){
+
+                    foreach($meetings->all_users as $user){
+
+                        if($mu->id == $user->id){
+                            $exists = true;
+                        }
                     }
                 }
+                
+                if($exists){
+                    $checkbox =  ' <input type="checkbox" class="all_users" name="all_users[]" ref="all_users[]" value="'.$mu->id.'" checked />';
+                }else {
+                    $checkbox =  ' <input type="checkbox" class="all_users" name="all_users[]" ref="all_users[]" value="'.$mu->id.'"/>';
+                }
+                
+                
+                $data[] = [
+                    $checkbox,
+                    $mu->firstname,
+                    $mu->lastname,
+                    $mu->user_type->name,        
+                ];
             }
-            
-            if($exists){
-                $checkbox =  ' <input type="checkbox" class="meeting_users" name="meeting_users[]" value="'.$mu->id.'" checked />';
-            }else {
-                $checkbox =  ' <input type="checkbox" class="meeting_users" name="meeting_users[]" value="'.$mu->id.'"/>';
-            }
-            
-            
-            $data[] = [
-                $checkbox,
-                $mu->firstname,
-                $mu->lastname,
-                $mu->userType->name,        
-            ];
-        }
 
-            
-        return json_encode(["data" => $data]);
+                
+            return json_encode(["data" => $data]);
+
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**
@@ -161,8 +168,8 @@ class WikiAf5MeetingsController extends Controller
             $meeting->save();
 
             
-            if(!is_null($request->meeting_users)){
-                foreach ($request->meeting_users as $user){
+            if(!is_null($request->all_users)){
+                foreach ($request->all_users as $user){
                    
                     DB::table('wiki_af5_meetings_users')->insert([
                         'meeting_id' => $request->id,
@@ -203,8 +210,13 @@ class WikiAf5MeetingsController extends Controller
                     $owner = User::where('id', $owner_id)->get();
                     $priority_id = $meeting->priority_id;
                     $priority = WikiAf5Priorities::where('id', $priority_id)->get();
+                    $assistants_id_array = WikiAf5MeetingsUsers::where('meeting_id', $meeting_id)->get('user_id');
+                    // $assistants_id_end = substr($assistants_id_array, strrpos($assistants_id_array, ':' )+1);
+                    // $assistants_id = substr($assistants_id_end, 0, strpos($assistants_id_end, '}'));
+                    // // dd($assistants_id);
+                    // $assistants = User::where('id', $assistants_id)->get();
 
-                    return Inertia::render('Meetings/Show', ['meeting' =>  $meeting, 'priority' => $priority, 'owner' => $owner]);
+                    return Inertia::render('Meetings/Show', ['meeting' =>  $meeting, 'priority' => $priority, 'owner' => $owner, 'assistants' => $assistants]);
                 }
             } 
             abort(404);
@@ -277,13 +289,13 @@ class WikiAf5MeetingsController extends Controller
             $meeting->description   = $request->description;
 
             $meeting->save();
-            // dd($meeting->meeting_users);
-            foreach($meeting->meeting_users as $user){
+            dd($request->all_users);
+            foreach($meeting->all_users as $user){
                 DB::table('wiki_af5_meetings_users')->where('meeting_id', $id)->delete();
             }
             
-            if(!is_null($request->meeting_users)){
-                foreach ($request->meeting_users as $user){
+            if(!is_null($request->all_users)){
+                foreach ($request->all_users as $user){
                    
                     DB::table('wiki_af5_meetings_users')->insert([
                         'meeting_id' => $id,

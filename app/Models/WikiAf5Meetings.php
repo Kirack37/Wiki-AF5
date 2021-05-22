@@ -19,7 +19,7 @@ class WikiAf5Meetings extends Model
         'status',
     ];
 
-    public function meeting_users(){
+    public function all_users(){
         return $this->belongsToMany(User::class, 'wiki_af5_meetings_users', 'meeting_id', 'user_id');
     }
     public function owner(){

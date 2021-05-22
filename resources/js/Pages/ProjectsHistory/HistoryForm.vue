@@ -18,7 +18,7 @@
             :editor="editor"
             :config="editorConfig"
             ></ckeditor>
-            <div v-if="errors.description">La descripción es requerida</div>
+            <div v-if="errors.description">La descripción es necesaria</div>
           </div>
         </div>
         <button class="bg-yellow-500 rounded p-4 mt-8" type="submit"> Añadir historial </button>
