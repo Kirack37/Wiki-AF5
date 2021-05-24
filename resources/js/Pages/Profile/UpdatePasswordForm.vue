@@ -1,11 +1,11 @@
 <template>
     <jet-form-section @submitted="updatePassword">
         <template #title>
-            Update Password
+            Actualizar contraseña
         </template>
 
         <template #description>
-            Ensure your account is using a long, random password to stay secure.
+            Asegúrate de que tu cuenta está usando una contraseña aleatoria y larga para estar seguro.
         </template>
 
         <template #form>
@@ -30,11 +30,11 @@
 
         <template #actions>
             <jet-action-message :on="form.recentlySuccessful" class="mr-3">
-                Saved.
+                Guardado.
             </jet-action-message>
 
             <jet-button :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                Guardar
             </jet-button>
         </template>
     </jet-form-section>

@@ -96,19 +96,28 @@ class WikiAf5ProjectsEnviromentsController extends Controller
      * @param  \App\Models\WikiAf5ProjectsEnviroments  $wikiAf5ProjectsEnviroments
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show(Request $request, $id)
     {   
-        // if (isset($request['history']) && $request['history']) {
-        //     $history_id = $request['project'];
-        //     $history = WikiAf5ProjectsHistory::find($history_id);
-        //     if (isset($history->id)){
-        //         $history->description = strip_tags($history->description);
-        //         $user_id = $history->user_id;
-        //         $user = User::where('id', $user_id)->get();
-        //         return Inertia::render('ProjectsHistory/Show', ['history' =>  $history, 'user' => $user]);
-        //     }
-        // } 
-        // abort(404);
+        $slug_action = 'vista_detalles_entorno_proyecto';
+
+        if(Auth::user()->can_action($slug_action)){
+
+            if (isset($request['enviroment']) && $request['enviroment']) {
+
+
+                $enviroment_id = $request['enviroment'];
+                $project = WikiAf5Projects::where('id', $id)->get();
+                $enviroment = WikiAf5ProjectsEnviroments::find($enviroment_id);
+                
+                if (isset($enviroment->id)){
+        
+                    return Inertia::render('ProjectsEnviroments/Show', ['enviroment' =>  $enviroment, 'project' => $project]);
+                }
+            } 
+                abort(404);
+        }else{
+            return redirect('dashboard')->with('status', 'No tienes permiso para acceder.');
+        }
     }
 
     /**

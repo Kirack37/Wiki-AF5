@@ -17,7 +17,7 @@ class ProjectsSeeder extends Seeder
     public function run()
     {
         // DB::table('wiki_af5_projects')->insert([
-            WikiAf5Projects::factory(30)->create();   
+            // WikiAf5Projects::factory(30)->create();   
         
         // ]);
     }

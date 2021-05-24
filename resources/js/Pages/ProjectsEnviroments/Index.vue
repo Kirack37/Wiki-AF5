@@ -25,6 +25,13 @@
             <p>{{ moment(enviroment.created_at).format("DD-MM-YYYY") }}</p>
           </div>
           <div class="item-data mr-12">
+            
+            <inertia-link class="inside-item text-yellow-600" :href="route('enviroments.show', [project[0].id, enviroment.id])">
+              <font-awesome-icon :icon="['fas', 'eye']" size="lg" />
+            </inertia-link>
+
+          </div>
+          <div class="item-data mr-12">
             <inertia-link
               class="inside-item text-blue-600"
               method="get"

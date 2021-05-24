@@ -14,6 +14,6 @@ class HistoriesSeeder extends Seeder
      */
     public function run()
     {
-        WikiAf5ProjectsHistory::factory(30)->create();   
+        // WikiAf5ProjectsHistory::factory(30)->create();   
     }
 }

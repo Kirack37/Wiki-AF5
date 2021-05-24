@@ -16,7 +16,6 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_type_id');
-            $table->unsignedBigInteger('company_id')->nullable();
             $table->string('name');
             $table->string('firstname');
             $table->string('lastname');
@@ -30,7 +29,6 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->dateTime('deleted_at')->nullable();
             $table->foreign('user_type_id')->references('id')->on('wiki_af5_users_type')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('company_id')->references('id')->on('wiki_af5_company')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -139,17 +139,6 @@ class WikiAf5MeetingsController extends Controller
 
         if(Auth::user()->can_action($slug_action)){
 
-            // $request->validate(
-            //     [   
-            //         'date' => 'required',
-            //         'subjects' => 'required',
-            //         'description' => 'required',
-            //         'owner_id' => 'required',
-            //         'priority_id' => 'required'
-            //     ]
-            // );
-
-            // WikiAf5Meetings::create($request->all());
             $validated = $request->validate([
                 'owner_id'     => 'required',
                 'priority_id'  => 'required',
@@ -210,13 +199,13 @@ class WikiAf5MeetingsController extends Controller
                     $owner = User::where('id', $owner_id)->get();
                     $priority_id = $meeting->priority_id;
                     $priority = WikiAf5Priorities::where('id', $priority_id)->get();
-                    $assistants_id_array = WikiAf5MeetingsUsers::where('meeting_id', $meeting_id)->get('user_id');
+                    // $assistants_id_array = WikiAf5MeetingsUsers::where('meeting_id', $meeting_id)->get('user_id');
                     // $assistants_id_end = substr($assistants_id_array, strrpos($assistants_id_array, ':' )+1);
                     // $assistants_id = substr($assistants_id_end, 0, strpos($assistants_id_end, '}'));
                     // // dd($assistants_id);
                     // $assistants = User::where('id', $assistants_id)->get();
 
-                    return Inertia::render('Meetings/Show', ['meeting' =>  $meeting, 'priority' => $priority, 'owner' => $owner, 'assistants' => $assistants]);
+                    return Inertia::render('Meetings/Show', ['meeting' =>  $meeting, 'priority' => $priority, 'owner' => $owner]);
                 }
             } 
             abort(404);
@@ -289,7 +278,7 @@ class WikiAf5MeetingsController extends Controller
             $meeting->description   = $request->description;
 
             $meeting->save();
-            dd($request->all_users);
+            // dd($request->all_users);
             foreach($meeting->all_users as $user){
                 DB::table('wiki_af5_meetings_users')->where('meeting_id', $id)->delete();
             }

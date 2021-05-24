@@ -8,15 +8,15 @@
         <div class="container mx-auto my-10 bg-white">
           <form @submit.prevent="submit">
             <div class="flex items-center mb-8">
-          <div class="flex-1">
-            <label class="mr-12" for="subjects">Asunto de la reunión:</label >
-            <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="subject" v-model="form.subjects" />
-          </div>
-          <div class="flex-1">
-            <label class="mr-8" for="alias">Fecha de la reunión:</label>
-            <input class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" type="date" id="date" v-model="form.date"/>
-          </div>
-        </div>
+              <div class="flex-1">
+                <label class="mr-12" for="subjects">Asunto de la reunión:</label >
+                <input type="text" class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" id="subject" v-model="form.subjects" />
+              </div>
+              <div class="flex-1">
+                <label class="mr-8" for="alias">Fecha de la reunión:</label>
+                <input class="relative px-6 py-3 rounded focus:outline-none focus:ring focus:ring-yellow-600" type="date" id="date" v-model="form.date"/>
+              </div>
+            </div>
         <div class="flex items-center mb-8">
           <div class="flex-1">
             <label class="mr-4" for="owner">Organizador de la reunión:</label>
@@ -113,7 +113,7 @@ export default {
       ],
       dom: 'Bfrtip',
       select: {
-        style:    'os',
+        style:    'multi',
         selector: 'td:first-child',
         select: true,
       },

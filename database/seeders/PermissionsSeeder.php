@@ -929,6 +929,14 @@ class PermissionsSeeder extends Seeder
             $action->save();
         }
 
+        $exists = WikiAf5Permission::where('slug', 'vista_detalles_entorno_proyecto')->first();
+        if(!isset($exists)){
+            $action = new WikiAf5Permission;
+            $action->name = 'Carga vista detalles entorno proyecto';
+            $action->slug = 'vista_detalles_entorno_proyecto';
+            $action->description = 'Carga la vista de detalles del entorno del proyecto';
+            $action->save();
+        }
         $exists = WikiAf5Permission::where('slug', 'carga_form_edicion_entorno_proyecto')->first();
         if(!isset($exists)){
             $action = new WikiAf5Permission;
@@ -1489,7 +1497,5 @@ class PermissionsSeeder extends Seeder
             $action->description = 'Crear un nuevo usuario';
             $action->save();
         }
-
-
     }
 }

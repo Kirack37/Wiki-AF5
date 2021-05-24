@@ -78,6 +78,11 @@
                                 </jet-nav-link>
                             </div>
                             <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                                <jet-nav-link :href="route('meetings')" :active="route().current('meetings')">
+                                    Guías
+                                </jet-nav-link>
+                            </div>
+                            <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <jet-nav-link :href="route('personalnotes')" :active="route().current('personalnotes')">
                                     Notas personales
                                 </jet-nav-link>
@@ -107,11 +112,11 @@
                                     <template #content>
                                         <!-- Account Management -->
                                         <div class="block px-4 py-2 text-xs text-gray-400">
-                                            Manage Account
+                                            Administrar la cuenta
                                         </div>
 
                                         <jet-dropdown-link :href="route('profile.show')">
-                                            Profile
+                                            Perfil
                                         </jet-dropdown-link>
 
                                         <jet-dropdown-link :href="route('api-tokens.index')" v-if="$page.props.jetstream.hasApiFeatures">
@@ -123,7 +128,7 @@
                                         <!-- Authentication -->
                                         <form @submit.prevent="logout">
                                             <jet-dropdown-link as="button">
-                                                Log Out
+                                                Cerrar sesión
                                             </jet-dropdown-link>
                                         </form>
                                     </template>
@@ -147,7 +152,59 @@
                 <div :class="{'block': showingNavigationDropdown, 'hidden': ! showingNavigationDropdown}" class="sm:hidden">
                     <div class="pt-2 pb-3 space-y-1">
                         <jet-responsive-nav-link :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            Inicio
+                        </jet-responsive-nav-link>
+                    </div>
+
+                    <div class="pt-2 pb-3 space-y-1">
+                        <jet-responsive-nav-link :href="route('projects')" :active="route().current('projects')">
+                            Proyectos
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <jet-responsive-nav-link :href="route('meetings')" :active="route().current('meetings')">
+                            Reuniones
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <jet-responsive-nav-link :href="route('clients')" :active="route().current('clients')">
+                            Clientes
+                        </jet-responsive-nav-link>
+                    </div>
+
+                     <div class="pt-2 pb-3 space-y-1">    
+                        <jet-responsive-nav-link :href="route('externalworkers')" :active="route().current('externalworkers')">
+                            Trabajadores Externos
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <jet-responsive-nav-link :href="route('contacts')" :active="route().current('contacts')">
+                            Contactos
+                        </jet-responsive-nav-link>   
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <jet-responsive-nav-link :href="route('companies')" :active="route().current('companies')">
+                            Empresas
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <jet-responsive-nav-link :href="route('wikiusers')" :active="route().current('wikiusers')">
+                            Usuarios
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <jet-responsive-nav-link :href="route('roles')" :active="route().current('roles')">
+                            Roles
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <jet-responsive-nav-link :href="route('meetings')" :active="route().current('meetings')">
+                            Guías
+                        </jet-responsive-nav-link>
+                    </div>
+                    <div class="pt-2 pb-3 space-y-1">
+                        <jet-responsive-nav-link :href="route('personalnotes')" :active="route().current('personalnotes')">
+                            Notas personales
                         </jet-responsive-nav-link>
                     </div>
 
@@ -166,7 +223,7 @@
 
                         <div class="mt-3 space-y-1">
                             <jet-responsive-nav-link :href="route('profile.show')" :active="route().current('profile.show')">
-                                Profile
+                                Perfil
                             </jet-responsive-nav-link>
 
                             <jet-responsive-nav-link :href="route('api-tokens.index')" :active="route().current('api-tokens.index')" v-if="$page.props.jetstream.hasApiFeatures">
@@ -176,7 +233,7 @@
                             <!-- Authentication -->
                             <form method="POST" @submit.prevent="logout">
                                 <jet-responsive-nav-link as="button">
-                                    Log Out
+                                    Cerrar sesión
                                 </jet-responsive-nav-link>
                             </form>
 
